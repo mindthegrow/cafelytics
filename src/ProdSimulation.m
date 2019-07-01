@@ -76,10 +76,11 @@ for n=1:num_years
                 Prod(j,1)=Prod(j,1)*(1-1/(data(2,13)-data(2,14)));
             end
             
+            % check for replanting condition
             if mod(Age(j),Catuai+data(2,13))==0
                 Prod(j,2)=Species(j,2);
                 Prod(j,1)=0;
-                Prod(j,3)=Catuai-1;
+                Prod(j,3)=data(2,12)-1;
                 Age(j)=0; % tree will be replanted this year, NOT cut. Same for species below
                 
                 % some farmers may want to plant more productive species in this field
@@ -88,6 +89,7 @@ for n=1:num_years
                     Species(j,2)=NaN;
                     Prod(j,3)=Borbon-2;
                     Age(j)=2;
+                
                 end
                 
             end
