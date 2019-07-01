@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/binder/?urlpath=git-pull?repo=https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/master/?urlpath=/lab/?filepath=index.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/binder/?urlpath=git-pull?repo=https://github.com/mathematicalmichael/coffeecode?filepath=index.ipynb?urlpath=lab/)
 
 # coffeecode
 A basic simulation of a coffee operation.
