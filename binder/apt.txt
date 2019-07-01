@@ -2,5 +2,6 @@ octave
 octave-symbolic
 octave-miscellaneous
 octave-io
+octave-control
 gnuplot
 ghostscript
