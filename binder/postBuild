@@ -9,3 +9,5 @@ jupyter serverextension enable --py nbgitpuller --sys-prefix
 
 # remember git login credentials
 git config --global credential.helper "cache --timeout 144000"
+
+export JUPYTER_ENABLE_LAB=yes
