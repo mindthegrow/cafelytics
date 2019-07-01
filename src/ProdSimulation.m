@@ -84,7 +84,7 @@ for n=1:num_years
                 Age(j)=0; % tree will be replanted this year, NOT cut. Same for species below
                 
                 % some farmers may want to plant more productive species in this field
-                if n>=Intercrop_Borbon && randi(10)<6 %after year n, plant Borbon 
+                if n>=Intercrop_Borbon && randi(10)<4 %after year n, plant Borbon 
                     Species(j,1)=Species(j,2);
                     Species(j,2)=NaN;
                     Prod(j,3)=Borbon-2;
