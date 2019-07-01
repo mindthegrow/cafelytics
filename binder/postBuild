@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# install the notebook and nbgitpuller packages
+pip install --no-cache --upgrade pip && \
+    pip install --no-cache notebook && \
+    pip install --no-cache nbgitpuller
+
+jupyter serverextension enable --py nbgitpuller --sys-prefix
+
+# remember git login credentials
+git config --global credential.helper "cache --timeout 144000"
