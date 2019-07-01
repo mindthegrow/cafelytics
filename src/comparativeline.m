@@ -1,9 +1,10 @@
-function comparativeline(X1, YMatrix1)
+function comparativeline(Year, Yields)
 
 % Create figure
 figure1 = figure('NumberTitle','off','Name','50 yr');
 
 % Create axes
+xtick_labels = [];
 axes1 = axes('Parent',figure1,'YMinorTick','on','YGrid','on',...
     'XTick',[2012 2017 2022 2027 2032 2037 2042 2047 2052 2057 2061],...
     'XMinorTick','on');
@@ -24,7 +25,7 @@ ylabel('Yield (lbs)','FontSize',16);
 %title('Purchase 20c. of Borbon in Year 5','FontSize',16);
 
 % Create multiple lines using matrix input to plot
-plot1 = plot(X1,YMatrix1,'LineWidth',3);
+plot1 = plot(Year,Yields,'LineWidth',3);
 set(plot1(1),...
     'Color',[0.0392156876623631 0.141176477074623 0.415686279535294],...
     'DisplayName','getcolumn(Year vs. Yield,1)');
