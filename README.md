@@ -2,7 +2,7 @@ Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v
 
 Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/master?urlpath=lab/tree/index.ipynb)
 
-# coffeecode ☕️
+# cafélytics ☕️
 A basic simulation of a coffee operation. Run it right in your browser by clicking on the Binder badge above.
 
 
