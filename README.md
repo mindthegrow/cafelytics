@@ -1,6 +1,6 @@
-Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/binder/?urlpath=git-pull?repo=https://github.com/mathematicalmichael/coffeecode)
+Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/cafelytics/binder/?urlpath=git-pull?repo=https://github.com/mathematicalmichael/cafelytics)
 
-Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/coffeecode/master?urlpath=lab/tree/index.ipynb)
+Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mathematicalmichael/cafelytics/master?urlpath=lab/tree/index.ipynb)
 
 # cafélytics ☕️
 A basic simulation of a coffee operation. Run it right in your browser by clicking on the Binder badge above.
