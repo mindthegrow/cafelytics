@@ -1,4 +1,5 @@
-import statistics as stat
+import statistics as stats
+import functions as functions
 
 class Cuerdas:
     
@@ -6,7 +7,7 @@ class Cuerdas:
     # not sure if I'll keep it all this way, but it's a good start
     
     
-    def __init__(self, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = hectaresToCuerdas(2000)): # use self to declare namespace
+    def __init__(self, _farmerName, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = functions.hectaresToCuerdas(2000)): # use self to declare namespace
         """
         
         Parameters
@@ -27,6 +28,8 @@ class Cuerdas:
         
         """
         
+        self.farmerName = _farmerName
+        
         self.inheretTreeProperties(_treeType)
         
         self.totalCuerdas = _cuerdas
@@ -39,7 +42,7 @@ class Cuerdas:
         self.initialAgeOfTrees = self.convertToRoundInt(_initialAgeOfTrees)
         
         #self.numOfTrees = _cuerdas * _sowDensity # how many [insert tree name] there are
-        self.trees = [_initialAgeOfTrees for i in range(self.totalTrees)]
+        self.trees = [self.initialAgeOfTrees for i in range(self.totalTrees)]
         
         self.averageAgeOfTrees = stats.mean(self.trees)
         
@@ -134,10 +137,12 @@ class Cuerdas:
         if type(number) == int:
             final = number
         elif type(number) == float:
-            final = int(round(_initialAgeOfTrees, 0)
+            final = int(round(number, 0))
         elif type(number) == str:
             temp = float(number)
             final = round(temp, 0)
+        else:
+            print("Invalid data type")
                         
         return(final)
 
@@ -276,7 +281,7 @@ class Cuerdas:
                 #print("Age after: ", self.trees[treeIndex])
                 #print("Harvest after: ", self.totalHarvest)
                 
-            elif ((treeAge >= self.descentHarvest['year']) and (treeAge) < self.death['year']):
+            elif ((treeAge >= self.descentHarvest['year']) and (treeAge < self.death['year'])):
                 #print("Age before: ", treeAge)
                 #print("Harvest before: ", self.totalHarvest)
                 
@@ -289,7 +294,7 @@ class Cuerdas:
                 #print("Age after: ", self.trees[treeIndex])
                 #print("Harvest after: ", self.totalHarvest)
                 
-            elif (treeAge == self.death['year']):
+            elif (treeAge >= self.death['year']):
                 self.trees[treeIndex] += 1
                 #print("Tree dies now")
                 #print("Harvest before: ", self.totalHarvest)
@@ -303,11 +308,16 @@ class Cuerdas:
                 %d years of age"""%(treeAge, treeIndex, self.death['year']))
                 break
                    
-        self.trees[:] = [age for age in self.trees if (age <= self.death['year'])] # call-by-reference overwrite of ls removing dead trees. 
+        self.trees[:] = [age for age in self.trees if (age < self.death['year'])] # call-by-reference overwrite of ls removing dead trees. 
         # assure this ^ is outside of the loop & assure the list references the full index with '[:]'
         self.totalTrees = len(self.trees)
-        self.averageAgeOfTrees = stats.mean(self.trees)
-        self.sowDensity = self.totalTrees / self.totalCuerdas
+                  
+        if self.totalTrees > 0:
+            self.averageAgeOfTrees = stats.mean(self.trees)
+            self.sowDensity = self.totalTrees / self.totalCuerdas
+        
+        else:
+            print("All of your trees are dead")
             
     def getHarvest(self):
         """
@@ -325,3 +335,22 @@ class Cuerdas:
         
         """
         self.totalHarvest = 0
+        
+        
+        
+class Farm:
+    
+    """
+    This is a class of farm. Farm uses objects of class Cuerda to store tree-specific land. One farm
+    will likely have many plots (hence 'Cuerdas,' the standard
+    unit for this specific set) of different species of trees with different ages.
+    
+    
+    """
+    
+    def __init__(self):
+        
+        """
+        The first step is to decide whether the initialization will allow users to create classes of Cuerdas,
+    or if it will have them passed as initialization arguments.
+        """
