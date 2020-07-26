@@ -61,7 +61,7 @@ class Cuerdas:
     
         """
         while loop:
-            if (treeType =='borbon') or (treeType == 0):
+            if (treeType =='borbon'):
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
                 self.fullHarvest = {'year': 5, 'proportion': 1.0}  # year of first harvest and proportion of harvest
                 self.descentHarvest = {'year': 28, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
@@ -74,7 +74,7 @@ class Cuerdas:
                 loop = False
                 
                 
-            elif (treeType =='catuaí') or (treeType == 'catuai') or (treeType == 1):
+            elif (treeType =='catuaí') or (treeType == 'catuai'):
                 self.firstHarvest = {'year': 3, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
                 self.fullHarvest = {'year': 4, 'proportion': 1.0}  # year of first harvest and proportion of harvest
                 self.descentHarvest = {'year': 15, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
@@ -86,7 +86,7 @@ class Cuerdas:
 
                 loop = False
 
-            elif (treeType == 'e14') or (treeType == 'E14') or (treeType == 2):
+            elif (treeType == 'e14') or (treeType == 'E14'):
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
                 self.fullHarvest = {'year': 5, 'proportion': 1.0}  # year of first harvest and proportion of harvest
                 self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
@@ -98,7 +98,7 @@ class Cuerdas:
                 
                 loop = False
 
-            elif (treeType == 'caturra') or (treeType == 3):
+            elif (treeType == 'caturra') or (treeType == 'catura'):
                 self.firstHarvest = {'year': 3, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
                 self.fullHarvest = {'year': 4, 'proportion': 1.0}  # year of first harvest and proportion of harvest
                 self.descentHarvest = {'year': 14, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
@@ -316,8 +316,8 @@ class Cuerdas:
             self.averageAgeOfTrees = stats.mean(self.trees)
             self.sowDensity = self.totalTrees / self.totalCuerdas
         
-        else:
-            print("All of your trees are dead")
+        #else:
+           # print("All of your trees are dead")
             
     def getHarvest(self):
         """

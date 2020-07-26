@@ -6,6 +6,8 @@ def readData(filePath):
     
     if ext == 'csv':
         data = pd.read_csv(filePath)
+    
+    return(data)
 
 
 def get_yn():
