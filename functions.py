@@ -1,12 +1,14 @@
 import pandas as pd
 
-def readData(filePath):
+def readData(filePath): # we will probably use os to do the file import later, but this works for now
     pathExt = filePath.split('.')
     ext = pathExt[1]
     
     if ext == 'csv':
         data = pd.read_csv(filePath)
-    
+    elif (ext == 'xlsx') or (ext == 'xls') or (ext == 'xlsm') or (ext == 'xlsb'):
+        #sheet = input("Please enter the sheet name or number (first sheet = 0, second = 1, etc.)")
+        data.pd.read_excel(filePath)
     return(data)
 
 

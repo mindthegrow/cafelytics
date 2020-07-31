@@ -132,4 +132,4 @@ if (totalFarmers == totalListsTrees) and (totalFarmers == totalListsAges) and (t
 finalData = pd.DataFrame(zip(finalFarmers,finalTrees,finalCuerdas,finalAges), columns = 
                          ['farmerName', 'treeType', 'numCuerdas', 'ageOfTrees'])              
 
-finalData.to_csv('demoData.csv')
+finalData.to_csv('data/demoData.csv')

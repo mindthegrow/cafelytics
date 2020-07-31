@@ -110,8 +110,8 @@ class Cuerdas:
 
                 loop = False
 
-            else:
-                choice01 = ("This tree species does not exist. Would you like to (0) rechose a tree type or (1) make a new tree type: ")
+            else: # uncomplete option
+                choice01 = ("This tree species does not exist. Would you like to (0) re-elect a tree type or (1) make a new tree type: ")
                 if (choice01 == 0) or (choice01 == False):
                     print("some stuff")
                             
@@ -241,6 +241,13 @@ class Cuerdas:
             
         self.totalTrees += numTrees
         self.averageAgeOfTrees = stats.mean(self.trees)
+        
+    def pruneTrees(self, proportion = 1.0):
+        """
+        
+        
+        """
+        
         
         
     def oneYear(self):
