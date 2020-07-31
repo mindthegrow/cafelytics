@@ -1,0 +1,65 @@
+---
+# four types of coffee tree strains (variants of coffea arabica) the co-op grew in Guatemala
+borbon:
+  treeType: "borbon"
+  altOrth: "borbón"
+  cuerdaHarvestCap: 200
+  firstHarvest:
+    year: 4
+    proportion: 0.2 
+  fullHarvest:
+    year: 5
+    proportion: 1.0
+  descentHarvest:
+    year: 28
+    proportionDescent: 0.2
+  death:
+    year: 30
+    
+catuai:
+  treeType: "catuai"
+  altOrth: "catuaí"
+  cuerdaHarvestCap: 125
+  firstHarvest:
+    year: 3
+    proportion: 0.2
+  fullHarvest:
+    year: 4
+    proportion: 1.0
+  descentHarvest:
+    year: 15
+    proportionDescent: 0.2
+  death:
+    year: 17
+ 
+e14:
+  treeType: "e14"
+  altOrth: "E14"
+  cuerdaHarvestCap: 125
+  firstHarvest:
+    year: 4
+    proportion: 0.2
+  fullHarvest:
+    year: 5
+    proportion: 1.0
+  descentHarvest:
+    year: 13
+    proportionDescent: 0.2
+  death:
+    year: 15
+    
+caturra:
+  treeType: "caturra"
+  altOrth: "catura"
+  cuerdaHarvestCap: 125
+  firstHarvest:
+    year: 3
+    proportion: 0.2
+  fullHarvest:
+    year: 4
+    proportion: 1.0
+  descentHarvest:
+    year: 14
+    proportionDescent: 0.2
+  death:
+    year: 16
