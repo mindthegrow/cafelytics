@@ -94,3 +94,7 @@ def hectaresToCuerdas(hectares: float = 1) -> float:
     cuerdas = hectares * 0.3930395625
     return(cuerdas)
 
+def logData(someInfo):
+    """
+    
+    """
