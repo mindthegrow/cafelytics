@@ -141,17 +141,23 @@ def main():
     pltYears = simData[0]
     pltHarvests = simData[1]
     
+    # get parameters for axes
+    mnYear, mxYear = min(pltYears), max(pltYears)
+    mxHarvest = max(pltHarvests)
+    
+    
     plt.rcParams["figure.figsize"] = (20,10)
     fsize = 20 # font size 
     #mpl.rcParams.update(mpl.rcParamsDefault)
     
-    plt.plot(pltYears, pltHarvests)
+    plt.axes(xlim=(mnYear,mxYear),ylim=(0,(mxHarvest + (mxHarvest * 0.10))))
+    plt.plot(pltYears, pltHarvests, linewidth = 4)
     plt.style.use('ggplot')
-    plt.title("Thirty-year prediction with no action by demo co-op", fontsize =(fsize * 1.25))
+    plt.title("Prediction of %d years with no action by demo co-op"%(years), fontsize =(fsize * 1.25))
     plt.xlabel("Year", fontsize =fsize)
-    plt.ylabel("Total pounds of coffee berry produced", fontsize =fsize)
+    plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
     plt.savefig("demoPredNew.png", dpi = 100)
-    plt.show()
+    #plt.show()
 
     
 if __name__ == '__main__':

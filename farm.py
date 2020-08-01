@@ -51,6 +51,8 @@ class Cuerdas:
         # if plants are added or if others die
         self.totalHarvest = 0 # units, in this case ???
         
+        
+        
         # initialize variables for pruning so if/else can deal with objects
         self.pruneYear = False
         self.pruneCount = 0
@@ -345,7 +347,7 @@ class Cuerdas:
                 #print("Age after: ", self.trees[treeIndex])
                 #print("Harvest after: ", self.totalHarvest)
                 
-            elif (treeAge >= self.death['year']):
+            elif (treeAge == self.death['year']):
                 self.trees[treeIndex] += 1
                 #print("Tree dies now")
                 #print("Harvest before: ", self.totalHarvest)
@@ -353,15 +355,20 @@ class Cuerdas:
                 #print("Age after: ", self.trees[treeIndex])
                 #print("Harvest after: ", self.totalHarvest)
                 
+            elif (treeAge >= (self.death['year'] + 1)):
+                # if it is the year after the tree died...
+                self.trees[treeIndex] = 0 # plant a new tree
+                
             else:
                 print("""The number: %d, list index: %d is out of range:
                 a tree can not be less than 0 years old, and a tree of this type can not be more than
                 %d years of age"""%(treeAge, treeIndex, self.death['year']))
                 break
                    
-        self.trees[:] = [age for age in self.trees if (age < self.death['year'])] # call-by-reference overwrite of ls removing dead trees. 
+        #self.trees[:] = [age for age in self.trees if (age < self.death['year'])] # call-by-reference overwrite of ls removing dead trees. 
         # assure this ^ is outside of the loop & assure the list references the full index with '[:]'
-        self.totalTrees = len(self.trees)
+        livingTrees = [age for age in self.trees if (age < self.death['year'])]
+        self.totalTrees = len(livingTrees)
                   
         if self.totalTrees > 0:
             self.averageAgeOfTrees = stats.mean(self.trees)
