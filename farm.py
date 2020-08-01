@@ -3,7 +3,7 @@ import functions as functions
 
 class Cuerdas:
     
-    # currently the program runs by iterating through a list where each tree is its own value (an integrer representing its age). I think that this approach offers benefits for later when we implement probabilities with trees sporadically dying from rust and CBB. I also think it allows for much easier access to information like: how many trees are in production; it also allows us to have many different aged trees. It's logical! But it's slow as hell.
+    # currently the program runs by iterating through a list where each tree is its own value (an integrer representing its age). I think that this approach offers benefits for later when we implement probabilities with trees sporadically dying from rust and CBB. I also think it allows for much easier access to information like: how many trees are in production; what is the average age of the trees in this plot (otherwise you need to weight the averages) it also allows us to have many different aged trees. It's logical! But it's slow as hell.
     
     # I'm wondering if a middle ground would be to break the trees up into like micro-plots of 50-100 trees, so we could have the same benefits but not have to iterate through so many objects.
     
@@ -381,19 +381,3 @@ class Cuerdas:
         
         
         
-class Farm:
-    
-    """
-    This is a class of farm. Farm uses objects of class Cuerda to store tree-specific land. One farm
-    will likely have many plots (hence 'Cuerdas,' the standard
-    unit for this specific set) of different species of trees with different ages.
-    
-    
-    """
-    
-    def __init__(self):
-        
-        """
-        The first step is to decide whether the initialization will allow users to create classes of Cuerdas,
-    or if it will have them passed as initialization arguments.
-        """
