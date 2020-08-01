@@ -16,7 +16,7 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
     Parameters
     ----------
     farmStr : str
-        string of filepath (from current working directory) to datasheet
+        string of filepath (from current working directory) to spreadsheet with data. Spreadsheet must correspond with template to run function. 
         
         
     Returns
@@ -30,11 +30,11 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
     lsOfPlots = []
 
     # create a list of plots using class Cuerdas
-    for i in range(len(demoData)):
-        tempName = str(demoData['farmerName'][i])
-        tempCuerdas = float(demoData['numCuerdas'][i])
-        tempTree = str(demoData['treeType'][i])
-        tempAge = float(demoData['ageOfTrees'][i])
+    for i in range(len(farmData)):
+        tempName = str(farmData['farmerName'][i])
+        tempCuerdas = float(farmData['numCuerdas'][i])
+        tempTree = str(farmData['treeType'][i])
+        tempAge = float(farmData['ageOfTrees'][i])
     
         plot = farm.Cuerdas(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
         lsOfPlots.append(plot)
@@ -42,37 +42,40 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
     return(lsOfPlots)
 
 
-def simulateCoOp(lsOfPlots, numYears, growthPattern = None, strategy = None):
+def simulateCoOp(lsOfPlots, numYears, pruneYear = None, growthPattern = None, strategy = None):
 
     numPlots = len(lsOfPlots)
-    demoYears = 30
 
     annualHarvest = []
     harvestYear = []
+    
+    
 
-    for i in range(demoYears):
-        thisYearsHarvest = 0
+    for year in range(numYears):
+        thisYearsHarvest = 0 # each year reset harvest
 
         for j in range(numPlots):
+            if (pruneYear):
+                if j == pruneYear: # if it's the prune year
+                    isPrune = True
+                    lsOfPlots[j].setPruneTrees(isPrune)
+                    
             lsOfPlots[j].oneYear() # run this plot through one year of the demo
             tempHarvest = lsOfPlots[j].totalHarvest
-            lsOfPlots[j].setHarvestZero() # not culminating sum, but instead reset
+            lsOfPlots[j].setHarvestZero() # not cumulative sum, but instead reset
             thisYearsHarvest += tempHarvest
 
-
+        harvestYear.append(year)
         annualHarvest.append(thisYearsHarvest)
-        harvestYear.append(i)
+       
+        
+    simulation = [harvestYear, annualHarvest]
+    
+    return(simulation)
 
-    plt.rcParams["figure.figsize"] = (20,10)
-    #mpl.rcParams.update(mpl.rcParamsDefault)
 
-plt.plot(harvestYear, annualHarvest)
-fsize = 20
-plt.style.use('ggplot')
-plt.title("Thirty-year prediction with no action by demo co-op", fontsize =(fsize * 1.25))
-plt.xlabel("Year", fontsize =fsize)
-plt.ylabel("Total pounds of coffee berry produced", fontsize =fsize)
-plt.savefig("demoPred", dpi = 100)
+        
+
 
 def main():
     import argparse
@@ -110,7 +113,7 @@ def main():
                         
                         """)
     
-    parser.add_argument('-y', '--year',
+    parser.add_argument('-y', '--years',
                         default=30,
                         type=int, # string type works well for 
                         help=
@@ -120,6 +123,35 @@ def main():
                         Example (& default): --year 30
                         
                         """)
+    
+    args = parser.parse_args()
+    
+    farm = args.farm
+    trees = args.trees
+    strategy = args.strategy
+    years = args.years
+    
+    if not os.path.exists(farm):
+        raise ValueError("File: %s does not exist"%farm)
+    
+    lsOfFarms = compileCoOp(farm)
+    
+    simData = simulateCoOp(lsOfFarms, years)
+    
+    pltYears = simData[0]
+    pltHarvests = simData[1]
+    
+    plt.rcParams["figure.figsize"] = (20,10)
+    fsize = 20 # font size 
+    #mpl.rcParams.update(mpl.rcParamsDefault)
+    
+    plt.plot(pltYears, pltHarvests)
+    plt.style.use('ggplot')
+    plt.title("Thirty-year prediction with no action by demo co-op", fontsize =(fsize * 1.25))
+    plt.xlabel("Year", fontsize =fsize)
+    plt.ylabel("Total pounds of coffee berry produced", fontsize =fsize)
+    plt.savefig("demoPredNew.png", dpi = 100)
+    plt.show()
 
     
 if __name__ == '__main__':
