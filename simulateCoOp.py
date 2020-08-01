@@ -1,3 +1,7 @@
+import time
+
+startTime = time.time() 
+
 import pandas as pd
 import numpy as np
 import statistics as stats
@@ -160,7 +164,13 @@ def main():
     plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
     plt.savefig("testNewFarm.png", dpi = 100)
     #plt.show()
+    
+    stopTime = time.time()
+    runTime = stopTime - startTime
+    print(runTime)
 
     
 if __name__ == '__main__':
     main()
+    
+    
