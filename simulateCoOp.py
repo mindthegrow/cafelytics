@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import importlib
 
 import farm as farm
+import farmRe as farmRe
 import functions as functions
 
 #importlib.reload(farm)
@@ -36,7 +37,8 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farm.Cuerdas(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
+        plot = farmRe.Farm(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
+        
         lsOfPlots.append(plot)
         
     return(lsOfPlots)
@@ -57,8 +59,8 @@ def simulateCoOp(lsOfPlots, numYears, pruneYear = None, growthPattern = None, st
         for j in range(numPlots):
             if (pruneYear):
                 if j == pruneYear: # if it's the prune year
-                    isPrune = True
-                    lsOfPlots[j].setPruneTrees(isPrune)
+                    # isPrune = True
+                    lsOfPlots[j].setPruneTrees()
                     
             lsOfPlots[j].oneYear() # run this plot through one year of the demo
             tempHarvest = lsOfPlots[j].totalHarvest
@@ -156,7 +158,7 @@ def main():
     plt.title("Prediction of %d years with no action by demo co-op"%(years), fontsize =(fsize * 1.25))
     plt.xlabel("Year", fontsize =fsize)
     plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
-    plt.savefig("demoPredNew.png", dpi = 100)
+    plt.savefig("testNewFarm.png", dpi = 100)
     #plt.show()
 
     
