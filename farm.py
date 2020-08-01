@@ -7,7 +7,7 @@ class Cuerdas:
     # not sure if I'll keep it all this way, but it's a good start
     
     
-    def __init__(self, _farmerName, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = functions.hectaresToCuerdas(2000)): # use self to declare namespace
+    def __init__(self, _farmerName, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = functions.hectaresToCuerdas(1000)): # use self to declare namespace
         """
         
         Parameters
@@ -50,6 +50,10 @@ class Cuerdas:
         self.harvestPerTree = self.cuerdaHarvestCap / _sowDensity # pull initial sow density because the other will change
         # if plants are added or if others die
         self.totalHarvest = 0 # units, in this case ???
+        
+        # initialize variables for pruning so if/else can deal with objects
+        self.pruneYear = False
+        self.pruneCount = 0
         
     def inheretTreeProperties(self, treeType):
         loop = True
@@ -242,13 +246,28 @@ class Cuerdas:
         self.totalTrees += numTrees
         self.averageAgeOfTrees = stats.mean(self.trees)
         
-    def pruneTrees(self, proportion = 1.0):
+    
+    def setPruneTrees(self):
         """
-        
+        Takes in `pruneYear` bool, sets self.pruneYear to equiveleant value. 
         
         """
+        self.pruneYear = True
         
+        # how much the total yield will increase after trees grow back from pruning (i.e. after pruneCount years)
+        self.pruneGrowth = 0.10 
         
+        # current yield - (current yield * (this proportion * countyear)) = yield for that year.
+        self.pruneDelay = 0.20
+        # caution! The product of this proportion ^^^ and count year SHANT EXCEED 1.0 otherwise the 
+        # program will simulate impossibilities
+        
+        if pruneYear == True: # the if-else is set up in case the main function decides to pass this on ever iteration
+            self.pruneCount = 3
+            
+            # increase total yield-per-tree to 10% higher
+            self.harvestPerTree = self.harvestPerTree + (self.pruneGrowth * self.harvestPerTree)
+            
         
     def oneYear(self):
         """
@@ -258,7 +277,32 @@ class Cuerdas:
         
         """
         for treeIndex, treeAge in enumerate(self.trees):
-            if (treeAge < self.firstHarvest['year']):
+            if (self.pruneYear == True):
+                # make sure to:
+                # (1) still age the trees
+                # (2) make them produce less for a bit!? How!?
+                # (3) increase total production or lifespan long-term
+                
+                self.trees[treeIndex] += 1 # trees still age when they're pruned
+                self.pruneCount -= 1 # lower the countdown to full yield by one year
+                
+                self.pruneYear = False # it is no longer a prune year and so this shifts it back to cycle
+                
+            elif (self.pruneCount > 0):
+                
+                subtract = self.pruneDelay * self.pruneCount
+                
+                if (subtract > 1.0):
+                    break
+                    print("Impossible proportion as a result of pruneCount and pruneDelay.")
+                    print("Please assure product of pruneCount and pruneDelay is always <= 1.0")
+                
+                product = self.harvestPerTree - (self.harvestPerTree * (subtract))
+            
+                self.trees[treeIndex] += 1 # trees still age when they're pruned
+                self.pruneCount -= 1 # lower the countdown to full yield by one year
+            
+            elif (treeAge < self.firstHarvest['year']):
                 #print("Age before: ", treeAge)
                 #print("Harvest before: ", self.totalHarvest)
                 
