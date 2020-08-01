@@ -3,9 +3,11 @@ import functions as functions
 
 class Cuerdas:
     
-    # the example below represents the borbón tree
-    # not sure if I'll keep it all this way, but it's a good start
+    # currently the program runs by iterating through a list where each tree is its own value (an integrer representing its age). I think that this approach offers benefits for later when we implement probabilities with trees sporadically dying from rust and CBB. I also think it allows for much easier access to information like: how many trees are in production; it also allows us to have many different aged trees. It's logical! But it's slow as hell.
     
+    # I'm wondering if a middle ground would be to break the trees up into like micro-plots of 50-100 trees, so we could have the same benefits but not have to iterate through so many objects.
+    
+    # Not sure how we will proceed. But it works, and I'm happy about that!
     
     def __init__(self, _farmerName, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = functions.hectaresToCuerdas(1000)): # use self to declare namespace
         """
@@ -49,7 +51,7 @@ class Cuerdas:
         
         self.harvestPerTree = self.cuerdaHarvestCap / _sowDensity # pull initial sow density because the other will change
         # if plants are added or if others die
-        self.totalHarvest = 0 # units, in this case ???
+        self.totalHarvest = 0 # units, in this case pounds
         
         
         
@@ -305,8 +307,7 @@ class Cuerdas:
                 self.pruneCount -= 1 # lower the countdown to full yield by one year
             
             elif (treeAge < self.firstHarvest['year']):
-                #print("Age before: ", treeAge)
-                #print("Harvest before: ", self.totalHarvest)
+                
                 
                 # product = 0 #in this range the trees produce nothing, but they still move up in age for the year
                 # self.totalHarvest += product
@@ -319,24 +320,15 @@ class Cuerdas:
                 self.totalHarvest += product
                 self.trees[treeIndex] += 1 # assure to reference the list and not the copy
                 
-                #print("Age after: ", self.trees[treeIndex])
-                #print("Harvest after: ", self.totalHarvest)
-                
                 
             elif ((treeAge >= self.fullHarvest['year']) and (treeAge < self.descentHarvest['year'])):
-                #print("Age before: ", treeAge)
-                #print("Harvest before: ", self.totalHarvest)
                 
                 product = self.harvestPerTree * self.fullHarvest['proportion']
                 self.totalHarvest += product
                 self.trees[treeIndex] += 1
                 
-                #print("Age after: ", self.trees[treeIndex])
-                #print("Harvest after: ", self.totalHarvest)
                 
             elif ((treeAge >= self.descentHarvest['year']) and (treeAge < self.death['year'])):
-                #print("Age before: ", treeAge)
-                #print("Harvest before: ", self.totalHarvest)
                 
                 yearsIntoDescent = treeAge - self.descentHarvest['year']
                 proportion = self.fullHarvest['proportion'] - (yearsIntoDescent * self.descentHarvest['proportionDescent'])
@@ -344,16 +336,11 @@ class Cuerdas:
                 self.totalHarvest += product
                 self.trees[treeIndex] += 1
                 
-                #print("Age after: ", self.trees[treeIndex])
-                #print("Harvest after: ", self.totalHarvest)
                 
             elif (treeAge == self.death['year']):
                 self.trees[treeIndex] += 1
-                #print("Tree dies now")
-                #print("Harvest before: ", self.totalHarvest)
                 continue
-                #print("Age after: ", self.trees[treeIndex])
-                #print("Harvest after: ", self.totalHarvest)
+            
                 
             elif (treeAge >= (self.death['year'] + 1)):
                 # if it is the year after the tree died...
@@ -374,8 +361,6 @@ class Cuerdas:
             self.averageAgeOfTrees = stats.mean(self.trees)
             self.sowDensity = self.totalTrees / self.totalCuerdas
         
-        #else:
-           # print("All of your trees are dead")
             
     def getHarvest(self):
         """
