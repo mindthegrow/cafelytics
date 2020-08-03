@@ -1,22 +1,15 @@
-import time
-
-startTime = time.time() 
-
 import pandas as pd
-import numpy as np
 import statistics as stats
 import matplotlib.pyplot as plt
-import importlib
 
 import farm as farm
-import farmRe as farmRe
 import functions as functions
 
 #importlib.reload(farm)
 
 def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
     """
-    Takes string arguments (file paths) and compiles the data into a list of classes of type : Cuerdas, assigning the parameters respective to the data in the spreadsheet (farmer names, tree types, number of cuerdas, and age of trees).
+    Takes a string argument (file paths) and compiles the data into a list of classes of type : farm.Farm, assigning the parameters respective to the data in the spreadsheet (farmer names, tree types, number of cuerdas, and age of trees).
     
     Parameters
     ----------
@@ -32,7 +25,7 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
     """
     farmData = functions.readData(farmStr)
 
-    lsOfPlots = []
+    plotList = []
 
     # create a list of plots using class Cuerdas
     for i in range(len(farmData)):
@@ -41,14 +34,22 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farmRe.Farm(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
+        plot = farm.Farm(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
         
-        lsOfPlots.append(plot)
+        plotList.append(plot)
         
-    return(lsOfPlots)
+    return(plotList)
 
 
-def simulateCoOp(lsOfPlots, numYears, pruneYear = None, growthPattern = None, strategy = None):
+def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, strategy = None):
+    """
+    Uses a list of plots, `plotList`, to simulate a cooperative over `numFarms` number of years.
+    
+    Returns a list of two lists: `simulation`
+        list one, `harvestYear`, represents the year range in the simulation.
+        list two, `annualHarvest`, represents the amount of coffee (in lbs) harvested for that  year
+    
+    """
 
     numPlots = len(lsOfPlots)
 
@@ -58,7 +59,8 @@ def simulateCoOp(lsOfPlots, numYears, pruneYear = None, growthPattern = None, st
     
 
     for year in range(numYears):
-        thisYearsHarvest = 0 # each year reset harvest
+        # each year reset harvest
+        thisYearsHarvest = 0 
 
         for j in range(numPlots):
             if (pruneYear):
@@ -83,9 +85,48 @@ def simulateCoOp(lsOfPlots, numYears, pruneYear = None, growthPattern = None, st
         
 
 
-def main():
+def main(args):
+    
+    farm = args.farm
+    trees = args.trees
+    strategy = args.strategy
+    years = args.years
+    
+    if not os.path.exists(farm):
+        raise ValueError("File: %s does not exist"%farm)
+    
+    lsOfFarms = compileCoOp(farm)
+    
+    simData = simulateCoOp(lsOfFarms, years)
+    
+    pltYears = simData[0]
+    pltHarvests = simData[1]
+    
+    # get parameters for axes
+    mnYear, mxYear = min(pltYears), max(pltYears)
+    mxHarvest = max(pltHarvests)
+    
+    
+    plt.rcParams["figure.figsize"] = (20,10)
+    fsize = 20 # font size 
+    #mpl.rcParams.update(mpl.rcParamsDefault)
+    
+    plt.axes(xlim=(mnYear,mxYear),ylim=(0,(mxHarvest + (mxHarvest * 0.10))))
+    plt.plot(pltYears, pltHarvests, linewidth = 4)
+    plt.style.use('ggplot')
+    plt.title("Prediction of %d years with no action by demo co-op"%(years), fontsize =(fsize * 1.25))
+    plt.xlabel("Year", fontsize =fsize)
+    plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
+    plt.savefig("testNewFarm.png", dpi = 100)
+    #plt.show()
+    
+    stopTime = time.time()
+    runTime = stopTime - startTime
+    print(runTime)
+
+    
+if __name__ == '__main__':
     import argparse
-    import os
     parser = argparse.ArgumentParser(description='Parse growth data for simulation.')
     parser.add_argument('-f', '--farm',
                         default='data/demoData.csv',
@@ -132,45 +173,6 @@ def main():
     
     args = parser.parse_args()
     
-    farm = args.farm
-    trees = args.trees
-    strategy = args.strategy
-    years = args.years
-    
-    if not os.path.exists(farm):
-        raise ValueError("File: %s does not exist"%farm)
-    
-    lsOfFarms = compileCoOp(farm)
-    
-    simData = simulateCoOp(lsOfFarms, years)
-    
-    pltYears = simData[0]
-    pltHarvests = simData[1]
-    
-    # get parameters for axes
-    mnYear, mxYear = min(pltYears), max(pltYears)
-    mxHarvest = max(pltHarvests)
-    
-    
-    plt.rcParams["figure.figsize"] = (20,10)
-    fsize = 20 # font size 
-    #mpl.rcParams.update(mpl.rcParamsDefault)
-    
-    plt.axes(xlim=(mnYear,mxYear),ylim=(0,(mxHarvest + (mxHarvest * 0.10))))
-    plt.plot(pltYears, pltHarvests, linewidth = 4)
-    plt.style.use('ggplot')
-    plt.title("Prediction of %d years with no action by demo co-op"%(years), fontsize =(fsize * 1.25))
-    plt.xlabel("Year", fontsize =fsize)
-    plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
-    plt.savefig("testNewFarm.png", dpi = 100)
-    #plt.show()
-    
-    stopTime = time.time()
-    runTime = stopTime - startTime
-    print(runTime)
-
-    
-if __name__ == '__main__':
-    main()
+    main(args)
     
     
