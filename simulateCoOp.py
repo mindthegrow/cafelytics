@@ -41,7 +41,7 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farmRe.Farm(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
+        plot = farm.Cuerdas(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
         
         lsOfPlots.append(plot)
         
