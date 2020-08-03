@@ -4,14 +4,14 @@ import functions as functions
 class Farm:
     
     
-    def __init__(self, _farmerName, _cuerdas, _treeType, _initialAgeOfTrees, _sowDensity = functions.hectaresToCuerdas(1000)): # use self to declare namespace
-        self.farmerName = _farmerName
+    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees, sowDensity = functions.hectaresToCuerdas(1000)): # use self to declare namespace
+        self.farmerName = farmerName
 
         self.inheretTreeProperties(_treeType)
 
-        self.totalCuerdas = _cuerdas
-        self.sowDensity = _sowDensity # sow density in trees/hectare
-        self.totalTrees = int(round((_cuerdas * _sowDensity), 0)) # round to nearest and convert to int because we can't have poritions of trees
+        self.totalCuerdas = cuerdas
+        self.sowDensity = sowDensity # sow density in trees/hectare
+        self.totalTrees = int(round((cuerdas * sowDensity), 0)) # round to nearest and convert to int because we can't have poritions of trees
             # and it needs to be an int to iterate through
 
             # adjust the initial age of trees to be a round number
@@ -20,7 +20,7 @@ class Farm:
         self.pruneYear = False
         self.pruneCount = 0    
         
-        self.initialAgeOfTrees= self.convertToRoundInt(_initialAgeOfTrees)
+        self.initialAgeOfTrees= self.convertToRoundInt(initialAgeOfTrees)
 
         
         # initialize trees in a list so if we plant another
@@ -34,7 +34,7 @@ class Farm:
         #self.averageAgeOfTrees = stats.mean(self.ageOfTrees)
 
         
-        self.harvestPerTree = self.cuerdaHarvestCap / _sowDensity # pull initial sow density because the other will change
+        self.harvestPerTree = self.cuerdaHarvestCap / sowDensity # pull initial sow density because the other will change
         
         # if plants are added or if others die
         self.totalHarvest = 0 # units, in this case pounds
