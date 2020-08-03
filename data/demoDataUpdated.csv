@@ -1,0 +1,105 @@
+plotID,farmerName,treeType,numCuerdas,ageOfTrees,yearPlanted
+0,Estefanía Cazares,catuai,9,9,2011
+1,Aldo Linares,catuai,1,2,2018
+2,Aldo Linares,borbon,1,20,2000
+3,Linda Gabriel Portillo Herrera,catuai,4,7,2013
+4,Linda Gabriel Portillo Herrera,borbon,10,27,1993
+5,Miguel Luis Manuel Curiel,catuai,9,11,2009
+6,Guillermo Barela Girón,catuai,4,10,2010
+7,Guillermo Barela Girón,borbon,4,16,2004
+8,Guillermo Barela Girón,catura,7,5,2015
+9,Guillermo Barela Girón,e14,2,7,2013
+10,Sr(a). Zoé Bueno,catuai,4,11,2009
+11,Joaquín Julia Nieves,borbon,1,19,2001
+12,Homero Ayala,catuai,7,8,2012
+13,Homero Ayala,borbon,7,11,2009
+14,Homero Ayala,catura,6,10,2010
+15,Héctor Salgado,borbon,1,0,2020
+16,Héctor Salgado,catuai,7,11,2009
+17,Héctor Salgado,catura,6,14,2006
+18,Rocío Tapia Carrión,catuai,10,13,2007
+19,Rocío Tapia Carrión,borbon,2,27,1993
+20,Rocío Tapia Carrión,catura,5,14,2006
+21,Alberto Juan Carlos Padrón,borbon,1,22,1998
+22,Alberto Juan Carlos Padrón,catura,8,3,2017
+23,Alberto Juan Carlos Padrón,catuai,1,5,2015
+24,Frida Esteban Gastélum,catuai,5,7,2013
+25,Frida Esteban Gastélum,borbon,4,29,1991
+26,Frida Esteban Gastélum,catura,7,7,2013
+27,Frida Esteban Gastélum,e14,2,4,2016
+28,Sr(a). Beatriz Báez,borbon,6,0,2020
+29,Sr(a). Beatriz Báez,catuai,4,8,2012
+30,Dr. Zacarías Molina,catuai,2,14,2006
+31,Dr. Zacarías Molina,borbon,1,7,2013
+32,María Cristina López Méndez,borbon,3,27,1993
+33,María Cristina López Méndez,catuai,2,14,2006
+34,María Cristina López Méndez,catura,9,3,2017
+35,Porfirio Valdivia Lomeli,borbon,1,3,2017
+36,Porfirio Valdivia Lomeli,catuai,8,5,2015
+37,Porfirio Valdivia Lomeli,catura,8,14,2006
+38,Porfirio Valdivia Lomeli,e14,7,3,2017
+39,Julia Romero Ramos,borbon,7,26,1994
+40,Julia Romero Ramos,catuai,3,2,2018
+41,Julia Romero Ramos,catura,9,6,2014
+42,Julia Romero Ramos,e14,9,9,2011
+43,Miguel José Perales,catuai,8,3,2017
+44,Miguel José Perales,borbon,9,2,2018
+45,Miguel José Perales,catura,8,12,2008
+46,Alonso Magdalena Sandoval Corona,borbon,3,16,2004
+47,Alonso Magdalena Sandoval Corona,catuai,2,4,2016
+48,Alonso Magdalena Sandoval Corona,catura,7,8,2012
+49,José María Gloria Barrios Limón,borbon,5,6,2014
+50,José María Gloria Barrios Limón,catuai,3,1,2019
+51,José María Gloria Barrios Limón,catura,8,5,2015
+52,José María Gloria Barrios Limón,e14,5,12,2008
+53,Ángela Horacio Orta,borbon,9,14,2006
+54,Ángela Horacio Orta,catuai,5,8,2012
+55,Ángela Horacio Orta,catura,4,3,2017
+56,Ángela Horacio Orta,e14,3,2,2018
+57,Mercedes Rolando Ortiz,borbon,10,21,1999
+58,Mercedes Rolando Ortiz,catuai,7,2,2018
+59,Mercedes Rolando Ortiz,catura,8,9,2011
+60,Rodrigo Casas,catuai,2,14,2006
+61,Rodrigo Casas,borbon,4,21,1999
+62,Rodrigo Casas,catura,3,2,2018
+63,Laura Olivia Ávalos,borbon,8,20,2000
+64,Miriam Diego Vargas Ballesteros,catuai,7,9,2011
+65,Miriam Diego Vargas Ballesteros,borbon,1,3,2017
+66,Miriam Diego Vargas Ballesteros,e14,6,7,2013
+67,Inés José Duarte,borbon,6,28,1992
+68,Inés José Duarte,catuai,1,8,2012
+69,Rodolfo de León Noriega,borbon,7,22,1998
+70,Miguel Cavazos de la Torre,borbon,3,20,2000
+71,Miguel Cavazos de la Torre,catuai,5,9,2011
+72,Mariano Emilio Barela Delgado,borbon,6,23,1997
+73,Emiliano Anguiano Burgos,borbon,4,27,1993
+74,Lourdes Guadalupe Méndez Sisneros,catuai,9,2,2018
+75,Lourdes Guadalupe Méndez Sisneros,borbon,1,22,1998
+76,Lourdes Guadalupe Méndez Sisneros,catura,4,10,2010
+77,Marcela Mena Naranjo,catura,3,3,2017
+78,Marcela Mena Naranjo,borbon,9,12,2008
+79,Marcela Mena Naranjo,catuai,1,4,2016
+80,Marcela Mena Naranjo,e14,6,8,2012
+81,Lic. Genaro Alarcón,borbon,8,24,1996
+82,Lic. Genaro Alarcón,catuai,2,9,2011
+83,Lic. Genaro Alarcón,catura,6,11,2009
+84,Lic. Genaro Alarcón,e14,4,6,2014
+85,Lorena Rosa Palacios Granado,catuai,10,3,2017
+86,Lorena Rosa Palacios Granado,borbon,6,1,2019
+87,Mtro. Jos Sotelo,borbon,5,12,2008
+88,Mtro. Jos Sotelo,catuai,6,12,2008
+89,Mtro. Jos Sotelo,catura,5,14,2006
+90,Mtro. Jos Sotelo,e14,3,8,2012
+91,Lorenzo Marcela Robledo,borbon,1,4,2016
+92,Lorenzo Marcela Robledo,catura,10,6,2014
+93,Lorenzo Marcela Robledo,catuai,1,7,2013
+94,Dr. Alonso Villarreal,borbon,6,2,2018
+95,Dr. Alonso Villarreal,catuai,1,10,2010
+96,Mauro Ángela Mateo Almonte,borbon,2,17,2003
+97,Homero Martha Blanco Barreto,borbon,2,14,2006
+98,Homero Martha Blanco Barreto,catuai,7,4,2016
+99,Homero Martha Blanco Barreto,catura,4,9,2011
+100,Cynthia Magaña Palomo,catuai,10,5,2015
+101,Cynthia Magaña Palomo,borbon,5,13,2007
+102,Cynthia Magaña Palomo,catura,7,3,2017
+103,Cynthia Magaña Palomo,e14,7,4,2016
