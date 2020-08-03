@@ -7,7 +7,7 @@ replant:
   year: 1 
   
 prune:
-  isPrune: False
+  isPrune: True
   age: 8
   proportion: 1.0
   
