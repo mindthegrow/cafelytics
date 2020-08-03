@@ -48,9 +48,9 @@ e14:
   death:
     year: 15
     
-caturra:
-  treeType: "caturra"
-  altOrth: "catura"
+catura:
+  treeType: "catura"
+  altOrth: "caturra"
   cuerdaHarvestCap: 125
   firstHarvest:
     year: 3
