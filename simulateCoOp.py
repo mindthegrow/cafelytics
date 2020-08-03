@@ -3,7 +3,7 @@ import statistics as stats
 import matplotlib.pyplot as plt
 
 import farm as farm
-import functions as functions
+import helpers as helpers
 
 #importlib.reload(farm)
 
@@ -19,11 +19,11 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
         
     Returns
     -------
-    lsOfPlots : list of farm.Cuerdas
+    plotList : list of farm.Cuerdas
         a list of class type Cuerdas that have been initialized with their respective parameters and attributes.
     
     """
-    farmData = functions.readData(farmStr)
+    farmData = helpers.readData(farmStr)
 
     plotList = []
 
@@ -34,7 +34,7 @@ def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farm.Farm(_farmerName=tempName, _cuerdas=tempCuerdas, _treeType=tempTree, _initialAgeOfTrees=tempAge)
+        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge)
         
         plotList.append(plot)
         
@@ -51,7 +51,7 @@ def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, str
     
     """
 
-    numPlots = len(lsOfPlots)
+    numPlots = len(plotList)
 
     annualHarvest = []
     harvestYear = []
@@ -66,11 +66,11 @@ def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, str
             if (pruneYear):
                 if j == pruneYear: # if it's the prune year
                     # isPrune = True
-                    lsOfPlots[j].setPruneTrees()
+                    plotList[j].setPruneTrees()
                     
-            lsOfPlots[j].oneYear() # run this plot through one year of the demo
-            tempHarvest = lsOfPlots[j].totalHarvest
-            lsOfPlots[j].setHarvestZero() # not cumulative sum, but instead reset
+            plotList[j].oneYear() # run this plot through one year of the demo
+            tempHarvest = plotList[j].totalHarvest
+            plotList[j].setHarvestZero() # not cumulative sum, but instead reset
             thisYearsHarvest += tempHarvest
 
         harvestYear.append(year)
@@ -87,10 +87,13 @@ def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, str
 
 def main(args):
     
+    import os
+    
     farm = args.farm
     trees = args.trees
     strategy = args.strategy
     years = args.years
+    output = args.output
     
     if not os.path.exists(farm):
         raise ValueError("File: %s does not exist"%farm)
@@ -117,12 +120,8 @@ def main(args):
     plt.title("Prediction of %d years with no action by demo co-op"%(years), fontsize =(fsize * 1.25))
     plt.xlabel("Year", fontsize =fsize)
     plt.ylabel("Total pounds of green coffee produced", fontsize =fsize)
-    plt.savefig("testNewFarm.png", dpi = 100)
+    plt.savefig(output, dpi = 100)
     #plt.show()
-    
-    stopTime = time.time()
-    runTime = stopTime - startTime
-    print(runTime)
 
     
 if __name__ == '__main__':
@@ -168,6 +167,15 @@ if __name__ == '__main__':
                         Number of years that should be iterated through in the simulation (type : int).
                         
                         Example (& default): --year 30
+                        
+                        """)
+    
+    parser.add_argument('-o', '--output',
+                        default="testNewFarm.png",
+                        type=str, # string type works well for 
+                        help=
+                        """
+                        Desired name of plot output file.
                         
                         """)
     
