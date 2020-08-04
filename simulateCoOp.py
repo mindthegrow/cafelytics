@@ -5,41 +5,6 @@ import matplotlib.pyplot as plt
 import farm as farm
 import helpers as helpers
 
-#importlib.reload(farm)
-
-def compileCoOp(farmStr): # strategyStr = None, treeStr = None):
-    """
-    Takes a string argument (file paths) and compiles the data into a list of classes of type : farm.Farm, assigning the parameters respective to the data in the spreadsheet (farmer names, tree types, number of cuerdas, and age of trees).
-    
-    Parameters
-    ----------
-    farmStr : str
-        string of filepath (from current working directory) to spreadsheet with data. Spreadsheet must correspond with template to run function. 
-        
-        
-    Returns
-    -------
-    plotList : list of farm.Cuerdas
-        a list of class type Cuerdas that have been initialized with their respective parameters and attributes.
-    
-    """
-    farmData = helpers.readData(farmStr)
-
-    plotList = []
-
-    # create a list of plots using class Cuerdas
-    for i in range(len(farmData)):
-        tempName = str(farmData['farmerName'][i])
-        tempCuerdas = float(farmData['numCuerdas'][i])
-        tempTree = str(farmData['treeType'][i])
-        tempAge = float(farmData['ageOfTrees'][i])
-    
-        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge)
-        
-        plotList.append(plot)
-        
-    return(plotList)
-
 
 def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, strategy = None):
     """
@@ -98,9 +63,9 @@ def main(args):
     if not os.path.exists(farm):
         raise ValueError("File: %s does not exist"%farm)
     
-    lsOfFarms = compileCoOp(farm)
+    farmList = farm.compileCoOp(farm)
     
-    simData = simulateCoOp(lsOfFarms, years)
+    simData = simulateCoOp(farmList, years)
     
     pltYears = simData[0]
     pltHarvests = simData[1]
@@ -112,7 +77,6 @@ def main(args):
     
     plt.rcParams["figure.figsize"] = (20,10)
     fsize = 20 # font size 
-    #mpl.rcParams.update(mpl.rcParamsDefault)
     
     plt.axes(xlim=(mnYear,mxYear),ylim=(0,(mxHarvest + (mxHarvest * 0.10))))
     plt.plot(pltYears, pltHarvests, linewidth = 4)
