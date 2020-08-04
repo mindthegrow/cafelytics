@@ -4,15 +4,14 @@ import functions as functions
 class Farm:
     
     
-    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees, sowDensity = functions.hectaresToCuerdas(1000)): # use self to declare namespace
+    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees: int, sowDensity: int =  333) # use self to declare namespace
         self.farmerName = farmerName
 
         self.inheretTreeProperties(_treeType)
 
         self.totalCuerdas = cuerdas
         self.sowDensity = sowDensity # sow density in trees/hectare
-        self.totalTrees = int(round((cuerdas * sowDensity), 0)) # round to nearest and convert to int because we can't have poritions of trees
-            # and it needs to be an int to iterate through
+        self.totalTrees = int(round((cuerdas * sowDensity), 0))
 
             # adjust the initial age of trees to be a round number
 
@@ -20,7 +19,7 @@ class Farm:
         self.pruneYear = False
         self.pruneCount = 0    
         
-        self.initialAgeOfTrees= self.convertToRoundInt(initialAgeOfTrees)
+        self.initialAgeOfTrees= initialAgeOfTrees
 
         
         # initialize trees in a list so if we plant another
@@ -38,36 +37,6 @@ class Farm:
         
         # if plants are added or if others die
         self.totalHarvest = 0 # units, in this case pounds
-
-
-
-        
-        
-        
-    def convertToRoundInt(self, number): 
-        """
-        
-        A function to assure that specific numbers in the class are rounded and/or converted to type: int
-        
-        Parameters
-        ----------
-        
-        number : int, float, or str
-            depending on the variable type, takes a route that converts it to a round number of type int
-        
-        """
-                                         
-        if type(number) == int:
-            final = number
-        elif type(number) == float:
-            final = int(round(number, 0))
-        elif type(number) == str:
-            temp = float(number)
-            final = round(temp, 0)
-        else:
-            print("Invalid data type")
-                        
-        return(final)
 
         
     def setTrees(self):
@@ -251,7 +220,7 @@ class Farm:
                 #self.sowDensity = self.totalTrees / self.totalCuerdas
 
                 
-    def addTreesAuto(self, numTrees, ages = 0): 
+    def addTreesAuto(self, numTrees: int, ages: int): 
         """
         Automatically add a new set of trees to existing cuerdas: this implies an increase in sowing density. Possible implications are intercropping between existing trees/rows.
         
@@ -274,9 +243,6 @@ class Farm:
             existing trees.
             
         """
-                        
-        ages = self.convertToRoundInt(ages)
-        numTrees = self.convertToRoundInt(numTrees) # even though you can't have portions of a tree, you never know
                         
         self.trees.append(numTrees)
         self.ageOfTrees.append(ages)
