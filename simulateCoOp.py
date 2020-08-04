@@ -3,7 +3,7 @@ import statistics as stats
 import matplotlib.pyplot as plt
 
 import farm as farm
-import helpers as helpers
+import importData as importData
 
 
 def simulateCoOp(plotList, numYears, pruneYear = None, growthPattern = None, strategy = None):
@@ -54,16 +54,16 @@ def main(args):
     
     import os
     
-    farm = args.farm
+    farmData = args.farm
     trees = args.trees
     strategy = args.strategy
     years = args.years
     output = args.output
     
-    if not os.path.exists(farm):
+    if not os.path.exists(farmData):
         raise ValueError("File: %s does not exist"%farm)
     
-    farmList = farm.compileCoOp(farm)
+    farmList = importData.compileCoOp(farmData)
     
     simData = simulateCoOp(farmList, years)
     

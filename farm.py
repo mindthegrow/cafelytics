@@ -1,13 +1,12 @@
 import statistics as stats
-import functions as functions
 
 class Farm:
     
     
-    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees: int, sowDensity: int =  333) # use self to declare namespace
+    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees: int, sowDensity: int =  333): # use self to declare namespace
         self.farmerName = farmerName
 
-        self.inheretTreeProperties(_treeType)
+        self.inheretTreeProperties(treeType)
 
         self.totalCuerdas = cuerdas
         self.sowDensity = sowDensity # sow density in trees/hectare

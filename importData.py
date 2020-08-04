@@ -1,4 +1,5 @@
 import pandas as pd
+import farm as farm
 
 def readData(filePath): # we will probably use os to do the file import later, but this works for now
     pathExt = filePath.split('.')
