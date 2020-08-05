@@ -32,21 +32,23 @@ def fakeData(numFarms, numFarmers, startYear = defaultYear):
     farmers = [fake.name() for i in range(numFarmers)]
     randFarmers = random.choices(farmers, k= numFarms)
 
+    age = []
     yearPlanted = []
     cuerdas = []
     plotID = []
 
     for i,e in enumerate(trees):
-        # (1) get year planted
+        # (1) get year planted and age
         # borbons have a longer lifespan
         if e == 'borbon':
-            age = random.randint(0,29)
+            _age = random.randint(0,29)
 
         else:
-            age = random.randint(0, 14)
+            _age = random.randint(0, 14)
 
-        _yearPlanted = startYear - age
+        _yearPlanted = startYear - _age
         yearPlanted.append(_yearPlanted)
+        age.append(_age)
 
         # (2) get number of  cuerdas
         _cuerdas = random.randint(0,10)
@@ -56,9 +58,9 @@ def fakeData(numFarms, numFarmers, startYear = defaultYear):
         _plotID = i
         plotID.append(_plotID)
 
-    fakeFarms = pd.DataFrame(zip(plotID, randFarmers, trees, cuerdas, yearPlanted),
+    fakeFarms = pd.DataFrame(zip(plotID, randFarmers, trees, cuerdas, yearPlanted, age),
                              columns = ["plotID", "farmerName", "treeType", 
-                                        "cuerdas", "yearPlanted"])
+                                        "numCuerdas", "yearPlanted", "ageOfTrees"])
     
     return(fakeFarms)
 
