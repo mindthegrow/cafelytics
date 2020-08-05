@@ -92,7 +92,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Parse growth data for simulation.')
     parser.add_argument('-f', '--farm',
-                        default='data/demoData.csv',
+                        default='data/fakeData.csv',
                         type=str, # string type works well for 
                         help=
                         """
