@@ -9,10 +9,10 @@ class Farm:
         self.inheretTreeProperties(treeType)
 
         self.totalCuerdas = cuerdas
-        self.sowDensity = sowDensity # sow density in trees/hectare
+        self.sowDensity = sowDensity 
         self.totalTrees = int(round((cuerdas * sowDensity), 0))
 
-            # adjust the initial age of trees to be a round number
+        
 
         # initialize variables for pruning so if/else can deal with objects
         self.pruneYear = False
@@ -28,14 +28,12 @@ class Farm:
         
         
         self.treesInProd = self.getTreesInProd()
-        # average age of trees is not so easy now because we need to weight it
-        #self.averageAgeOfTrees = stats.mean(self.ageOfTrees)
-
         
-        self.harvestPerTree = self.cuerdaHarvestCap / sowDensity # pull initial sow density because the other will change
+        # pull initial sow density because the other will change
+        self.harvestPerTree = self.cuerdaHarvestCap / sowDensity 
         
         # if plants are added or if others die
-        self.totalHarvest = 0 # units, in this case pounds
+        self.totalHarvest = 0 # pounds
 
         
     def setTrees(self):
@@ -57,12 +55,15 @@ class Farm:
         """
         while loop:
             if (treeType =='borbon'):
-                self.firstHarvest = {'year': 4, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
-                self.fullHarvest = {'year': 5, 'proportion': 1.0}  # year of first harvest and proportion of harvest
-                self.descentHarvest = {'year': 28, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} # these are placeholder values to remember to add member val
-                self.death = {'year': 30} # year in which trees are expelled from dataset
-
+                # year of first harvest and proportion of harvest until full
+                self.firstHarvest = {'year': 4, 'proportion': 0.2} 
+                # year of first harvest and proportion of harvest
+                self.fullHarvest = {'year': 5, 'proportion': 1.0}  
+                 # year that production descends and annual proportion descent
+                self.descentHarvest = {'year': 28, 'proportionDescent': 0.2}
+                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
+                # year in which trees are expelled from dataset
+                self.death = {'year': 30} 
                 self.cuerdaHarvestCap = 200 # units, in this case lbs, per cuerda
                 self.treeType = 'borbon'
 
@@ -70,37 +71,38 @@ class Farm:
                 
                 
             elif (treeType =='catuaí') or (treeType == 'catuai'):
-                self.firstHarvest = {'year': 3, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
-                self.fullHarvest = {'year': 4, 'proportion': 1.0}  # year of first harvest and proportion of harvest
-                self.descentHarvest = {'year': 15, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} # these are placeholder values to remember to add member val
-                self.death = {'year': 17} # year in which trees are expelled from dataset
-
+                # year of first harvest and proportion of harvest until full
+                self.firstHarvest = {'year': 3, 'proportion': 0.2} 
+                # year of first harvest and proportion of harvest
+                self.fullHarvest = {'year': 4, 'proportion': 1.0} 
+                # year that production descends and annual proportion descent
+                self.descentHarvest = {'year': 15, 'proportionDescent': 0.2} 
+                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} #
+                self.death = {'year': 17} 
                 self.cuerdaHarvestCap = 125 # units, in this case lbs, per cuerda
                 self.treeType = 'catuai'
 
                 loop = False
 
             elif (treeType == 'e14') or (treeType == 'E14'):
-                self.firstHarvest = {'year': 4, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
-                self.fullHarvest = {'year': 5, 'proportion': 1.0}  # year of first harvest and proportion of harvest
-                self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} # these are placeholder values to remember to add member val
-                self.death = {'year': 15} # year in which trees are expelled from dataset
-
-                self.cuerdaHarvestCap = 125 # units, in this case lbs, per cuerda
+                self.firstHarvest = {'year': 4, 'proportion': 0.2} 
+                self.fullHarvest = {'year': 5, 'proportion': 1.0}  
+                self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} 
+                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
+                self.death = {'year': 15} 
+                self.cuerdaHarvestCap = 125 
                 self.treeType = 'e14'
                 
                 loop = False
 
             elif (treeType == 'caturra') or (treeType == 'catura'):
-                self.firstHarvest = {'year': 3, 'proportion': 0.2} # year of first harvest and proportion of harvest until full
-                self.fullHarvest = {'year': 4, 'proportion': 1.0}  # year of first harvest and proportion of harvest
-                self.descentHarvest = {'year': 14, 'proportionDescent': 0.2} # year that production descends and annual proportion descent
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} # these are placeholder values to remember to add member val
-                self.death = {'year': 16} # year in which trees are expelled from dataset
+                self.firstHarvest = {'year': 3, 'proportion': 0.2} 
+                self.fullHarvest = {'year': 4, 'proportion': 1.0}  
+                self.descentHarvest = {'year': 14, 'proportionDescent': 0.2} 
+                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
+                self.death = {'year': 16}
 
-                self.cuerdaHarvestCap = 125 # units, in this case lbs, per cuerda
+                self.cuerdaHarvestCap = 125 
                 self.treeType = 'caturra'
 
                 loop = False
@@ -135,12 +137,17 @@ class Farm:
                     # (2) make them produce less for a bit!? How!?
                     # (3) increase total production or lifespan long-term
 
-                    self.ageOfTrees[treeIndex] += 1 # trees still age when they're pruned
-                    self.pruneCount -= 1 # lower the countdown to full yield by one year
-
-                    self.pruneYear = False # it is no longer a prune year and so this shifts it back to cycle
+                    # trees still age when they're pruned
+                    self.ageOfTrees[treeIndex] += 1 
                     
-                    product = 0 # do trees produce year they're pruned? How much?
+                    # lower the countdown to full yield by one year
+                    self.pruneCount -= 1 
+
+                    # it is no longer a prune year and so this shifts it back to cycle
+                    self.pruneYear = False 
+                    
+                    # do trees produce year they're pruned? How much?
+                    product = 0 
                     self.totalHarvest += product
 
                 elif (self.pruneCount > 0):
@@ -154,8 +161,10 @@ class Farm:
 
                     product = (self.harvestPerTree * treeQuant) - (self.harvestPerTree * (subtract))
 
-                    self.ageOfTrees[treeIndex] += 1 # trees still age when they're pruned
-                    self.pruneCount -= 1 # lower the countdown to full yield by one year
+                    # trees still age when they're pruned
+                    self.ageOfTrees[treeIndex] += 1 
+                    # lower the countdown to full yield by one year
+                    self.pruneCount -= 1
 
                 elif (treeAge < self.firstHarvest['year']):
 
@@ -173,8 +182,9 @@ class Farm:
                     
                     product = (self.harvestPerTree * treeQuant) * self.firstHarvest['proportion']
                     self.totalHarvest += product
-                    self.ageOfTrees[treeIndex] += 1 # assure to reference the list and not the copy
+                    # assure to reference the list and not the copy
 
+                    self.ageOfTrees[treeIndex] += 1 
 
                 elif ((treeAge >= self.fullHarvest['year']) and (treeAge < self.descentHarvest['year'])):
 
@@ -295,14 +305,6 @@ class Farm:
                     
         return(treesInProd)
         
-        
-        
-    def getProdData(self):
-        """
-            
-        """
-        return(0)            
-                        
             
     def getHarvest(self):
         """
