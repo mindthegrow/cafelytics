@@ -27,3 +27,20 @@ Contributions are welcome. There are many aspects of this project to improve, pl
 ## license
 This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](/info/LICENSE.txt).
 
+## python cli
+
+after you have installed the repository and necessary modules (more on this later),first create a fake dataset to run the simulation on using:
+
+```bash
+python3 fakeData.py --farms 100 --year 2020 --output data/fakeData.csv
+```
+
+Feel free to replace arguments to suit your taste. The arguments above are the defaults that will be ran without specification.
+
+After you've created this dataset, run the simulation using:
+
+```bash
+python3 simulateCoOp.py --farm data/fakeData.csv --years 30 --ouptut testNewFarm.png
+```
+
+once again, these are the default arguments.
