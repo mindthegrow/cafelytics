@@ -49,7 +49,7 @@ jobs:
         run: |
           cat README.md | grep python3 | bash
           python -m cafe.fakeData # fake default dataframe
-          python -m cafe.importData.readData # gets imported by this
+          python -m cafe.simulateCoOp # gets imported by this
 
       - name: Code Coverage
         if: ${{ matrix.python-version }} == 3.8

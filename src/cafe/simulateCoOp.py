@@ -63,10 +63,13 @@ def main(args):
     if not os.path.exists(farmData):
         raise ValueError("File: %s does not exist"%farm)
     
+    print("Importing Data")
     farmList = importData.compileCoOp(farmData)
     
+    print("Simulating Cooperative")
     simData = simulateCoOp(farmList, years)
     
+    print("Plotting")
     pltYears = simData[0]
     pltHarvests = simData[1]
     

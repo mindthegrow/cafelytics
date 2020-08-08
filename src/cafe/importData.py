@@ -1,7 +1,7 @@
 import pandas as pd
 import cafe.farm as farm
 
-def readData(filePath:str='data/fakeData.csv'):
+def readData(filePath:str):
     """
     Takes a filepath in the form of a string (e.g. 'data/demoData.csv') that represents a spreadsheet and returns a pandas dataframe. 
     
@@ -14,6 +14,7 @@ def readData(filePath:str='data/fakeData.csv'):
     elif (ext == 'xlsx') or (ext == 'xls') or (ext == 'xlsm') or (ext == 'xlsb'):
         #sheet = input("Please enter the sheet name or number (first sheet = 0, second = 1, etc.)")
         data  = pd.read_excel(filePath)
+
     return(data)
 
 def compileCoOp(farmStr: str): # strategyStr = None, treeStr = None):
