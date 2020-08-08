@@ -18,7 +18,7 @@ defaultYear = currentDate.year
 
 fake = Faker('es_MX')
 
-def fakeData(numFarms, numFarmers, startYear = defaultYear):
+def fakeData(numFarms=1, numFarmers=1, startYear=defaultYear, outputFile='data/fakeData.csv'):
     """
     Takes in the desired number of farms (i.e. rows) and farmers, as well as the year
     that the simulation is to start in, and returns a pandas DataFrame with all of the
@@ -62,6 +62,7 @@ def fakeData(numFarms, numFarmers, startYear = defaultYear):
                              columns = ["plotID", "farmerName", "treeType", 
                                         "numCuerdas", "yearPlanted", "ageOfTrees"])
     
+    df.to_csv(outputFile, index = False)
     return(fakeFarms)
 
 def main(args):
@@ -70,8 +71,7 @@ def main(args):
     year = args.year
     output = args.output
     
-    df = fakeData(numFarms = farms,  numFarmers =  names, startYear= year)
-    df.to_csv(output, index = False)
+    df = fakeData(numFarms=farms,  numFarmers=names, startYear=year, outputFile=output)
 
 if __name__ == '__main__':
     import argparse

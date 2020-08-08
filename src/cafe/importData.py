@@ -1,7 +1,7 @@
 import pandas as pd
 import farm as farm
 
-def readData(filePath: str): 
+def readData(filePath:str='data/fakeData.csv'):
     """
     Takes a filepath in the form of a string (e.g. 'data/demoData.csv') that represents a spreadsheet and returns a pandas dataframe. 
     
