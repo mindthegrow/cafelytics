@@ -22,6 +22,7 @@ matrix:
     - env: DISTRIB="conda" PYTHON_VERSION="3.8" COVERAGE="true"
 
 install:
+  - git checkout develop
   - source tests/travis_install.sh
   - pip install .[dev]
 # before_script:
