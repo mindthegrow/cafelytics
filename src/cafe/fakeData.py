@@ -62,7 +62,7 @@ def fakeData(numFarms=1, numFarmers=1, startYear=defaultYear, outputFile='data/f
                              columns = ["plotID", "farmerName", "treeType", 
                                         "numCuerdas", "yearPlanted", "ageOfTrees"])
     
-    df.to_csv(outputFile, index = False)
+    fakeFarms.to_csv(outputFile, index = False)
     return(fakeFarms)
 
 def main(args):
@@ -70,8 +70,9 @@ def main(args):
     names = args.names
     year = args.year
     output = args.output
-    
     df = fakeData(numFarms=farms,  numFarmers=names, startYear=year, outputFile=output)
+    print("Demonstration of output data:")
+    print(df)
 
 if __name__ == '__main__':
     import argparse
