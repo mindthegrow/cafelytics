@@ -1,5 +1,5 @@
 import pandas as pd
-import farm as farm
+import cafe.farm as farm
 
 def readData(filePath:str='data/fakeData.csv'):
     """
