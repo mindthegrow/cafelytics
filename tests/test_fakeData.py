@@ -9,7 +9,7 @@ __copyright__ = "Mathematical Michael"
 __license__ = "mit"
 
 
-def test_farm_instantiation_defaults():
+def test_empty_fake_data():
     fakedata = fd.fakeData()
     with pytest.raises(AssertionError):
-        len(fakedata) == 1 # check num farms in dataframe
+        assert len(fakedata) == 1 # check num farms in dataframe
