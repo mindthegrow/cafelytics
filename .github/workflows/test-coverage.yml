@@ -55,7 +55,7 @@ jobs:
         if: ${{ matrix.python-version }} == 3.8
         shell: pwsh
         run: |
-          coverage run --source=. -m py.test
+          coverage run -m py.test
           coverage report -m
 
       - name: Publish to CodeCov
