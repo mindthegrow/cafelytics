@@ -3,7 +3,11 @@ import statistics as stats
 class Farm:
     
     
-    def __init__(self, farmerName, cuerdas, treeType, initialAgeOfTrees: int, sowDensity: int =  333): # use self to declare namespace
+    def __init__(self, farmerName:str='Farmer',
+                 cuerdas:float=1,
+                 treeType:str='Borbon',
+                 initialAgeOfTrees:int=1,
+                 sowDensity:int=333): # use self to declare namespace
         self.farmerName = farmerName
 
         self.inheretTreeProperties(treeType)
@@ -13,7 +17,7 @@ class Farm:
         self.totalTrees = int(round((cuerdas * sowDensity), 0))
 
         
-
+        # TODO: let these be set by user?
         # initialize variables for pruning so if/else can deal with objects
         self.pruneYear = False
         self.pruneCount = 0    
