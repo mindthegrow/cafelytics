@@ -43,7 +43,7 @@ jobs:
           pip install black || true
 
       - name: Run tests
-        run: pytest
+        run: pytest # options in setup.cfg handle coverage options
 
       - name: Test usage patterns
         run: |
@@ -51,11 +51,10 @@ jobs:
           python -m cafe.fakeData # fake default dataframe
           python -m cafe.simulateCoOp # gets imported by this
 
-      - name: Code Coverage
-        if: ${{ matrix.python-version }} == 3.8
+      - name: Code Coverage Upload
+        if: ${{ matrix.python-version }} == 3.8 # only upload one report
         shell: pwsh
         run: |
-          pytest --cov=./src
           coverage report -m
 
       - name: Publish to CodeCov
