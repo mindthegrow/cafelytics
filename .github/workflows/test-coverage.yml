@@ -51,7 +51,6 @@ jobs:
           python -m cafe.fakeData # fake default dataframe
           python -m cafe.simulateCoOp # gets imported by this
 
-
       - name: Code Coverage Upload
         if: ${{ matrix.python-version }} == 3.8 # only upload one report
         shell: pwsh
