@@ -74,9 +74,19 @@ def main(args):
         
         """%farmData)
         
+    if not os.path.exists(trees):
+        raise ValueError(
+        """
+        File: %s does not exist
+        
+        Assure you are in the correct working directory relative to the filepath
+        argument given for --trees.
+        
+        """%trees)
+        
     
     print("Importing Data")
-    farmList = importData.compileCoOp(farmData)
+    farmList = importData.compileCoOp(farmStr=farmData,treeStr=trees)
     
     print("Simulating Cooperative")
     simData = simulateCoOp(farmList, years)

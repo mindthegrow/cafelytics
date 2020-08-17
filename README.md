@@ -40,7 +40,7 @@ Feel free to replace arguments to suit your taste. The arguments above are the d
 After you've created this dataset, run the simulation using:
 
 ```bash
-python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --years 30 --output testNewFarm.png
+python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 30 --output testNewFarm.png
 ```
 
 once again, these are the default arguments.

@@ -8,10 +8,10 @@ class Farm:
                  treeType:str='Borbón',
                  initialAgeOfTrees:int=1,
                  sowDensity:int=333,
-                 treeAttributes:dict = None): # use self to declare namespace
+                 treeAttributes:dict=None): # use self to declare namespace
         self.farmerName = farmerName
 
-        self.inheretTreeProperties(treeType)
+        self.inheretTreeProperties(treeType, treeAttributes)
 
         self.totalCuerdas = cuerdas
         self.sowDensity = sowDensity 
@@ -49,7 +49,7 @@ class Farm:
         
         return(numTrees)
         
-    def inheretTreeProperties(self, treeType):
+    def inheretTreeProperties(self, treeType, treeAttributes):
         
         """
         Based on the argument treeType in the initializer function, assign parameters for the respective
@@ -62,14 +62,14 @@ class Farm:
         
         if treeAttributes:
             keys = list(treeAttributes.keys())
-            altOrth = [treeAttributes[key]['altOrth'] for key in trees]
+            altOrth = [treeAttributes[key]['altOrth'] for key in treeAttributes]
             # tipos = keys + altOrth # all of the possible spellings for the tree types
             
             if treeType in keys:
                 treeDict = treeAttributes[treeType]
                 
             elif treeType in altOrth:
-                keyPair = [(key, treeAttributes[key]['altOrth']) for key in trees]
+                keyPair = [(key, treeAttributes[key]['altOrth']) for key in treeAttributes]
                 _treeType = ''
                 for i,e in enumerate(keyPair):
                     if treeType == e[1]:
