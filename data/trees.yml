@@ -1,7 +1,7 @@
 ---
 # four types of coffee tree strains (variants of coffea arabica) the co-op grew in Guatemala
 borbon:
-  treeType: "borbon"
+  treeType: "borbon" # treeType var should be named the same as the key. 
   altOrth: "borbón"
   cuerdaHarvestCap: 200
   firstHarvest:

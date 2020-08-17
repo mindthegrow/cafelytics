@@ -5,9 +5,10 @@ class Farm:
     
     def __init__(self, farmerName:str='Farmer',
                  cuerdas:float=1,
-                 treeType:str='Borbon',
+                 treeType:str='Borbón',
                  initialAgeOfTrees:int=1,
-                 sowDensity:int=333): # use self to declare namespace
+                 sowDensity:int=333,
+                 treeAttributes:dict = None): # use self to declare namespace
         self.farmerName = farmerName
 
         self.inheretTreeProperties(treeType)
@@ -49,7 +50,7 @@ class Farm:
         return(numTrees)
         
     def inheretTreeProperties(self, treeType):
-        loop = True
+        
         """
         Based on the argument treeType in the initializer function, assign parameters for the respective
         life & production patterns of the trees on the cuerda.
@@ -57,7 +58,35 @@ class Farm:
         The following property assignments were developed from data collected from the co-op in 2014
     
         """
-        while loop:
+        treeType = treeType.lower() # convert to lower case for easier parsing
+        
+        if treeAttributes:
+            keys = list(treeAttributes.keys())
+            altOrth = [treeAttributes[key]['altOrth'] for key in trees]
+            # tipos = keys + altOrth # all of the possible spellings for the tree types
+            
+            if treeType in keys:
+                treeDict = treeAttributes[treeType]
+                
+            elif treeType in altOrth:
+                keyPair = [(key, treeAttributes[key]['altOrth']) for key in trees]
+                _treeType = ''
+                for i,e in enumerate(keyPair):
+                    if treeType == e[1]:
+                        _treeType = e[0]
+                
+                treeDict = treeAttributes[_treeType]
+                
+            else:
+                raise AttributeError(
+                """
+                '%s' is not a recognized value (orthography) in the `treeAttributes` dict.
+                
+                """%(treeType))
+                
+                
+        
+        else: # temporary stand-in for variable testing
             if (treeType =='borbon'):
                 # year of first harvest and proportion of harvest until full
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
@@ -119,7 +148,7 @@ class Farm:
                 elif (choice01 == 1) or (choice01 == True):
                     print("some other stuff")
                     
-                loop = False
+                
                                
                     
                     
