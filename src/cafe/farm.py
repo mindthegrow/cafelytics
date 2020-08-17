@@ -84,9 +84,16 @@ class Farm:
                 
                 """%(treeType))
                 
-                
+            self.treeType = treeDict['treeType']
+            self.firstHarvest = treeDict['firstHarvest']
+            self.fullHarvest = treeDict['fullHarvest']
+            self.descentHarvest = treeDict['descentHarvest']
+            self.death = treeDict['death']
+            self.cuerdaHarvestCap = treeDict['cuerdaHarvestCap']
         
-        else: # temporary stand-in for variable testing
+        # as soon as yaml imports are tested, this can be deleted:
+        # temporary stand-in for variable testing
+        else:
             if (treeType =='borbon'):
                 # year of first harvest and proportion of harvest until full
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
@@ -136,21 +143,7 @@ class Farm:
                 self.death = {'year': 16}
 
                 self.cuerdaHarvestCap = 125 
-                self.treeType = 'caturra'
-
-                loop = False
-
-            else: # uncomplete option
-                choice01 = ("This tree species does not exist. Would you like to (0) re-elect a tree type or (1) make a new tree type: ")
-                if (choice01 == 0) or (choice01 == False):
-                    print("some stuff")
-                            
-                elif (choice01 == 1) or (choice01 == True):
-                    print("some other stuff")
-                    
-                
-                               
-                    
+                self.treeType = 'caturra'                    
                     
     def oneYear(self):
         """
