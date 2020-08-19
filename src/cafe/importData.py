@@ -48,8 +48,10 @@ def compileCoOp(farmStr:str, treeStr:str): # strategyStr = None, treeStr = None)
         a list of class type Cuerdas that have been initialized with their respective parameters and attributes.
     
     """
-    farmData = readData(farmStr) # a pd.DataFrame from spredsheet file
-    treeData = openYaml(treeStr) # a dictionary from yaml file
+    # a pd.DataFrame from spredsheet file
+    farmData = readData(farmStr) 
+    # a dictionary from yaml file
+    treeData = openYaml(treeStr)
 
     plotList = []
 
@@ -60,7 +62,7 @@ def compileCoOp(farmStr:str, treeStr:str): # strategyStr = None, treeStr = None)
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge)
+        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge, treeAttributes=treeData)
         
         plotList.append(plot)
         
