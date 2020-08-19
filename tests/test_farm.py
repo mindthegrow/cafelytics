@@ -17,7 +17,7 @@ def test_farm_instantiation_defaults():
     assert test_farm.pruneYear == None
     assert test_farm.treeType == 'borbon'
     
-    testDict = importData.openYaml("../../data/trees.yml")
+    testDict = importData.openYaml("../data/trees.yml")
     test_farm02 = cf.Farm(treeAttributes = testDict)
     assert test_farm02.treeType == 'borbon'
     
