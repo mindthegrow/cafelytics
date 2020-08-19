@@ -10,7 +10,7 @@ __license__ = "mit"
 
 
 def test_farm_instantiation_defaults():
-    # test_farm = object() #cf.Farm()
+    test_farm = cf.Farm()
     # TODO: add some basics here and assert them
     assert test_farm.totalCuerdas == 1
     assert test_farm.pruneYear == None
