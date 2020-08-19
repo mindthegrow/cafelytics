@@ -8,6 +8,7 @@ class Farm:
                  treeType:str='Borbón',
                  initialAgeOfTrees:int=1,
                  sowDensity:int=333,
+                 pruneYear:int=None,
                  treeAttributes:dict=None): # use self to declare namespace
         self.farmerName = farmerName
 
@@ -20,7 +21,9 @@ class Farm:
         
         # TODO: let these be set by user?
         # initialize variables for pruning so if/else can deal with objects
-        self.pruneYear = False
+        
+        
+        self.pruneYear = pruneYear
         self.pruneCount = 0    
         
         self.initialAgeOfTrees= initialAgeOfTrees
@@ -94,7 +97,7 @@ class Farm:
         # as soon as yaml imports are tested, this can be deleted:
         # temporary stand-in for variable testing
         else:
-            if (treeType =='borbon'):
+            if (treeType =='borbon') or (treeType == 'borbón'):
                 # year of first harvest and proportion of harvest until full
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
                 # year of first harvest and proportion of harvest
@@ -124,7 +127,7 @@ class Farm:
 
                 loop = False
 
-            elif (treeType == 'e14') or (treeType == 'E14'):
+            elif (treeType == 'e14'):
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
                 self.fullHarvest = {'year': 5, 'proportion': 1.0}  
                 self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} 
@@ -157,7 +160,7 @@ class Farm:
             for treeIndex, treeQuant in enumerate(self.trees):
                 treeAge = self.ageOfTrees[treeIndex]
                 
-                if (self.pruneYear == True):
+                if (self.pruneYear) or (self.pruneYear == 0):
                     # make sure to:
                     # (1) still age the trees
                     # (2) make them produce less for a bit!? How!?
