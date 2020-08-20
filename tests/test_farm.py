@@ -17,6 +17,7 @@ def test_farm_instantiation_defaults():
     assert test_farm.totalCuerdas == 1
     assert test_farm.pruneYear == None
     assert test_farm.treeType == 'borbon'
+    assert test_farm.getHarvest() == 0
     
     # tests search from root directory as the working directory
     testDict = importData.openYaml("data/trees.yml")
@@ -24,9 +25,14 @@ def test_farm_instantiation_defaults():
     test_farm02 = cf.Farm(treeAttributes = testDict)
     assert test_farm02.treeType == 'borbon'
     
-    # run through a one year simulation
-    test_farm.oneYear()
-    assert test_farm.ageOfTrees[0] == 2
+    # run through a five year simulation
+    years = 5
+    for i in range(years):
+        test_farm.setHarvestZero()
+        test_farm.oneYear()
+        
+    assert test_farm.ageOfTrees[0] == (years + 1)
+    assert test_farm.getHarvest == 200
     
 
     # this is another syntax structure to accomplish the above
