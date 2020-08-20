@@ -11,15 +11,22 @@ __license__ = "mit"
 
 
 def test_farm_instantiation_defaults():
+    # object with automatic defaults
     test_farm = cf.Farm()
     # TODO: add some basics here and assert them
     assert test_farm.totalCuerdas == 1
     assert test_farm.pruneYear == None
     assert test_farm.treeType == 'borbon'
     
+    # tests search from root directory as the working directory
     testDict = importData.openYaml("data/trees.yml")
+    # object where a dictionary is imported for treeAttributes
     test_farm02 = cf.Farm(treeAttributes = testDict)
     assert test_farm02.treeType == 'borbon'
+    
+    # run through a one year simulation
+    test_farm.oneYear()
+    assert test_farm.ageOfTrees[0] == 2
     
 
     # this is another syntax structure to accomplish the above
