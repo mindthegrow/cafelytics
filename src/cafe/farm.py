@@ -5,12 +5,14 @@ class Farm:
     
     def __init__(self, farmerName:str='Farmer',
                  cuerdas:float=1,
-                 treeType:str='Borbon',
+                 treeType:str='Borbón',
                  initialAgeOfTrees:int=1,
-                 sowDensity:int=333): # use self to declare namespace
+                 sowDensity:int=333,
+                 pruneYear:int=None,
+                 treeAttributes:dict=None): # use self to declare namespace
         self.farmerName = farmerName
 
-        self.inheretTreeProperties(treeType)
+        self.inheretTreeProperties(treeType, treeAttributes)
 
         self.totalCuerdas = cuerdas
         self.sowDensity = sowDensity 
@@ -19,7 +21,9 @@ class Farm:
         
         # TODO: let these be set by user?
         # initialize variables for pruning so if/else can deal with objects
-        self.pruneYear = False
+        
+        
+        self.pruneYear = pruneYear
         self.pruneCount = 0    
         
         self.initialAgeOfTrees= initialAgeOfTrees
@@ -48,8 +52,8 @@ class Farm:
         
         return(numTrees)
         
-    def inheretTreeProperties(self, treeType):
-        loop = True
+    def inheretTreeProperties(self, treeType, treeAttributes):
+        
         """
         Based on the argument treeType in the initializer function, assign parameters for the respective
         life & production patterns of the trees on the cuerda.
@@ -57,8 +61,43 @@ class Farm:
         The following property assignments were developed from data collected from the co-op in 2014
     
         """
-        while loop:
-            if (treeType =='borbon'):
+        treeType = treeType.lower() # convert to lower case for easier parsing
+        
+        if treeAttributes:
+            keys = list(treeAttributes.keys())
+            altOrth = [treeAttributes[key]['altOrth'] for key in treeAttributes]
+            # tipos = keys + altOrth # all of the possible spellings for the tree types
+            
+            if treeType in keys:
+                treeDict = treeAttributes[treeType]
+                
+            elif treeType in altOrth:
+                keyPair = [(key, treeAttributes[key]['altOrth']) for key in treeAttributes]
+                _treeType = ''
+                for i,e in enumerate(keyPair):
+                    if treeType == e[1]:
+                        _treeType = e[0]
+                
+                treeDict = treeAttributes[_treeType]
+                
+            else:
+                raise AttributeError(
+                """
+                '%s' is not a recognized value (orthography) in the `treeAttributes` dict.
+                
+                """%(treeType))
+                
+            self.treeType = treeDict['treeType']
+            self.firstHarvest = treeDict['firstHarvest']
+            self.fullHarvest = treeDict['fullHarvest']
+            self.descentHarvest = treeDict['descentHarvest']
+            self.death = treeDict['death']
+            self.cuerdaHarvestCap = treeDict['cuerdaHarvestCap']
+        
+        # as soon as yaml imports are tested, this can be deleted:
+        # temporary stand-in for variable testing
+        else:
+            if (treeType =='borbon') or (treeType == 'borbón'):
                 # year of first harvest and proportion of harvest until full
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
                 # year of first harvest and proportion of harvest
@@ -88,7 +127,7 @@ class Farm:
 
                 loop = False
 
-            elif (treeType == 'e14') or (treeType == 'E14'):
+            elif (treeType == 'e14'):
                 self.firstHarvest = {'year': 4, 'proportion': 0.2} 
                 self.fullHarvest = {'year': 5, 'proportion': 1.0}  
                 self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} 
@@ -107,21 +146,7 @@ class Farm:
                 self.death = {'year': 16}
 
                 self.cuerdaHarvestCap = 125 
-                self.treeType = 'caturra'
-
-                loop = False
-
-            else: # uncomplete option
-                choice01 = ("This tree species does not exist. Would you like to (0) re-elect a tree type or (1) make a new tree type: ")
-                if (choice01 == 0) or (choice01 == False):
-                    print("some stuff")
-                            
-                elif (choice01 == 1) or (choice01 == True):
-                    print("some other stuff")
-                    
-                loop = False
-                               
-                    
+                self.treeType = 'caturra'                    
                     
     def oneYear(self):
         """
@@ -135,7 +160,7 @@ class Farm:
             for treeIndex, treeQuant in enumerate(self.trees):
                 treeAge = self.ageOfTrees[treeIndex]
                 
-                if (self.pruneYear == True):
+                if (self.pruneYear) or (self.pruneYear == 0):
                     # make sure to:
                     # (1) still age the trees
                     # (2) make them produce less for a bit!? How!?
