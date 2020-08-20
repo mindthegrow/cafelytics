@@ -32,7 +32,7 @@ def test_farm_instantiation_defaults():
         test_farm.oneYear()
         
     assert test_farm.ageOfTrees[0] == (years + 1)
-    assert test_farm.getHarvest == 200
+    assert test_farm.getHarvest() == 200
     
 
     # this is another syntax structure to accomplish the above
