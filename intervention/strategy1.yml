@@ -1,0 +1,20 @@
+---
+# a template for what a strategy should look like
+
+replant:
+  isReplant: True
+  # year before/after previous trees' death where 0 = death
+  year: 1 
+  
+prune:
+  isPrune: True
+  age: 8
+  proportion: 1.0
+  lifeExtend: 0.15
+  
+intercrop:
+  isIntercrop: False
+  age: 8
+  year: 8
+  proportion: 0.1
+  
