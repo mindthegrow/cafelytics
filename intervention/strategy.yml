@@ -10,6 +10,7 @@ prune:
   isPrune: True
   age: 8
   proportion: 1.0
+  lifeExtend: 0.15
   
 intercrop:
   isIntercrop: False
