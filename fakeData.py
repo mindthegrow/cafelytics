@@ -33,6 +33,7 @@ lsOfFarmers = [] # create a list to append these farmers to
 lsOfTrees = [] # create a list to hold lists for each farmer's trees
 lsOfCuerdas = [] # creat a list to hold the number of cuerdas
 lsOfAges = []
+lsOfProportions = []
 
 for i in range(numFarmers):
     lsOfFarmers.append(fake.name()) # append the fake name, who is the owner of the farm
@@ -69,6 +70,7 @@ for i in range(numFarmers):
     
     cuerdaLs = []
     plotAgeLs = []
+    proportionProduct = []
     
 
     for j in range(len(treeLs)): # iterate through the number of plots this farmer has
@@ -82,12 +84,16 @@ for i in range(numFarmers):
             plotAge = random.randint(0, 14)
             
         plotAgeLs.append(plotAge)
+        
+        _proportionProduct = random.random(0.7, 1.0)
+        proportionProduct.append(_proportionProduct)
             
      
     # append the lists of len(numStrains) to their stuff
     lsOfTrees.append(treeLs)
     lsOfCuerdas.append(cuerdaLs)
     lsOfAges.append(plotAgeLs)
+    lsOfProportions.append(proportionProduct)
     
     
     
@@ -95,6 +101,7 @@ totalFarmers = len(lsOfFarmers)
 totalListsCuerdas = len(lsOfCuerdas)
 totalListsTrees = len(lsOfTrees)
 totalListsAges = len(lsOfAges)
+totalProportions = len(lsOfProportions)
     
 print("Farmers: ", totalFarmers)
 print("Lists of Trees: ", totalListsTrees)
@@ -111,13 +118,15 @@ finalFarmers = []
 finalTrees = []
 finalCuerdas = []
 finalAges = []
+finalProportions = []
 
 # all lists need to be the same length to iterate through these
-if (totalFarmers == totalListsTrees) and (totalFarmers == totalListsAges) and (totalFarmers == totalListsCuerdas):
+if (totalFarmers == totalListsTrees) and (totalFarmers == totalListsAges) and (totalFarmers == totalListsCuerdas) and (totalFarmers == totalProportions):
     for index, farmerName in enumerate(lsOfFarmers):
         cuerdaLs = lsOfCuerdas[index]
         treeLs = lsOfTrees[index]
         ageLs = lsOfAges[index]
+        proportionLs = lsOfProportions[index]
         
         if (len(cuerdaLs) == len(treeLs)) and (len(cuerdaLs) == len(ageLs)):
             
@@ -126,10 +135,12 @@ if (totalFarmers == totalListsTrees) and (totalFarmers == totalListsAges) and (t
                 finalTrees.append(treeLs[j])
                 finalCuerdas.append(cuerdaLs[j])
                 finalAges.append(ageLs[j])
+                finalProportions.append(proportionLs[j])
                 
                 
                 
-finalData = pd.DataFrame(zip(finalFarmers,finalTrees,finalCuerdas,finalAges), columns = 
-                         ['farmerName', 'treeType', 'numCuerdas', 'ageOfTrees'])              
+                
+finalData = pd.DataFrame(zip(finalFarmers,finalTrees,finalCuerdas,finalAges,finalProportions), columns = 
+                         ['farmerName', 'treeType', 'numCuerdas', 'ageOfTrees','proportions'])              
 
 finalData.to_csv('data/demoData.csv')
