@@ -18,7 +18,7 @@ borbon:
     
 catuai:
   treeType: "catuai"
-  altOrth: "catuaí"
+  altOrth: "catuaí" # an alternate orthography
   cuerdaHarvestCap: 125
   firstHarvest:
     year: 3
@@ -34,7 +34,7 @@ catuai:
  
 e14:
   treeType: "e14"
-  altOrth: "E14"
+  altOrth: "E14" # an alternate orthography
   cuerdaHarvestCap: 125
   firstHarvest:
     year: 4
@@ -50,7 +50,7 @@ e14:
     
 catura:
   treeType: "catura"
-  altOrth: "caturra"
+  altOrth: "caturra" # an alternate orthography
   cuerdaHarvestCap: 125
   firstHarvest:
     year: 3
