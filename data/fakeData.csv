@@ -1,0 +1,101 @@
+plotID,farmerName,treeType,numCuerdas,yearPlanted,ageOfTrees,productionProportion
+0,Emilio Manzanares Garibay,catuai,7,2018,2,0.9706483571847314
+1,Hernán Jaramillo Camacho,borbon,5,2012,8,0.720966922301394
+2,Angélica Horacio Jaimes,catuai,10,2015,5,0.9836696545475829
+3,Emilio Manzanares Garibay,catuai,9,2019,1,0.8211817725065017
+4,Pascual Rafaél Villareal Botello,borbon,6,2007,13,0.9953057076166401
+5,Salvador Cintrón,catura,8,2020,0,0.778791229671476
+6,Tomás Esther Hurtado Almonte,borbon,4,1997,23,0.9025463142672429
+7,Amador Amador Feliciano Ortiz,catura,10,2006,14,0.9435507034492333
+8,Timoteo Quiñónez Miramontes,catuai,6,2016,4,0.7169442418598619
+9,Pascual Rafaél Villareal Botello,borbon,9,1992,28,0.8498386578589087
+10,Jerónimo Aponte,catuai,7,2019,1,0.8292171277462965
+11,Ing. Sessa Serrano,borbon,4,2013,7,0.8134010062090754
+12,Timoteo Quiñónez Miramontes,catura,9,2009,11,0.796908698289382
+13,Mónica Susana Leyva,borbon,3,2001,19,0.8961797872673971
+14,Amador Magdalena Ceja Matías,catuai,9,2020,0,0.7499160824191196
+15,Amador Amador Feliciano Ortiz,catuai,5,2013,7,0.7796501737751957
+16,María José Socorro Cruz Medina,catuai,2,2006,14,0.7284548067897134
+17,Amador Magdalena Ceja Matías,borbon,6,1996,24,0.7517208211198804
+18,Lic. Esparta Lebrón,borbon,6,2010,10,0.9684437754983211
+19,Gabriela Ernesto Ruelas Tamez,catuai,3,2013,7,0.7993716644820816
+20,Fernando Gabriela Aragón,borbon,0,1999,21,0.8919132662782542
+21,Elias Gabriel Benítez Bravo,borbon,10,2012,8,0.9546559023268
+22,Nelly Munguía Salgado,borbon,0,2000,20,0.8401338613848705
+23,Lic. Timoteo Frías,borbon,5,1991,29,0.7749447921179824
+24,Adela Cristal Loera,borbon,3,2015,5,0.7253167510311563
+25,Gabriela Ernesto Ruelas Tamez,catuai,1,2019,1,0.8809875511361612
+26,Lic. Jaime Acevedo,borbon,10,1998,22,0.8555606261343756
+27,Mónica Susana Leyva,catura,10,2020,0,0.8812224627082937
+28,Pascual Rafaél Villareal Botello,catuai,2,2013,7,0.8643068777976267
+29,Angélica Horacio Jaimes,catuai,8,2011,9,0.8712246027852137
+30,Abel Uriel Bétancourt Alejandro,borbon,6,2007,13,0.7519234353333747
+31,Adela Cristal Loera,borbon,2,2016,4,0.7081533129302401
+32,Amador Amador Feliciano Ortiz,catuai,3,2010,10,0.8281941430833462
+33,Lic. Eduardo Dueñas,borbon,8,2012,8,0.8088875629436714
+34,Gabriela Ernesto Ruelas Tamez,catuai,8,2012,8,0.8110743636126305
+35,Tomás Esther Hurtado Almonte,borbon,1,1996,24,0.7601602225110986
+36,Angélica Horacio Jaimes,borbon,6,1991,29,0.7760921294906832
+37,Gabriela Ernesto Ruelas Tamez,catuai,7,2006,14,0.7147901767225494
+38,Hernán Jaramillo Camacho,borbon,9,2017,3,0.9261252564815151
+39,Mariano Navarrete Correa,borbon,4,2006,14,0.8790225894548979
+40,Ing. Francisco Botello,borbon,6,2015,5,0.8009259402673254
+41,Mónica Susana Leyva,catuai,8,2015,5,0.8483434680301057
+42,Timoteo Quiñónez Miramontes,catuai,5,2017,3,0.7079001068914046
+43,Georgina Rosado,borbon,4,2009,11,0.9153827743585892
+44,Emilio Manzanares Garibay,catuai,10,2017,3,0.7739739893384074
+45,Ing. Francisco Botello,catuai,1,2011,9,0.7869590462787398
+46,Mariano Navarrete Correa,catuai,8,2016,4,0.8170708156960875
+47,Adela Cristal Loera,borbon,5,1995,25,0.8879722843223378
+48,Lic. Jaime Acevedo,borbon,1,2014,6,0.7671852756516966
+49,Ing. Ivonne Alcaraz,borbon,7,1992,28,0.7527445072334132
+50,Emilio Manzanares Garibay,catura,9,2018,2,0.7398323391501309
+51,Jerónimo Aponte,borbon,1,2017,3,0.9389119982621192
+52,Ing. Ivonne Alcaraz,borbon,9,2017,3,0.9134253913804172
+53,Lic. Esparta Lebrón,borbon,6,1998,22,0.9639432005453628
+54,Lic. Esparta Lebrón,catuai,1,2019,1,0.8420517213787038
+55,Abel Uriel Bétancourt Alejandro,borbon,1,1994,26,0.8648924589960317
+56,Emilio Manzanares Garibay,borbon,6,2002,18,0.9124457161519619
+57,Georgina Rosado,catuai,2,2015,5,0.9340451344462897
+58,Óscar Linda Esquivel Ureña,borbon,8,2004,16,0.8457579215160662
+59,María José Socorro Cruz Medina,catuai,5,2020,0,0.9503060428254602
+60,Salvador Cintrón,catuai,6,2014,6,0.9071342314051759
+61,Jerónimo Aponte,borbon,3,2015,5,0.7271286606122154
+62,Lic. Camilo Márquez,borbon,7,2014,6,0.8458263231943378
+63,Lic. Jaime Acevedo,borbon,9,2004,16,0.9952706020907411
+64,Gabriela Ernesto Ruelas Tamez,catuai,3,2016,4,0.9776113970425013
+65,María José Socorro Cruz Medina,catuai,8,2020,0,0.7200847750693218
+66,Salvador Cintrón,borbon,10,2010,10,0.9395350293731338
+67,Gonzalo Claudia Becerra Aguayo,borbon,4,1997,23,0.7857986733304659
+68,Pascual Rafaél Villareal Botello,catuai,1,2009,11,0.7420447511202646
+69,Adela Cristal Loera,catuai,2,2009,11,0.7281721099373107
+70,Adela Cristal Loera,catuai,9,2018,2,0.8589306664990998
+71,María José Socorro Cruz Medina,borbon,8,2004,16,0.8870567118828837
+72,Jonás José Carlos Osorio,catuai,7,2019,1,0.7350263428312127
+73,Ing. Ivonne Alcaraz,borbon,6,1994,26,0.7258018849861545
+74,Nelly Munguía Salgado,catuai,4,2009,11,0.9028693950408032
+75,Humberto Yeni Posada Mireles,borbon,2,2016,4,0.8258616837393884
+76,Ing. Ivonne Alcaraz,catuai,8,2012,8,0.8582815148682895
+77,Ing. Sessa Serrano,catura,1,2007,13,0.9841436206193964
+78,Pascual Rafaél Villareal Botello,borbon,3,2015,5,0.9155357350110238
+79,Timoteo Quiñónez Miramontes,borbon,4,2017,3,0.7601409779299769
+80,Abel Uriel Bétancourt Alejandro,catuai,1,2009,11,0.7362343707015904
+81,Lic. Concepción Vanegas,catuai,0,2018,2,0.8340773544795846
+82,Amador Magdalena Ceja Matías,catuai,9,2010,10,0.8286527954752968
+83,Óscar Linda Esquivel Ureña,catuai,1,2006,14,0.8243820459065132
+84,Mtro. Pablo Marín,borbon,2,1999,21,0.9984215738051416
+85,María José Socorro Cruz Medina,catuai,8,2016,4,0.8765860219374193
+86,Amador Magdalena Ceja Matías,borbon,0,2011,9,0.9754307967241302
+87,Mtro. Pablo Marín,borbon,3,1991,29,0.7159593316084034
+88,Tomás Esther Hurtado Almonte,catuai,0,2006,14,0.9524529732601226
+89,Mariano Navarrete Correa,catuai,2,2006,14,0.8271105867492563
+90,Pascual Rafaél Villareal Botello,borbon,6,2004,16,0.7958195828184619
+91,Georgina Rosado,borbon,2,2019,1,0.924740508237289
+92,Lic. Eduardo Dueñas,borbon,9,2015,5,0.8684387675839277
+93,Ing. Sessa Serrano,borbon,3,1999,21,0.7619915973708076
+94,Fernando Gabriela Aragón,catuai,5,2013,7,0.9995336555154481
+95,María del Carmen José María Franco,borbon,5,1996,24,0.7591996776705179
+96,Gabriela Ernesto Ruelas Tamez,borbon,4,2010,10,0.9623826715973931
+97,Diego Carranza,catuai,8,2006,14,0.8856658619599186
+98,Amador Amador Feliciano Ortiz,borbon,4,2003,17,0.8813078013547919
+99,Ing. Ivonne Alcaraz,catuai,7,2016,4,0.7776470204904985
