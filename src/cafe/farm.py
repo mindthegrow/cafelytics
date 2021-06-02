@@ -1,5 +1,33 @@
 import statistics as stats
 
+from dataclasses import dataclass
+
+@dataclass
+class Plot:
+    plot_id: int = 0
+    species: str = ''
+    year_planted: int = 2020
+    size: float = 0.0
+    unit: str = 'cuerdas'
+
+    def show(self):
+        return self.__repr__()
+
+    @classmethod
+    def from_series(cls, series):
+        return cls(
+            plot_id=series.plotID,
+            species=series.treeType,
+            size=series.numCuerdas,
+            unit='cuerdas',
+            year_planted=series.yearPlanted,
+        )
+
+    @classmethod
+    def from_dict(cls, dict):
+        return cls.from_series(pd.Series(dict))
+
+
 class Farm:
     
     
