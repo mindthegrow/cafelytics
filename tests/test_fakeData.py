@@ -2,7 +2,7 @@
 
 import pytest
 import cafe.fakeData as fd
-import os
+
 
 __author__ = "Mathematical Michael"
 __copyright__ = "Mathematical Michael"
@@ -15,4 +15,3 @@ def test_empty_fake_data():
     # things below here will pass if they RAISE an error.
     # these are expected "failure modes", e.g. check that an error message was printed.    
     # with pytest.raises(TypeError):
-    os.system('python src/cafe/fakeData.py')

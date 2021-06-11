@@ -61,10 +61,32 @@ def main(args):
     output = args.output
     
     if not os.path.exists(farmData):
-        raise ValueError("File: %s does not exist"%farm)
+        raise ValueError(
+        """
+        File: %s does not exist
+        
+        If you are running default commands and this is your first time
+        running the simulation, assure you have run:
+        
+        `python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv`
+        
+        in the core directory before calling simulateCoOp.py from the command line.
+        
+        """%farmData)
+        
+    if not os.path.exists(trees):
+        raise ValueError(
+        """
+        File: %s does not exist
+        
+        Assure you are in the correct working directory relative to the filepath
+        argument given for --trees.
+        
+        """%trees)
+        
     
     print("Importing Data")
-    farmList = importData.compileCoOp(farmData)
+    farmList = importData.compileCoOp(farmStr=farmData,treeStr=trees)
     
     print("Simulating Cooperative")
     simData = simulateCoOp(farmList, years)

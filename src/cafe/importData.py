@@ -1,4 +1,5 @@
 import pandas as pd
+import yaml
 import cafe.farm as farm
 
 def readData(filePath:str):
@@ -17,7 +18,21 @@ def readData(filePath:str):
 
     return(data)
 
-def compileCoOp(farmStr: str): # strategyStr = None, treeStr = None):
+def openYaml(yamlFilePath : str) -> dict: 
+    """
+    Arguments: filepath str from pwd
+    
+    Returns: dictionary with the information contained in the YAML file
+    
+    Opens a .yaml/.yml file and returns a dictionary
+    
+    """
+    yamlFile = open(yamlFilePath)
+    parsed = yaml.load(yamlFile, Loader =yaml.FullLoader)
+    return(parsed)
+
+
+def compileCoOp(farmStr:str, treeStr:str): # strategyStr = None, treeStr = None):
     """
     Takes a string argument (file paths) and compiles the data into a list of classes of type : farm.Farm, assigning the parameters respective to the data in the spreadsheet (farmer names, tree types, number of cuerdas, and age of trees).
     
@@ -33,7 +48,10 @@ def compileCoOp(farmStr: str): # strategyStr = None, treeStr = None):
         a list of class type Cuerdas that have been initialized with their respective parameters and attributes.
     
     """
-    farmData = readData(farmStr)
+    # a pd.DataFrame from spredsheet file
+    farmData = readData(farmStr) 
+    # a dictionary from yaml file
+    treeData = openYaml(treeStr)
 
     plotList = []
 
@@ -44,7 +62,7 @@ def compileCoOp(farmStr: str): # strategyStr = None, treeStr = None):
         tempTree = str(farmData['treeType'][i])
         tempAge = float(farmData['ageOfTrees'][i])
     
-        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge)
+        plot = farm.Farm(farmerName=tempName, cuerdas=tempCuerdas, treeType=tempTree, initialAgeOfTrees=tempAge, treeAttributes=treeData)
         
         plotList.append(plot)
         
