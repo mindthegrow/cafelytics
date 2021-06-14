@@ -110,7 +110,6 @@ class Plot:
         return plot
 
 
-
 @dataclass
 class Farm:
     plot_list: List[Plot] = field(default_factory=List)
