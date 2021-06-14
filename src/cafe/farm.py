@@ -124,6 +124,10 @@ class Farm:
         return cls(list_of_plots)
 
     @property
+    def size(self) -> float:
+        return len(self.plot_list)
+
+    @property
     def plots(self) -> List[Plot]:
         return self.plot_list
     
@@ -150,3 +154,10 @@ def predict_yield_for_farm(farm: Farm, configs: List[Config], events: List[Event
             harvests.append(0)
     return harvests
 
+
+def predict_yield_for_plot(plot: Plot, config: Config) -> float:
+    # yield = area * crops/area * weight / crop
+    # messy to compare two different classes but duck typing allows it...
+    if plot.species == config.species and plot.unit == config.unit:
+        return plot.num * config.output_per_crop
+    raise ValueError(f"Species mismatch, {plot}, {config}")
