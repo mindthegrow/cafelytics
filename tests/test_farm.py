@@ -20,6 +20,9 @@ def configs():
        Config('d', 'd'),
           )
 
+
+# CONFIG TESTS
+
 def test_that_membership_is_based_on_species_when_name_unspecified():
     assert Config('a') == Config('a')
     assert Config('a') == Config('a', 'a-details')
@@ -48,3 +51,10 @@ def test_warning_thrown_when_species_requested_for_which_no_default_exists(confi
                        output_per_crop=1.0,
                        unit='cuerdas'
                       )
+
+# FARM TESTS
+
+def test_that_farm_contains_works():
+    p = Plot(species='a')
+    f = Farm([p])
+    assert f.contains(species='a')

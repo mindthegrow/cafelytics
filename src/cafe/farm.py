@@ -46,7 +46,7 @@ class Event:
 
 @dataclass
 class Plot:
-    num: int = 1  # crops / unit of area
+    num: int = 1  # number of crops
     area: float = 1.0
     plot_id: int = 0
     species: str = field(default_factory=str)
@@ -61,7 +61,7 @@ class Plot:
 
     @property  # TODO deprecate / change tests?
     def size(self) -> float:
-        return self.num
+        return self.area
 
     @property  # TODO deprecate / change tests?
     def year_planted(self):
