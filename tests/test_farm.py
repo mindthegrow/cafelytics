@@ -1,41 +1,50 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import cafe.farm as cf
-import cafe.importData as importData
+from cafe.farm import Config, Plot, Farm, find_config
+# import cafe.importData as importData
 import numpy as np
+import warnings
 
-__author__ = "Mathematical Michael"
-__copyright__ = "Mathematical Michael"
+__author__ = "Mathematical Michael <Pilosov>"
+__copyright__ = "Mind the Math, LLC"
 __license__ = "mit"
 
 
-def test_farm_instantiation_defaults():
-    # object with automatic defaults
-    test_farm = cf.Farm()
-    # TODO: add some basics here and assert them
-    assert test_farm.totalCuerdas == 1
-    assert test_farm.pruneYear == None
-    assert test_farm.treeType == 'borbon'
-    assert test_farm.getHarvest() == 0
-    
-    # tests search from root directory as the working directory
-    testDict = importData.openYaml("data/trees.yml")
-    # object where a dictionary is imported for treeAttributes
-    test_farm02 = cf.Farm(treeAttributes = testDict)
-    assert test_farm02.treeType == 'borbon'
-    
-    # run through a five year simulation
-    years = 5
-    for i in range(years):
-        test_farm.setHarvestZero()
-        test_farm.oneYear()
-        
-    assert test_farm.ageOfTrees[0] == (years + 1)
-    assert test_farm.getHarvest() == 200
-    
+@pytest.fixture()
+def configs():
+   return (
+       Config('a', 'a-sparse'), 
+       Config('b', 'b-intercroppped'),
+       Config('c', 'c'),
+       Config('d', 'd'),
+          )
 
-    # this is another syntax structure to accomplish the above
-    # but it is new to me, personally -- mm
-    #with pytest.raises(AssertionError):
+def test_that_membership_is_based_on_species_when_name_unspecified():
+    assert Config('a') == Config('a')
+    assert Config('a') == Config('a', 'a-details')
+    assert Config('a', 'a-details') in [Config('a')]
 
+
+def test_that_membership_is_based_on_species_and_name_when_both_supplied():
+    # test that if name present, assertion happens on species and name
+    assert Config('a', 'a-standard') != Config('a', 'a-other-details')
+    assert Config('a', 'a-standard') == Config('a', 'a-standard')
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_error_thrown_when_bad_config_requested(configs):
+    with pytest.raises(ValueError):
+        c = find_config('f', configs)
+
+
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_warning_thrown_when_species_requested_for_which_no_default_exists(configs):
+    with pytest.warns(UserWarning):
+        c = find_config('b', configs)
+
+    assert c == Config(species='b',
+                       name='b-intercroppped',
+                       output_per_crop=1.0,
+                       unit='cuerdas'
+                      )
