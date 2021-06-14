@@ -14,13 +14,17 @@ import pandas as pd
 @dataclass(frozen=True)
 class Config:
     species: str
-    name: str = ''
-    output_per_crop: float = 1.0 
-    unit: str = 'cuerdas'
+    name: str = ""
+    output_per_crop: float = 1.0
+    unit: str = "cuerdas"
 
     def __eq__(cls, other_cls):
         if cls.name and other_cls.name:
-            return cls.name == other_cls.name and cls.species == other_cls.species and cls.unit == other_cls.unit
+            return (
+                cls.name == other_cls.name
+                and cls.species == other_cls.species
+                and cls.unit == other_cls.unit
+            )
         return cls.species == other_cls.species and cls.unit == other_cls.unit
 
 
@@ -32,7 +36,9 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
             return c
     # if none found, seek species default
     # TODO print warning about this behavior
-    warnings.warn(f'Could not find canonical match for species=`{name}`, searching for match against species instead.')
+    warnings.warn(
+        f"Could not find canonical match for species=`{name}`, searching for match against species instead."
+    )
     for c in configs:
         if c.species == name:
             return c
@@ -41,7 +47,7 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
 
 @dataclass
 class Event:
-    name: str = ''
+    name: str = ""
 
 
 @dataclass
@@ -50,7 +56,7 @@ class Plot:
     area: float = 1.0
     plot_id: int = 0
     species: str = field(default_factory=str)
-    unit: str = 'cuerdas'
+    unit: str = "cuerdas"
     origin: datetime = datetime.datetime(2020, 1, 1, 0, 0)
 
     def show(self) -> str:
@@ -69,7 +75,7 @@ class Plot:
 
     @property
     def years(self) -> int:
-        return round(self.age.days/365.25)
+        return round(self.age.days / 365.25)
 
     @property
     def days(self) -> int:
@@ -77,7 +83,7 @@ class Plot:
 
     @property
     def mins(self) -> int:
-        return round(self.age.seconds/60)
+        return round(self.age.seconds / 60)
 
     @staticmethod
     def to_datetime(time) -> datetime.datetime:
@@ -95,7 +101,7 @@ class Plot:
             plot_id=series.plotID,
             species=series.treeType,
             area=series.numCuerdas,
-            unit='cuerdas',
+            unit="cuerdas",
             origin=cls.to_datetime(series.yearPlanted),
         )
 
@@ -129,16 +135,18 @@ class Farm:
     @property
     def plots(self) -> List[Plot]:
         return self.plot_list
-    
+
     @property
     def ids(self) -> List[str]:
         return [p.plot_id for p in self.plot_list]
 
-    def contains(self, species: str ='') -> bool:
+    def contains(self, species: str = "") -> bool:
         return species in set(p.species for p in self.plot_list)
 
 
-def predict_yield_for_farm(farm: Farm, configs: List[Config], events: List[Event] = None) -> List[float]:
+def predict_yield_for_farm(
+    farm: Farm, configs: List[Config], events: List[Event] = None
+) -> List[float]:
     harvests = []
     # TODO incoporate events into prediction.
     # - is it relevant to this plot?
@@ -149,7 +157,9 @@ def predict_yield_for_farm(farm: Farm, configs: List[Config], events: List[Event
             c = find_config(name, configs)
             harvests.append(predict_yield_for_plot(p, c))
         except ValueError as v:
-            warnings.warn(f"Caught {v}, skipping yield prediction for plot {p.id}. Yield will be 0") # TODO: make into a logger instead
+            warnings.warn(
+                f"Caught {v}, skipping yield prediction for plot {p.id}. Yield will be 0"
+            )  # TODO: make into a logger instead
             harvests.append(0)
     return harvests
 
