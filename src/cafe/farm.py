@@ -28,7 +28,7 @@ class Config:
         return cls.species == other_cls.species and cls.unit == other_cls.unit
 
 
-@lru_cache
+@lru_cache(maxsize=128)
 def find_config(name: str, configs: Tuple[Config]) -> Config:
     # first check for name (to look for strategy)
     for c in configs:
