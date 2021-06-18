@@ -32,4 +32,3 @@ def openYaml(yamlFilePath: str) -> dict:
     yamlFile = open(yamlFilePath)
     parsed = yaml.load(yamlFile, Loader=yaml.FullLoader)
     return parsed
-

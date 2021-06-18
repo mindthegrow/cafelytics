@@ -22,24 +22,24 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
     harvestYear = []
 
     for year in range(numYears):
-#         # each year reset harvest
-#         thisYearsHarvest = 0
-# 
-#         for j in range(numPlots):
-#             if pruneYear:
-#                 if j == pruneYear:  # if it's the prune year
-#                     # isPrune = True
-#                     plotList[j].setPruneTrees()
-# 
-#             plotList[j].oneYear()  # run this plot through one year of the demo
-#             tempHarvest = plotList[j].totalHarvest
-#             plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
-#             thisYearsHarvest += tempHarvest
+        #         # each year reset harvest
+        #         thisYearsHarvest = 0
+        #
+        #         for j in range(numPlots):
+        #             if pruneYear:
+        #                 if j == pruneYear:  # if it's the prune year
+        #                     # isPrune = True
+        #                     plotList[j].setPruneTrees()
+        #
+        #             plotList[j].oneYear()  # run this plot through one year of the demo
+        #             tempHarvest = plotList[j].totalHarvest
+        #             plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
+        #             thisYearsHarvest += tempHarvest
 
         configs = (
-            Config('e14', 'e14'),
-            Config('borbon', 'borbon'),
-            Config('catuai', 'catuai'),
+            Config("e14", "e14"),
+            Config("borbon", "borbon"),
+            Config("catuai", "catuai"),
         )
         farm = Farm(plotList)
         thisYearsHarvest = predict_yield_for_farm(farm, configs, events=None)
@@ -48,7 +48,6 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         annualHarvest.append(sum(thisYearsHarvest))
 
     simulation = [harvestYear, annualHarvest]
-
 
     return simulation
 
