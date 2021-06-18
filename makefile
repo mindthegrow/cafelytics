@@ -12,8 +12,7 @@ lint:
 	flake8 tests/
 
 black:
-	black src/
-	black tests/
+	black .
 
 cov:
 	coverage html
