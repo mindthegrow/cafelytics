@@ -158,7 +158,7 @@ def predict_yield_for_farm(
             harvests.append(predict_yield_for_plot(p, c))
         except ValueError as v:
             warnings.warn(
-                f"Caught {v}, skipping yield prediction for plot {p.id}. Yield will be 0"
+                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
             )  # TODO: make into a logger instead
             harvests.append(0)
     return harvests

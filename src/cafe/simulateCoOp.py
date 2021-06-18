@@ -2,7 +2,7 @@ import pandas as pd
 import statistics as stats
 import matplotlib.pyplot as plt
 
-import cafe.farm as farm
+from cafe.farm import Config, Farm, predict_yield_for_farm
 import cafe.importData as importData
 
 
@@ -22,24 +22,33 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
     harvestYear = []
 
     for year in range(numYears):
-        # each year reset harvest
-        thisYearsHarvest = 0
+#         # each year reset harvest
+#         thisYearsHarvest = 0
+# 
+#         for j in range(numPlots):
+#             if pruneYear:
+#                 if j == pruneYear:  # if it's the prune year
+#                     # isPrune = True
+#                     plotList[j].setPruneTrees()
+# 
+#             plotList[j].oneYear()  # run this plot through one year of the demo
+#             tempHarvest = plotList[j].totalHarvest
+#             plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
+#             thisYearsHarvest += tempHarvest
 
-        for j in range(numPlots):
-            if pruneYear:
-                if j == pruneYear:  # if it's the prune year
-                    # isPrune = True
-                    plotList[j].setPruneTrees()
-
-            plotList[j].oneYear()  # run this plot through one year of the demo
-            tempHarvest = plotList[j].totalHarvest
-            plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
-            thisYearsHarvest += tempHarvest
-
+        configs = (
+            Config('e14', 'e14'),
+            Config('borbon', 'borbon'),
+            Config('catuai', 'catuai'),
+        )
+        farm = Farm(plotList)
+        thisYearsHarvest = predict_yield_for_farm(farm, configs, events=None)
+        print(plotList)
         harvestYear.append(year)
-        annualHarvest.append(thisYearsHarvest)
+        annualHarvest.append(sum(thisYearsHarvest))
 
     simulation = [harvestYear, annualHarvest]
+
 
     return simulation
 
@@ -70,20 +79,9 @@ def main(args):
             % farmData
         )
 
-    if not os.path.exists(trees):
-        raise ValueError(
-            """
-        File: %s does not exist
-        
-        Assure you are in the correct working directory relative to the filepath
-        argument given for --trees.
-        
-        """
-            % trees
-        )
-
     print("Importing Data")
-    farmList = importData.compileCoOp(farmStr=farmData, treeStr=trees)
+    farm_example = Farm.from_csv(farmData)
+    farmList = farm_example.plots
 
     print("Simulating Cooperative")
     simData = simulateCoOp(farmList, years)

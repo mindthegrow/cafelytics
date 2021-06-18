@@ -1,2 +1,101 @@
 plotID,farmerName,treeType,numCuerdas,yearPlanted,ageOfTrees,productionProportion
-0,Sr(a). José Emilio Garay,catuai,3,2017,4,0.7312972985578358
+0,Nadia Tamayo Figueroa,borbon,8,1999,21,0.9121137624604512
+1,Lic. José María Arriaga,borbon,2,2002,18,0.7509894546350023
+2,Juan Felipe Tamez Villaseñor,borbon,3,2006,14,0.8267091975599328
+3,Norma Aguilar,borbon,10,2002,18,0.7809995451493432
+4,Paola Ramos Cano,catuai,3,2020,0,0.9965047630683711
+5,Sonia Mateo Delgado,borbon,8,2000,20,0.9281432558360208
+6,Pablo Ramiro Casares,catuai,0,2013,7,0.778101851999947
+7,Nicolás Rufino Benavides,borbon,10,1991,29,0.9185535376809199
+8,Genaro Clemente Venegas Jaime,catuai,5,2019,1,0.7876346221249823
+9,Hugo Arellano,borbon,8,2016,4,0.8641046321621948
+10,Lic. José María Arriaga,catuai,9,2007,13,0.7401115024005347
+11,Barbara Martha del Río Girón,borbon,4,1992,28,0.8947639725679879
+12,Dulce Paola Ulibarri,catuai,5,2018,2,0.9637879504722839
+13,Pablo Ramiro Casares,borbon,0,1999,21,0.8603937553563825
+14,Cristal Concepción,borbon,10,2008,12,0.9855076045186888
+15,Norma Aguilar,catura,3,2013,7,0.7369608101626313
+16,Abel Ávalos,catuai,8,2009,11,0.9267057388915949
+17,Ofelia Mitzy Camarillo Vargas,catura,0,2018,2,0.8300540601979374
+18,Jaime Bernabé Flores,borbon,10,2008,12,0.8075746374827748
+19,Cristal Concepción,catuai,0,2020,0,0.8706062248801908
+20,Barbara Martha del Río Girón,catuai,2,2014,6,0.7598147642668217
+21,José Carlos Alejandra Villanueva Portillo,borbon,5,2006,14,0.7641460567236696
+22,Carmen Vélez,catuai,0,2006,14,0.9832915895783274
+23,Jaime Bernabé Flores,borbon,4,2017,3,0.8027703221281156
+24,Rosalia Bustos Patiño,borbon,0,2008,12,0.7595087962129506
+25,Rosa Esther Rincón Verdugo,borbon,1,1999,21,0.816094962471066
+26,Zeferino Holguín Mares,borbon,2,1998,22,0.9190758448917674
+27,Juana Padrón Saavedra,catuai,0,2009,11,0.9734491643614261
+28,Lic. Laura Collado,catuai,5,2015,5,0.7046186396448236
+29,Zoé Diego Zaragoza Montoya,borbon,9,2002,18,0.7223380946689494
+30,Francisca Irene Badillo,borbon,1,2007,13,0.9143632885662724
+31,Barbara Martha del Río Girón,catuai,10,2014,6,0.7867610977639606
+32,Juan Felipe Tamez Villaseñor,borbon,9,2008,12,0.9504324622060052
+33,Juana Padrón Saavedra,borbon,2,2003,17,0.9827015661046604
+34,Ing. Luisa Cuellar,borbon,9,1995,25,0.7320931186888402
+35,José Carlos Alejandra Villanueva Portillo,borbon,3,2007,13,0.826937631130205
+36,Jacobo Ramón Arevalo Duarte,borbon,10,2020,0,0.8299009628472955
+37,Sonia Mateo Delgado,catura,10,2016,4,0.962663519185455
+38,Rosa Esther Rincón Verdugo,borbon,7,1999,21,0.8392603697407113
+39,Juana Padrón Saavedra,catuai,2,2006,14,0.8117098221056228
+40,Jacobo Ramón Arevalo Duarte,catuai,9,2019,1,0.9760187026131102
+41,Socorro Zepeda,catuai,8,2012,8,0.8912070551984999
+42,Barbara Martha del Río Girón,catuai,8,2013,7,0.8657936575258802
+43,Rosa Esther Rincón Verdugo,borbon,7,1999,21,0.9747683697529206
+44,José Carlos Alejandra Villanueva Portillo,borbon,2,2003,17,0.8784230307464868
+45,Ángela Judith Mascareñas,borbon,5,2010,10,0.7396027955870156
+46,Genaro Clemente Venegas Jaime,borbon,4,2001,19,0.7338092185751447
+47,María Cristina Zamudio,catuai,4,2008,12,0.8690739208732239
+48,Abel Ávalos,catuai,5,2016,4,0.7346924050501841
+49,Nadia Tamayo Figueroa,borbon,7,2006,14,0.9824669369782416
+50,Cristal Concepción,borbon,2,1999,21,0.7259854481504903
+51,Lic. Laura Collado,borbon,9,1996,24,0.7666112821478633
+52,Sonia Mateo Delgado,borbon,1,1993,27,0.7103630425848256
+53,Silvano Cristian Quintanilla,borbon,8,2019,1,0.757872664613291
+54,Mtro. Gerónimo Ocampo,borbon,10,2011,9,0.7866002021543477
+55,Barbara Martha del Río Girón,catuai,3,2012,8,0.8465744122831893
+56,Norma Aguilar,catuai,1,2009,11,0.7103060155426293
+57,Ofelia Mitzy Camarillo Vargas,borbon,7,2005,15,0.8252338706796145
+58,Socorro Zepeda,catuai,1,2012,8,0.9128871631306895
+59,Socorro Zepeda,borbon,7,2010,10,0.9615659990348868
+60,Genaro Clemente Venegas Jaime,catuai,8,2016,4,0.862060508098188
+61,Ing. Luisa Cuellar,borbon,6,2010,10,0.9913808025948578
+62,Nicolás Rufino Benavides,borbon,2,2015,5,0.8387581913326783
+63,Pablo Ramiro Casares,borbon,9,1993,27,0.7346239112747456
+64,Carmen Vélez,catuai,2,2018,2,0.9127712320766114
+65,Barbara Martha del Río Girón,borbon,5,2015,5,0.8657011730331159
+66,Zeferino Holguín Mares,borbon,1,2018,2,0.9629892982380682
+67,Paola Ramos Cano,catuai,10,2013,7,0.8091975284801072
+68,Ing. Eugenio Paredes,catuai,4,2015,5,0.9809832071608098
+69,José Carlos Alejandra Villanueva Portillo,borbon,10,1995,25,0.785025788602836
+70,Silvano Cristian Quintanilla,borbon,1,2018,2,0.9977708003466182
+71,Barbara Martha del Río Girón,catura,7,2017,3,0.8707646607511327
+72,Zoé Diego Zaragoza Montoya,borbon,4,1997,23,0.8328866015812607
+73,Ángela Judith Mascareñas,borbon,5,2017,3,0.8473563130837805
+74,Cristal Concepción,borbon,8,2003,17,0.7228760970502207
+75,Nadia Tamayo Figueroa,catuai,9,2015,5,0.9898469644250685
+76,Dulce Paola Ulibarri,borbon,5,1998,22,0.8940602385150667
+77,Carmen Vélez,borbon,4,2002,18,0.7629209345963287
+78,Carmen Vélez,borbon,10,1997,23,0.9504196616960362
+79,Bernardo Prado,catuai,9,2014,6,0.9488476994695122
+80,José Carlos Alejandra Villanueva Portillo,borbon,1,2017,3,0.7377203691460492
+81,Lic. Miguel Segovia,catuai,7,2015,5,0.7541452830048291
+82,Mtro. Camilo Valdez,borbon,3,2014,6,0.7976999016402492
+83,Nicolás Rufino Benavides,catuai,0,2017,3,0.7875132167850858
+84,Juana Padrón Saavedra,borbon,1,2012,8,0.9512328955809882
+85,Barbara Martha del Río Girón,catuai,0,2013,7,0.7558961136330513
+86,Bernardo Prado,catuai,2,2016,4,0.8695463357716989
+87,Silvano Cristian Quintanilla,catuai,4,2008,12,0.7270771387253181
+88,Norma Aguilar,catuai,2,2013,7,0.9021830230925175
+89,Silvano Cristian Quintanilla,catuai,9,2016,4,0.9368764171355312
+90,Barbara Martha del Río Girón,catuai,1,2016,4,0.7433190782521624
+91,Cristal Concepción,borbon,3,2000,20,0.8203900321857184
+92,Nicolás Rufino Benavides,borbon,7,2016,4,0.8108696688080139
+93,Juana Padrón Saavedra,borbon,10,1994,26,0.7350148571371329
+94,Abel Ávalos,borbon,10,2005,15,0.9932208523081907
+95,Lic. José María Arriaga,catuai,7,2020,0,0.8226363280746384
+96,Bernardo Prado,borbon,0,1998,22,0.7114128699918237
+97,Zoé Diego Zaragoza Montoya,catuai,2,2011,9,0.8903705411724343
+98,Sr(a). Luis Manuel Abrego,catuai,9,2017,3,0.825298070675537
+99,Ing. Eugenio Paredes,catuai,9,2012,8,0.8557464552760974
