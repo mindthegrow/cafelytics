@@ -1,356 +1,172 @@
+from dataclasses import dataclass, field
+import datetime
+from functools import lru_cache
+import math
+import random
 import statistics as stats
+from typing import List, Dict, Tuple
+from numbers import Number
+import warnings
 
-class Farm:
-    
-    
-    def __init__(self, farmerName:str='Farmer',
-                 cuerdas:float=1,
-                 treeType:str='Borbón',
-                 initialAgeOfTrees:int=1,
-                 sowDensity:int=333,
-                 pruneYear:int=None,
-                 treeAttributes:dict=None): # use self to declare namespace
-        self.farmerName = farmerName
+import pandas as pd
 
-        self.inheretTreeProperties(treeType, treeAttributes)
 
-        self.totalCuerdas = cuerdas
-        self.sowDensity = sowDensity 
-        self.totalTrees = int(round((cuerdas * sowDensity), 0))
+@dataclass(frozen=True)
+class Config:
+    species: str
+    name: str = ""
+    output_per_crop: float = 1.0
+    unit: str = "cuerdas"
 
-        
-        # TODO: let these be set by user?
-        # initialize variables for pruning so if/else can deal with objects
-        
-        
-        self.pruneYear = pruneYear
-        self.pruneCount = 0    
-        
-        self.initialAgeOfTrees= initialAgeOfTrees
+    def __eq__(cls, other_cls):
+        if cls.name and other_cls.name:
+            return (
+                cls.name == other_cls.name
+                and cls.species == other_cls.species
+                and cls.unit == other_cls.unit
+            )
+        return cls.species == other_cls.species and cls.unit == other_cls.unit
 
-        
-        # initialize trees in a list so if we plant another
-        # set of differently aged trees we can add (indicies must match)
-        self.trees = [self.setTrees()] # quantity of trees per set
-        self.ageOfTrees = [self.initialAgeOfTrees] # age of trees
-        
-        
-        self.treesInProd = self.getTreesInProd()
-        
-        # pull initial sow density because the other will change
-        self.harvestPerTree = self.cuerdaHarvestCap / sowDensity 
-        
-        # if plants are added or if others die
-        self.totalHarvest = 0 # pounds
 
-        
-    def setTrees(self):
-        
-        
-        numTreesRaw = self.totalCuerdas * self.sowDensity
-        numTrees = int(round(numTreesRaw, 0))
-        
-        return(numTrees)
-        
-    def inheretTreeProperties(self, treeType, treeAttributes):
-        
-        """
-        Based on the argument treeType in the initializer function, assign parameters for the respective
-        life & production patterns of the trees on the cuerda.
-        
-        The following property assignments were developed from data collected from the co-op in 2014
-    
-        """
-        treeType = treeType.lower() # convert to lower case for easier parsing
-        
-        if treeAttributes:
-            keys = list(treeAttributes.keys())
-            altOrth = [treeAttributes[key]['altOrth'] for key in treeAttributes]
-            # tipos = keys + altOrth # all of the possible spellings for the tree types
-            
-            if treeType in keys:
-                treeDict = treeAttributes[treeType]
-                
-            elif treeType in altOrth:
-                keyPair = [(key, treeAttributes[key]['altOrth']) for key in treeAttributes]
-                _treeType = ''
-                for i,e in enumerate(keyPair):
-                    if treeType == e[1]:
-                        _treeType = e[0]
-                
-                treeDict = treeAttributes[_treeType]
-                
-            else:
-                raise AttributeError(
-                """
-                '%s' is not a recognized value (orthography) in the `treeAttributes` dict.
-                
-                """%(treeType))
-                
-            self.treeType = treeDict['treeType']
-            self.firstHarvest = treeDict['firstHarvest']
-            self.fullHarvest = treeDict['fullHarvest']
-            self.descentHarvest = treeDict['descentHarvest']
-            self.death = treeDict['death']
-            self.cuerdaHarvestCap = treeDict['cuerdaHarvestCap']
-        
-        # as soon as yaml imports are tested, this can be deleted:
-        # temporary stand-in for variable testing
+@lru_cache(maxsize=128)
+def find_config(name: str, configs: Tuple[Config]) -> Config:
+    # first check for name (to look for strategy)
+    for c in configs:
+        if c.name == name:
+            return c
+    # if none found, seek species default
+    # TODO print warning about this behavior
+    warnings.warn(
+        f"Could not find canonical match for species=`{name}`, searching for match against species instead."
+    )
+    for c in configs:
+        if c.species == name:
+            return c
+    raise ValueError(f"Could not find desired config for species=`{name}`")
+
+
+@dataclass
+class Event:
+    name: str = ""
+
+
+@dataclass
+class Plot:
+    num: int = 1  # number of crops
+    area: float = 1.0
+    plot_id: int = 0
+    species: str = field(default_factory=str)
+    unit: str = "cuerdas"
+    origin: datetime = datetime.datetime(2020, 1, 1, 0, 0)
+
+    def show(self) -> str:
+        return self.__repr__()
+
+    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        return current_time - self.origin
+
+    @property  # TODO deprecate / change tests?
+    def size(self) -> float:
+        return self.area
+
+    @property  # TODO deprecate / change tests?
+    def year_planted(self):
+        return self.origin.year
+
+    @property
+    def years(self) -> int:
+        return round(self.age.days / 365.25)
+
+    @property
+    def days(self) -> int:
+        return self.age.days
+
+    @property
+    def mins(self) -> int:
+        return round(self.age.seconds / 60)
+
+    @staticmethod
+    def to_datetime(time) -> datetime.datetime:
+        if isinstance(time, Number):  # assumes `time` = year
+            return datetime.datetime(round(time), 1, 1, 0, 0)
+        elif isinstance(time, datetime.datetime):
+            return time
         else:
-            if (treeType =='borbon') or (treeType == 'borbón'):
-                # year of first harvest and proportion of harvest until full
-                self.firstHarvest = {'year': 4, 'proportion': 0.2} 
-                # year of first harvest and proportion of harvest
-                self.fullHarvest = {'year': 5, 'proportion': 1.0}  
-                 # year that production descends and annual proportion descent
-                self.descentHarvest = {'year': 28, 'proportionDescent': 0.2}
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
-                # year in which trees are expelled from dataset
-                self.death = {'year': 30} 
-                self.cuerdaHarvestCap = 200 # units, in this case lbs, per cuerda
-                self.treeType = 'borbon'
+            raise ValueError(f"Please specify a valid time. Given {type(time)}")
 
-                loop = False
-                
-                
-            elif (treeType =='catuaí') or (treeType == 'catuai'):
-                # year of first harvest and proportion of harvest until full
-                self.firstHarvest = {'year': 3, 'proportion': 0.2} 
-                # year of first harvest and proportion of harvest
-                self.fullHarvest = {'year': 4, 'proportion': 1.0} 
-                # year that production descends and annual proportion descent
-                self.descentHarvest = {'year': 15, 'proportionDescent': 0.2} 
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} #
-                self.death = {'year': 17} 
-                self.cuerdaHarvestCap = 125 # units, in this case lbs, per cuerda
-                self.treeType = 'catuai'
+    @classmethod
+    def from_series(cls, series):
+        return cls.from_density(
+            density=1.0,
+            plot_id=series.plotID,
+            species=series.treeType,
+            area=series.numCuerdas,
+            unit="cuerdas",
+            origin=cls.to_datetime(series.yearPlanted),
+        )
 
-                loop = False
+    @classmethod
+    def from_dict(cls, dict):
+        return cls.from_series(pd.Series(dict))
 
-            elif (treeType == 'e14'):
-                self.firstHarvest = {'year': 4, 'proportion': 0.2} 
-                self.fullHarvest = {'year': 5, 'proportion': 1.0}  
-                self.descentHarvest = {'year': 13, 'proportionDescent': 0.2} 
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
-                self.death = {'year': 15} 
-                self.cuerdaHarvestCap = 125 
-                self.treeType = 'e14'
-                
-                loop = False
-
-            elif (treeType == 'caturra') or (treeType == 'catura'):
-                self.firstHarvest = {'year': 3, 'proportion': 0.2} 
-                self.fullHarvest = {'year': 4, 'proportion': 1.0}  
-                self.descentHarvest = {'year': 14, 'proportionDescent': 0.2} 
-                # self.pruneHarvest = {'yearShift': -5, 'proportionAscent': 0.2} 
-                self.death = {'year': 16}
-
-                self.cuerdaHarvestCap = 125 
-                self.treeType = 'caturra'                    
-                    
-    def oneYear(self):
-        """
-        
-        This function takes this entire set of trees and adjusts the member values in the class to grow/change/produce accordingly.
-        The function uses preset parameters for the specific tree type to guide the flow-control.
-        
-        """
-        if len(self.trees) == len(self.ageOfTrees):
-        
-            for treeIndex, treeQuant in enumerate(self.trees):
-                treeAge = self.ageOfTrees[treeIndex]
-                
-                if (self.pruneYear) or (self.pruneYear == 0):
-                    # make sure to:
-                    # (1) still age the trees
-                    # (2) make them produce less for a bit!? How!?
-                    # (3) increase total production or lifespan long-term
-
-                    # trees still age when they're pruned
-                    self.ageOfTrees[treeIndex] += 1 
-                    
-                    # lower the countdown to full yield by one year
-                    self.pruneCount -= 1 
-
-                    # it is no longer a prune year and so this shifts it back to cycle
-                    self.pruneYear = False 
-                    
-                    # do trees produce year they're pruned? How much?
-                    product = 0 
-                    self.totalHarvest += product
-
-                elif (self.pruneCount > 0):
-
-                    subtract = self.pruneDelay * self.pruneCount
-
-                    if (subtract > 1.0):
-                        break
-                        print("Impossible proportion as a result of pruneCount and pruneDelay.")
-                        print("Please assure product of pruneCount and pruneDelay is always <= 1.0")
-
-                    product = (self.harvestPerTree * treeQuant) - (self.harvestPerTree * (subtract))
-
-                    # trees still age when they're pruned
-                    self.ageOfTrees[treeIndex] += 1 
-                    # lower the countdown to full yield by one year
-                    self.pruneCount -= 1
-
-                elif (treeAge < self.firstHarvest['year']):
+    @classmethod
+    def from_density(cls, density: float = 1.0, **kwargs):
+        plot = cls(**kwargs)
+        plot.num = math.floor(plot.area * density)
+        return plot
 
 
-                    # product = 0 #in this range the trees produce nothing, but they still move up in age for the year
-                    # self.totalHarvest += product
-                    product = 0
-                    self.totalHarvest += product
-                    self.ageOfTrees[treeIndex] += 1
-                    
+@dataclass
+class Farm:
+    plot_list: List[Plot] = field(default_factory=List)
+
+    @classmethod
+    def from_csv(cls, csv_file):
+        df = pd.read_csv(csv_file)
+        list_of_plots = []
+        for idx, series in df.iterrows():
+            list_of_plots.append(Plot.from_series(series))
+        return cls(list_of_plots)
+
+    @property
+    def size(self) -> float:
+        return len(self.plot_list)
+
+    @property
+    def plots(self) -> List[Plot]:
+        return self.plot_list
+
+    @property
+    def ids(self) -> List[str]:
+        return [p.plot_id for p in self.plot_list]
+
+    def contains(self, species: str = "") -> bool:
+        return species in set(p.species for p in self.plot_list)
 
 
-                elif (treeAge >= self.firstHarvest['year']) and (treeAge < self.fullHarvest['year']):
-
-                    
-                    product = (self.harvestPerTree * treeQuant) * self.firstHarvest['proportion']
-                    self.totalHarvest += product
-                    # assure to reference the list and not the copy
-
-                    self.ageOfTrees[treeIndex] += 1 
-
-                elif ((treeAge >= self.fullHarvest['year']) and (treeAge < self.descentHarvest['year'])):
-
-                    product = (self.harvestPerTree * treeQuant) * self.fullHarvest['proportion']
-                    self.totalHarvest += product
-                    self.ageOfTrees[treeIndex] += 1
-
-
-                elif ((treeAge >= self.descentHarvest['year']) and (treeAge < self.death['year'])):
-
-                    yearsIntoDescent = self.ageOfTrees[treeIndex] - self.descentHarvest['year']
-                    proportion = self.fullHarvest['proportion'] - (yearsIntoDescent * self.descentHarvest['proportionDescent'])
-                    product = (self.harvestPerTree * treeQuant) * proportion
-                    self.totalHarvest += product
-                    self.ageOfTrees[treeIndex] += 1
+def predict_yield_for_farm(
+    farm: Farm, configs: List[Config], events: List[Event] = None
+) -> List[float]:
+    harvests = []
+    # TODO incoporate events into prediction.
+    # - is it relevant to this plot?
+    # - if so, what will be the impact to pass to the prediction function?
+    for p in farm.plots:
+        name = p.species  # TODO: eventually merge this with strategy somehow
+        try:
+            c = find_config(name, configs)
+            harvests.append(predict_yield_for_plot(p, c))
+        except ValueError as v:
+            warnings.warn(
+                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
+            )  # TODO: make into a logger instead
+            harvests.append(0)
+    return harvests
 
 
-                elif (treeAge == self.death['year']):
-                    self.ageOfTrees[treeIndex] += 1
-                    continue
-
-
-                elif (treeAge >= (self.death['year'] + 1)):
-                    # if it is the year after the tree died...
-                    
-                    self.ageOfTrees[treeIndex] = 0 # plant new trees
-
-                else:
-                    print("""The number: %d, list index: %d is out of range:
-                    a tree can not be less than 0 years old, and a tree of this type can not be more than
-                    %d years of age"""%(treeAge, treeIndex, self.death['year']))
-                    break
-
-            #self.trees[:] = [age for age in self.trees if (age < self.death['year'])] # call-by-reference overwrite of ls removing dead trees. 
-            # assure this ^ is outside of the loop & assure the list references the full index with '[:]'
-            #livingTrees = [age for age in self.trees if (age < self.death['year'])]
-            #self.totalTrees = len(livingTrees)
-            
-            
-            #if self.totalTrees > 0:
-                #self.averageAgeOfTrees = stats.mean(self.trees)
-                #self.sowDensity = self.totalTrees / self.totalCuerdas
-
-                
-    def addTreesAuto(self, numTrees: int, ages: int): 
-        """
-        Automatically add a new set of trees to existing cuerdas: this implies an increase in sowing density. Possible implications are intercropping between existing trees/rows.
-        
-        Note: this function will adjust the average age of trees, the sow/plant density, 
-        and the total # of trees stored in self.averageAgeOfTrees, self.sowDensity, and self.totalTrees 
-        
-        Parameters
-        ----------
-        self : class
-            required to change-by-reference members of the class
-            
-        number: int
-            the number of trees the user will add to the plot
-            
-        ages : int
-            the age of the trees (which translates to the element in the list)
-            the user will add to the set. default value is 0 because most
-            trees are planted/added as seeds/saplings, however the param
-            is adjustable because it might be useful if adding new land with
-            existing trees.
-            
-        """
-                        
-        self.trees.append(numTrees)
-        self.ageOfTrees.append(ages)
-            
-        self.totalTrees += numTrees
-        self.sowDensity = self.totalTrees * self.totalCuerdas
-        
-        #self.averageAgeOfTrees = stats.mean(self.ageOfTrees)
-            
-    
-    
-    def setPruneTrees(self):
-        """
-        Takes in `pruneYear` bool, sets self.pruneYear to equiveleant value. 
-        
-        """
-        self.pruneYear = True
-        
-        # how much the total yield will increase after trees grow back from pruning (i.e. after pruneCount years)
-        self.pruneGrowth = 0.10 
-        
-        # current yield - (current yield * (this proportion * countyear)) = yield for that year.
-        self.pruneDelay = 0.20
-        # caution! The product of this proportion ^^^ and count year SHANT EXCEED 1.0 otherwise the 
-        # program will simulate impossibilities
-        
-       
-        self.pruneCount = 3
-            
-            # increase total yield-per-tree to 10% higher
-        self.harvestPerTree = self.harvestPerTree + (self.pruneGrowth * self.harvestPerTree)
-            
-    def getTreesInProd(self):
-        """
-        Returns the total number of trees that are in production. Does not care whether the trees are producing at 100% or 5%, if they are producing, they are 'in production.' See Farm.getProdData() for more statistics. 
-        """
-        treesInProd = 0
-            
-            
-            
-        if len(self.ageOfTrees) == len(self.trees): # indicies must match
-            for index,age in enumerate(self.ageOfTrees):
-                if (self.pruneYear == True):
-                    prod = 0
-                    treesInProd += prod
-                    
-                elif ((age >= self.firstHarvest['year']) and (age <= self.death['year'])):
-                    prod = self.trees[index]
-                    treesInProd += prod
-                    
-                    
-        return(treesInProd)
-        
-            
-    def getHarvest(self):
-        """
-        
-        return the total harvest
-        
-        """
-        return(self.totalHarvest)
-    
-    def setHarvestZero(self):
-        """
-        
-        You must set Harvest to zero after each iteration of oneYear if you want to keep track of annual production
-        as opposed to total time production
-        
-        """
-        self.totalHarvest = 0
-        
-        
-        
+def predict_yield_for_plot(plot: Plot, config: Config) -> float:
+    # yield = area * crops/area * weight / crop
+    # messy to compare two different classes but duck typing allows it...
+    if plot.species == config.species and plot.unit == config.unit:
+        return plot.num * config.output_per_crop
+    raise ValueError(f"Species mismatch, {plot}, {config}")
