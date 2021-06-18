@@ -20,6 +20,9 @@ cov:
 
 clean:
 	rm -rf tests/.ipynb_checkpoints
+	rm .coverage
+	rm .pytest_cache/
+	rm -rf .eggs
 	rm -rf .ipynb_checkpoints
 	rm -rf src/cafe/.ipynb_checkpoints
 	rm -rf binder/.ipynb_checkpoints
