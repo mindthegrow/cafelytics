@@ -1,12 +1,11 @@
 import pandas as pd
 import yaml
-import cafe.farm as farm
 
 
 def readData(filePath: str):
     """
-    Takes a filepath in the form of a string (e.g. 'data/demoData.csv') that represents a spreadsheet and returns a pandas dataframe.
-
+    Takes a filepath in the form of a string (e.g. 'data/demoData.csv')
+    that represents a spreadsheet and returns a pandas dataframe.
     """
     pathExt = filePath.split(".")
     ext = pathExt[1]

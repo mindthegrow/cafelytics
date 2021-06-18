@@ -5,12 +5,16 @@ from datetime import date
 
 """
 
-Copmpile a fake dataset resembling the dataset Michael collected on his trip to Guatemala in.
+Copmpile a fake dataset resembling the dataset
+Michael collected on his trip to Guatemala in.
 
-The fake dataset uses relative proportions of the tree types in the original dataset as
-probabilities for selection of the tree types of this dataset. So, although it is not the original data--
+The fake dataset uses relative proportions of the
+tree types in the original dataset as
+
+probabilities for selection of the tree types of this dataset.
+
+So, although it is not the original data--
 and the names are fake!--it resembles the patterns of the co-op.
-
 """
 # get current year for auto assgn
 currentDate = date.today()
@@ -105,8 +109,9 @@ if __name__ == "__main__":
         default=100,
         type=int,  # string type works well for
         help="""
-                        Number of farms (i.e. the number of rows) desired for the output dataset.
-                        """,
+            Number of farms (i.e. the number of rows)
+            desired for the output dataset.
+        """,
     )
 
     parser.add_argument(
@@ -115,9 +120,8 @@ if __name__ == "__main__":
         default=40,
         type=int,  # string type works well for
         help="""
-                        Number of fake names (farmers) desired as owners of of the farms.
-                        
-                        """,
+            Number of fake names (farmers) desired as owners of of the farms.
+        """,
     )
 
     parser.add_argument(
@@ -126,11 +130,10 @@ if __name__ == "__main__":
         default=defaultYear,
         type=int,  # string type works well for
         help="""
-                        
-                        The year in which the simulation will begin (this is important because all of the trees are
-                        'planted' relative to this date)
-                        
-                        """,
+            The year in which the simulation will begin
+            (this is important because all of the trees are
+            'planted' relative to this date)
+        """,
     )
     parser.add_argument(
         "-o",
@@ -138,9 +141,9 @@ if __name__ == "__main__":
         default="data/fakeData.csv",
         type=str,  # string type works well for
         help="""
-                        Desired name of file (and path from current directory) for the output spreadsheet.
-                        
-                        """,
+            Desired name of file (and path from current directory)
+            for the output CSV file.
+        """,
     )
 
     args = parser.parse_args()
