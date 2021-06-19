@@ -12,8 +12,7 @@ lint:
 	flake8 tests/
 
 black:
-	black src/
-	black tests/
+	black .
 
 cov:
 	coverage html
@@ -21,6 +20,9 @@ cov:
 
 clean:
 	rm -rf tests/.ipynb_checkpoints
+	rm -f  .coverage
+	rm -rf .pytest_cache/
+	rm -rf .eggs/
 	rm -rf .ipynb_checkpoints
 	rm -rf src/cafe/.ipynb_checkpoints
 	rm -rf binder/.ipynb_checkpoints
