@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [master, develop]
+    branches: [main, develop]
       #- '*'
   schedule:
       - cron: "0 0 */7 * *"
@@ -42,8 +42,8 @@ jobs:
           # install black if available (Python 3.6 and above)
           pip install black || true
 
-      - name: Run tests
-        run: pytest # options in setup.cfg handle coverage options
+      - name: Run tests with coverage
+        run: make cov
 
       - name: Test usage patterns
         run: |
