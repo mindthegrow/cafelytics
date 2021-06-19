@@ -2,9 +2,7 @@ from dataclasses import dataclass, field
 import datetime
 from functools import lru_cache
 import math
-import random
-import statistics as stats
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 from numbers import Number
 import warnings
 
@@ -37,7 +35,11 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
     # if none found, seek species default
     # TODO print warning about this behavior
     warnings.warn(
-        f"Could not find canonical match for species=`{name}`, searching for match against species instead."
+        (
+            "Could not find canonical match"
+            f"for species=`{name}`, searching for"
+            "match against species instead."
+        )
     )
     for c in configs:
         if c.species == name:

@@ -11,7 +11,7 @@ from cafe.farm import (
 )
 
 # import cafe.importData as importData
-import warnings
+# import warnings
 
 from unittest import mock
 from pandas import DataFrame
@@ -74,6 +74,7 @@ def test_that_membership_is_based_on_species_and_name_when_both_supplied():
 def test_error_thrown_when_bad_config_requested(configs):
     with pytest.raises(ValueError):
         c = find_config("f", configs)
+        assert c is None
 
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
