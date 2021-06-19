@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 import datetime
 from functools import lru_cache
 import math
-from typing import List, Tuple
+from typing import List, Optional, Tuple, Callable, Union
 from numbers import Number
 import warnings
 
@@ -49,7 +49,35 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
 
 @dataclass
 class Event:
-    name: str = ""
+    name: str
+    start: Optional[datetime.datetime] = None
+    end: Optional[datetime.datetime] = None
+    impact: Optional[Union[float, Callable]] = 1.0
+
+    def is_active(self, current_time=datetime.datetime.today()) -> bool:
+        if not self.start:
+            return True
+        if not self.end:
+            return True
+        age = self.age(current_time)
+        return age > 0 and current_time <= self.end
+
+    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        return current_time - self.start
+
+    def years(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).days / 365.25)
+
+    def days(self, current_time=datetime.datetime.today()) -> int:
+        return self.age(current_time).days
+
+    def mins(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).seconds / 60)
+
+    def eval(self, *args):
+        if isinstance(self.impact, Callable):
+            return self.impact(*args, **self.__dict__)
+        return self.impact
 
 
 @dataclass
@@ -61,12 +89,6 @@ class Plot:
     unit: str = "cuerdas"
     origin: datetime = datetime.datetime(2020, 1, 1, 0, 0)
 
-    def show(self) -> str:
-        return self.__repr__()
-
-    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
-        return current_time - self.origin
-
     @property  # TODO deprecate / change tests?
     def size(self) -> float:
         return self.area
@@ -74,18 +96,6 @@ class Plot:
     @property  # TODO deprecate / change tests?
     def year_planted(self):
         return self.origin.year
-
-    @property
-    def years(self) -> int:
-        return round(self.age.days / 365.25)
-
-    @property
-    def days(self) -> int:
-        return self.age.days
-
-    @property
-    def mins(self) -> int:
-        return round(self.age.seconds / 60)
 
     @staticmethod
     def to_datetime(time) -> datetime.datetime:

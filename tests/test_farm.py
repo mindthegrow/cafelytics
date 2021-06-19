@@ -123,11 +123,26 @@ def test_that_we_can_use_farm_loaded_from_legacy_csv_file(mock_csv, farm_dict):
 # PREDICTION TESTS
 
 
+def test_lifecycle(configs):
+    # Arrange
+    farm = Farm([Plot(species="a", num=1)])
+    harvest = predict_yield_for_farm(farm, configs)
+    # Act
+
+    # Assert
+    assert harvest[0] > 0
+    pass
+
+
+# WARNINGS TESTS
+
+
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_that_prediction_against_wrong_species_raise_value_error():
     p, c = Plot(species="a"), Config("b")
     with pytest.raises(ValueError):
-        predict_yield_for_plot(p, c)
+        harvest = predict_yield_for_plot(p, c)
+        assert harvest is None
 
 
 @pytest.mark.filterwarnings("ignore::UserWarning")
