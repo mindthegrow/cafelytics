@@ -1,4 +1,4 @@
-test: clean
+test:
 	pytest
 
 run:
