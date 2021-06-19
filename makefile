@@ -14,7 +14,7 @@ lint:
 black:
 	black .
 
-cov:
+cov: test
 	coverage html
 	open htmlcov/index.html
 
