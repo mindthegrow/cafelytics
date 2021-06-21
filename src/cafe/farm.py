@@ -157,7 +157,9 @@ class Farm:
 
 
 def predict_yield_for_farm(
-    farm: Farm, configs: List[Config], events: List[Event] = None
+    farm: Farm, configs: List[Config],
+    events: List[Event] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> List[float]:
     harvests = []
     # TODO incoporate events into prediction.
@@ -167,6 +169,7 @@ def predict_yield_for_farm(
         name = p.species  # TODO: eventually merge this with strategy somehow
         try:
             c = find_config(name, configs)
+            # e = find_relevant_events(time, events)
             harvests.append(predict_yield_for_plot(p, c))
         except ValueError as v:
             warnings.warn(

@@ -133,6 +133,20 @@ def test_that_event_impact_default_has_no_impact(dummy_event):
     assert dummy_event.eval(2021) == 1.0
 
 
+# integration
+
+def test_that_event_impacts_harvest(dummy_event, growth_function, farm, configs):
+    # Arrange
+    dummy_event.impact = growth_function
+    date = datetime.datetime(2025, 1, 1)
+
+    # Act
+    harvest = predict_yield_for_farm(farm, configs, [dummy_event], time=date)
+
+    # Assert
+    assert harvest[0] == 200
+
+
 def test_that_membership_is_based_on_species_when_name_unspecified():
     assert Config("a") == Config("a")
     assert Config("a") == Config("a", "a-details")
