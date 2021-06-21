@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-
+import datetime
 import pytest
 from cafe.farm import (
     Config,
     Plot,
     Farm,
+    Event,
     find_config,
     predict_yield_for_farm,
     predict_yield_for_plot,
@@ -55,7 +56,81 @@ def farm_dict():
     }
 
 
+@pytest.fixture()
+def growth_function():
+    def f(year, **kwargs):
+        start = kwargs['start'].year
+        age = year - start
+        if age == 0:
+            return 0
+        if age < 3:
+            return 50 * age
+        if age < 30:
+            return 200
+        if age < 33:
+            return 200 - 50 * (age - 30)
+        return 0
+    return f
+
+
+@pytest.fixture()
+def start_date():
+    return datetime.datetime(2020, 1, 1)
+
+
+@pytest.fixture()
+def dummy_event(start_date):
+    return Event('some_event', start_date)
+
+
 # CONFIG TESTS
+
+
+# some of the below are integration tests
+def test_that_event_impact_works_with_callables(growth_function, start_date):
+    # Arrange
+    e = Event('some_event', start_date, impact=growth_function)
+
+    # Act
+    newly_planted = e.eval(2020)
+    small_harvest = e.eval(2021)
+    med_harvest = e.eval(2022)
+    full_harvest = e.eval(2023)
+    last_full_harvest = e.eval(2050)
+    decline_harvest = e.eval(2051)
+    more_decline_harvest = e.eval(2052)
+    no_harvest = e.eval(2053)
+
+    # Assert
+    assert newly_planted == 0
+    assert small_harvest == 50
+    assert med_harvest == 100
+    assert full_harvest == 200
+    assert last_full_harvest == 200
+    assert decline_harvest == 150
+    assert more_decline_harvest == 100
+    assert no_harvest == 0
+
+
+def test_that_event_impact_works_with_floats(dummy_event):
+    # Arrange
+    dummy_event.impact = 2
+
+    # Act
+    impact = dummy_event.eval(2020)
+
+    # Assert
+    assert impact == 2.0
+
+
+def test_that_event_impact_default_has_no_impact(dummy_event):
+    # Arrange
+
+    # Act
+
+    # Assert
+    assert dummy_event.eval(2020) == 1.0
+    assert dummy_event.eval(2021) == 1.0
 
 
 def test_that_membership_is_based_on_species_when_name_unspecified():
