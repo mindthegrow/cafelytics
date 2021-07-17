@@ -111,8 +111,8 @@ def test_that_event_impact_works_with_callables(
 
 
 def assert_on_pair(targets, predictions):
-    for t, p in zip(targets, predictions):
-        assert t == p, f"MISMATCH: target {t} | prediction {p} mismatch"
+    for i, (t, p) in enumerate(zip(targets, predictions)):
+        assert t == p, f"MISMATCH @ time {i}: target {t} | prediction {p} mismatch"
 
 
 def test_that_event_impact_works_with_floats(dummy_event):

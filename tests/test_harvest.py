@@ -66,8 +66,7 @@ def test_borbon_harvest_returns(
 
     # Act
     predicted_harvest = [
-        predict_yield_for_farm(farm, configs, events, time=date)[0]
-        for date in years
+        predict_yield_for_farm(farm, configs, events, time=date)[0] for date in years
     ]
 
     # Assert
