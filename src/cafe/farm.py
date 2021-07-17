@@ -169,8 +169,7 @@ def predict_yield_for_farm(
         name = p.species  # TODO: eventually merge this with strategy somehow
         try:
             c = find_config(name, configs)
-            relevant_events = find_relevant_events(time, events)
-            impact = math.prod([e.eval(time.year) for e in relevant_events])
+            impact = total_impact(time, events)
             harvests.append(impact * predict_yield_for_plot(p, c))
         except ValueError as v:
             warnings.warn(
@@ -180,12 +179,14 @@ def predict_yield_for_farm(
     return harvests
 
 
-def find_relevant_events(time: datetime.datetime, events: List[Event]):
+def total_impact(time: datetime.datetime, events: List[Event]):
     # TODO: other filtering (geography, crop type?)
     if not events:
-        return []
+        return 1.0
+
     relevent_events = [e for e in events if e.is_active(time)]
-    return relevent_events
+    impact = math.prod([e.eval(time.year) for e in relevent_events])
+    return impact
 
 
 def predict_yield_for_plot(plot: Plot, config: Config) -> float:
