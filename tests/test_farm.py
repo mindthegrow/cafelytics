@@ -59,7 +59,7 @@ def farm_dict():
 @pytest.fixture()
 def growth_function():
     def f(year, **kwargs):
-        start = kwargs['start'].year
+        start = kwargs["start"].year
         age = year - start
         if age == 0:
             return 0
@@ -70,6 +70,7 @@ def growth_function():
         if age < 33:
             return 200 - 50 * (age - 30)
         return 0
+
     return f
 
 
@@ -80,7 +81,7 @@ def start_date():
 
 @pytest.fixture()
 def dummy_event(start_date):
-    return Event('some_event', start_date)
+    return Event("some_event", start_date)
 
 
 # CONFIG TESTS
@@ -89,7 +90,7 @@ def dummy_event(start_date):
 # some of the below are integration tests
 def test_that_event_impact_works_with_callables(growth_function, start_date):
     # Arrange
-    e = Event('some_event', start_date, impact=growth_function)
+    e = Event("some_event", start_date, impact=growth_function)
 
     # Act
     newly_planted = e.eval(2020)
@@ -134,6 +135,7 @@ def test_that_event_impact_default_has_no_impact(dummy_event):
 
 
 # integration
+
 
 def test_that_event_impacts_harvest(dummy_event, growth_function, farm, configs):
     # Arrange

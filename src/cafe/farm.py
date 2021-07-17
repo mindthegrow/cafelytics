@@ -157,16 +157,14 @@ class Farm:
 
 
 def predict_yield_for_farm(
-    farm: Farm, configs: List[Config],
+    farm: Farm,
+    configs: List[Config],
     events: List[Event] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> List[float]:
     harvests = []
-    # TODO incoporate events into prediction.
-    # - is it relevant to this plot?
-    # - if so, what will be the impact to pass to the prediction function?
     for p in farm.plots:
-        name = p.species  # TODO: eventually merge this with strategy somehow
+        name = p.species
         try:
             c = find_config(name, configs)
             harvests.append(predict_yield_for_plot(p, c, events, time))
@@ -179,6 +177,9 @@ def predict_yield_for_farm(
 
 
 def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]):
+    # - is it relevant to this plot? can check species, geography, etc.
+    # - if so, what will be the impact to pass to the prediction function?
+    # - is a strategy being applied? it has an impact too, is an event
     if not events:
         return 1.0
 
@@ -192,7 +193,12 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]):
     return impact
 
 
-def predict_yield_for_plot(plot: Plot, config: Config, events: Optional[List[Event]] = None, time: datetime.datetime = datetime.datetime(2020, 1, 1)) -> float:
+def predict_yield_for_plot(
+    plot: Plot,
+    config: Config,
+    events: Optional[List[Event]] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
+) -> float:
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
