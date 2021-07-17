@@ -21,9 +21,10 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
     for year in range(numYears):
 
         configs = (
-            Config("e14", "e14"),
-            Config("borbon", "borbon"),
-            Config("catuai", "catuai"),
+            Config("e14", "e14", 125, "cuerdas"),
+            Config("borbon", "borbon", 200, "cuerdas"),
+            Config("catuai", "catuai", 125, "cuerdas"),
+            Config("catura", "catura", 125, "cuerdas"),
         )
         farm = Farm(plotList)
         thisYearsHarvest = predict_yield_for_farm(farm, configs, events=None)

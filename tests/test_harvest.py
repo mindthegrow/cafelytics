@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import pytest
-from typing import Dict
+from typing import Dict, Callable, Tuple, List
 from cafe.farm import (
     Config,
     Plot,
@@ -10,71 +10,66 @@ from cafe.farm import (
     find_config,
     predict_yield_for_farm,
     predict_yield_for_plot,
+    guate_harvest_function,
 )
 
 
 @pytest.fixture()
 def farm():
-    return Farm([Plot(species="a")])
+    return Farm([Plot(species="borbon")])
 
 
 @pytest.fixture()
 def start_date():
     return datetime.datetime(2020, 1, 1)
 
-@pytest.fixture()
-def expected_harvest_info():
-    proportion = [0.0, 0.25, 0.5, 1.0, 1.0, 0.75, 0.5, 0.0]
-    years = [2020, 2021, 2022, 2023, 2050, 2051, 2052, 2053]
+
+def guate_growth_target(
+    lifespan: float = 30, mature: float = 5, retire: float = 28
+) -> Tuple[List[float], List[float]]:
+    test_periods = [
+        0,
+        mature - 2,
+        mature - 1,
+        mature,
+        mature + 1,
+        retire - 1,
+        retire,
+        retire + 1,
+        lifespan,
+    ]
+    years = [2020 + y for y in test_periods]
+    proportion = [0.0, 0.0, 0.2, 1.0, 1.0, 1.0, 0.75, 0.5, 0.0]
     return years, proportion
 
-@pytest.fixture()
-def borbon_harvest_info() -> tuple[float, Dict[str, float]]:
-    harvest_cap = 200
-    timeline = {"first_harvest": 4, "full_harvest": 5, "last_harvest": 29, "death": 30}
-    return harvest_cap, timeline
 
-def assert_on_pair(targets, predictions):
-    for t, p in zip(targets, predictions):
-        assert t == p, f"MISMATCH: target {t} | prediction {p} mismatch"
+@pytest.fixture()
+def expected_borbon_harvest_info():
+    return guate_growth_target()
 
 
 @pytest.fixture()
-def borbon_harvest_function(borbon_harvest_info):
-    def f(year, **kwargs):
-        start = kwargs["start"].year
-        age = year - start
-        harvest_cap, timeline = borbon_harvest_info
-
-        if age <= timeline["first_harvest"]:
-            return 0
-        if age >= timeline["full_harvest"]:
-            return 1.0
-        if age == timeline["last_harvest"]:
-            return 0.5
-        if age >= timeline["death"]:
-            return 0
-        return 0
+def borbon_harvest_function() -> Callable:
+    return guate_harvest_function()
 
 
 def test_borbon_harvest_returns(
-    start_date, borbon_harvest_info, farm, borbon_harvest_function
+    start_date, expected_borbon_harvest_info, farm, borbon_harvest_function
 ):
-    harvest_cap, timeline = borbon_harvest_info
-
     # Arrange
-    borbon_event = Event("borbon event", start_date, impact=borbon_harvest_function)
-    configs = (Config("borbon", "borbon", output_per_crop=harvest_cap),)
+    years, proportions = guate_growth_target()
+    borbon_max_yield = 200
+    expected_harvest = [p * borbon_max_yield for p in proportions]
 
-    dates = [
-        datetime.datetime((start_date.year + y), 1, 1) for y in timeline.values()
-    ]
+    events = [Event("borbon harvest", start_date, impact=borbon_harvest_function)]
+    configs = (Config("borbon", "borbon", output_per_crop=borbon_max_yield),)
 
     # Act
-    harvests = [
-        predict_yield_for_farm(farm, configs, [borbon_event], time=date)[0]
-        for date in dates
+    predicted_harvest = [
+        predict_yield_for_farm(farm, configs, events, time=date)[0]
+        for date in years
     ]
 
     # Assert
-    assert_on_pair(targets, harvests)
+    for i, (t, p) in enumerate(zip(expected_harvest, predicted_harvest)):
+        assert t == p, f"MISMATCH @ time {i}: target {t} | prediction {p} mismatch"

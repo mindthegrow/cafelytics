@@ -58,8 +58,9 @@ def farm_dict():
 
 @pytest.fixture()
 def growth_function():
-    def f(year, **kwargs):
+    def f(time, **kwargs):
         start = kwargs["start"].year
+        year = time if isinstance(time, (float, int)) else time.year
         age = year - start
         if age == 0:
             return 0
