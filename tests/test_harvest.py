@@ -54,21 +54,21 @@ def borbon_harvest_function() -> Callable:
 
 
 def test_borbon_harvest_returns(
-    start_date, expected_borbon_harvest_info, farm, borbon_harvest_function
+    expected_borbon_harvest_info, farm, borbon_harvest_function
 ):
     # Arrange
     years, proportions = guate_growth_target()
     borbon_max_yield = 200
     expected_harvest = [p * borbon_max_yield for p in proportions]
-
-    events = [Event("borbon harvest", start_date, impact=borbon_harvest_function)]
+    
+    events = [Event("borbon harvest", impact=borbon_harvest_function)]
     configs = (Config("borbon", "borbon", output_per_crop=borbon_max_yield),)
 
     # Act
     predicted_harvest = [
         predict_yield_for_farm(farm, configs, events, time=date)[0] for date in years
     ]
-
+    print(expected_harvest, predicted_harvest)
     # Assert
     for i, (t, p) in enumerate(zip(expected_harvest, predicted_harvest)):
         assert t == p, f"MISMATCH @ time {i}: target {t} | prediction {p} mismatch"
