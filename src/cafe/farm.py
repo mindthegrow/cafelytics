@@ -169,8 +169,7 @@ def predict_yield_for_farm(
         name = p.species  # TODO: eventually merge this with strategy somehow
         try:
             c = find_config(name, configs)
-            impact = total_impact(time, events)
-            harvests.append(impact * predict_yield_for_plot(p, c))
+            harvests.append(predict_yield_for_plot(p, c, events, time))
         except ValueError as v:
             warnings.warn(
                 f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
@@ -179,19 +178,24 @@ def predict_yield_for_farm(
     return harvests
 
 
-def total_impact(time: datetime.datetime, events: List[Event]):
-    # TODO: other filtering (geography, crop type?)
+def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]):
     if not events:
         return 1.0
 
-    relevent_events = [e for e in events if e.is_active(time)]
+    relevent_events = []
+    for e in events:
+        # TODO more checks to determine this condition
+        if e.is_active(time):
+            relevent_events.append(e)
+
     impact = math.prod([e.eval(time.year) for e in relevent_events])
     return impact
 
 
-def predict_yield_for_plot(plot: Plot, config: Config) -> float:
+def predict_yield_for_plot(plot: Plot, config: Config, events: Optional[List[Event]] = None, time: datetime.datetime = datetime.datetime(2020, 1, 1)) -> float:
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
-        return plot.num * config.output_per_crop
+        impact = total_impact(plot, time, events)
+        return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
