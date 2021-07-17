@@ -87,30 +87,29 @@ def dummy_event(start_date):
 # CONFIG TESTS
 
 
+@pytest.fixture()
+def expected_harvest_info():
+    proportion = [0.0, 0.25, 0.5, 1.0, 1.0, 0.75, 0.5, 0.0]
+    years = [2020, 2021, 2022, 2023, 2050, 2051, 2052, 2053]
+    return years, proportion
+
+
 # some of the below are integration tests
-def test_that_event_impact_works_with_callables(growth_function, start_date):
+def test_that_event_impact_works_with_callables(growth_function, start_date, expected_harvest_info):
     # Arrange
     e = Event("some_event", start_date, impact=growth_function)
+    list_of_years, expected_harvest = expected_harvest_info
 
     # Act
-    newly_planted = e.eval(2020)
-    small_harvest = e.eval(2021)
-    med_harvest = e.eval(2022)
-    full_harvest = e.eval(2023)
-    last_full_harvest = e.eval(2050)
-    decline_harvest = e.eval(2051)
-    more_decline_harvest = e.eval(2052)
-    no_harvest = e.eval(2053)
+    actual_harvest = [e.eval(y) for y in list_of_years]
 
     # Assert
-    assert newly_planted == 0.0
-    assert small_harvest == 0.25
-    assert med_harvest == 0.5
-    assert full_harvest == 1.0
-    assert last_full_harvest == 1.0
-    assert decline_harvest == 0.75
-    assert more_decline_harvest == 0.5
-    assert no_harvest == 0.0
+    assert_on_pair(expected_harvest, actual_harvest)
+
+
+def assert_on_pair(targets, predictions):
+    for t, p in zip(targets, predictions):
+        assert t == p, "target / prediction mismatch"
 
 
 def test_that_event_impact_works_with_floats(dummy_event):
