@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 import datetime
 from functools import lru_cache
-import math
-from typing import List, Tuple
+import numpy as np
+from typing import List, Optional, Tuple, Callable, Union, Dict
 from numbers import Number
 import warnings
 
@@ -49,7 +49,36 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
 
 @dataclass
 class Event:
-    name: str = ""
+    name: str
+    start: Optional[datetime.datetime] = None
+    end: Optional[datetime.datetime] = None
+    impact: Optional[Union[float, Callable]] = 1.0
+    scope: Optional[Dict] = field(default_factory=dict)
+
+    def is_active(self, current_time=datetime.datetime.today()) -> bool:
+        if not self.start:
+            return True
+        if not self.end:
+            return True
+        age = self.age(current_time)
+        return age > 0 and current_time <= self.end
+
+    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        return current_time - self.start
+
+    def years(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).days / 365.25)
+
+    def days(self, current_time=datetime.datetime.today()) -> int:
+        return self.age(current_time).days
+
+    def mins(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).seconds / 60)
+
+    def eval(self, *args):
+        if isinstance(self.impact, Callable):
+            return self.impact(*args, **self.__dict__)
+        return self.impact
 
 
 @dataclass
@@ -61,12 +90,6 @@ class Plot:
     unit: str = "cuerdas"
     origin: datetime = datetime.datetime(2020, 1, 1, 0, 0)
 
-    def show(self) -> str:
-        return self.__repr__()
-
-    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
-        return current_time - self.origin
-
     @property  # TODO deprecate / change tests?
     def size(self) -> float:
         return self.area
@@ -74,18 +97,6 @@ class Plot:
     @property  # TODO deprecate / change tests?
     def year_planted(self):
         return self.origin.year
-
-    @property
-    def years(self) -> int:
-        return round(self.age.days / 365.25)
-
-    @property
-    def days(self) -> int:
-        return self.age.days
-
-    @property
-    def mins(self) -> int:
-        return round(self.age.seconds / 60)
 
     @staticmethod
     def to_datetime(time) -> datetime.datetime:
@@ -114,7 +125,7 @@ class Plot:
     @classmethod
     def from_density(cls, density: float = 1.0, **kwargs):
         plot = cls(**kwargs)
-        plot.num = math.floor(plot.area * density)
+        plot.num = np.floor(plot.area * density)
         return plot
 
 
@@ -147,17 +158,17 @@ class Farm:
 
 
 def predict_yield_for_farm(
-    farm: Farm, configs: List[Config], events: List[Event] = None
+    farm: Farm,
+    configs: List[Config],
+    events: List[Event] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> List[float]:
     harvests = []
-    # TODO incoporate events into prediction.
-    # - is it relevant to this plot?
-    # - if so, what will be the impact to pass to the prediction function?
     for p in farm.plots:
-        name = p.species  # TODO: eventually merge this with strategy somehow
+        name = p.species
         try:
             c = find_config(name, configs)
-            harvests.append(predict_yield_for_plot(p, c))
+            harvests.append(predict_yield_for_plot(p, c, events, time))
         except ValueError as v:
             warnings.warn(
                 f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
@@ -166,9 +177,32 @@ def predict_yield_for_farm(
     return harvests
 
 
-def predict_yield_for_plot(plot: Plot, config: Config) -> float:
+def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> float:
+    # - is it relevant to this plot? can check species, geography, etc.
+    # - if so, what will be the impact to pass to the prediction function?
+    # - is a strategy being applied? it has an impact too, is an event
+    if not events:
+        return 1.0
+
+    relevent_events = []
+    for e in events:
+        # TODO more checks to determine this condition
+        if e.is_active(time):
+            relevent_events.append(e)
+
+    impact = np.prod([e.eval(time.year) for e in relevent_events])
+    return impact
+
+
+def predict_yield_for_plot(
+    plot: Plot,
+    config: Config,
+    events: Optional[List[Event]] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
+) -> float:
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
-        return plot.num * config.output_per_crop
+        impact = total_impact(plot, time, events)
+        return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")

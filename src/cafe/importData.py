@@ -2,7 +2,7 @@ import pandas as pd
 import yaml
 
 
-def readData(filePath: str):
+def read_data(filePath: str):
     """
     Takes a filepath in the form of a string (e.g. 'data/demoData.csv')
     that represents a spreadsheet and returns a pandas dataframe.
