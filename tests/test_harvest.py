@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 import datetime
 import pytest
-from typing import Dict, Callable, Tuple, List
+from typing import Callable, Tuple, List
 from cafe.farm import (
     Config,
     Plot,
     Farm,
     Event,
-    find_config,
     predict_yield_for_farm,
-    predict_yield_for_plot,
     guate_harvest_function,
 )
 
@@ -44,23 +42,16 @@ def guate_growth_target(
 
 
 @pytest.fixture()
-def expected_borbon_harvest_info():
-    return guate_growth_target()
-
-
-@pytest.fixture()
 def borbon_harvest_function() -> Callable:
     return guate_harvest_function()
 
 
-def test_borbon_harvest_returns(
-    expected_borbon_harvest_info, farm, borbon_harvest_function
-):
+def test_borbon_harvest_returns(farm, borbon_harvest_function):
     # Arrange
     years, proportions = guate_growth_target()
     borbon_max_yield = 200
     expected_harvest = [p * borbon_max_yield for p in proportions]
-    
+
     events = [Event("borbon harvest", impact=borbon_harvest_function)]
     configs = (Config("borbon", "borbon", output_per_crop=borbon_max_yield),)
 
