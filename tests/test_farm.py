@@ -64,11 +64,11 @@ def growth_function():
         if age == 0:
             return 0
         if age < 3:
-            return 50 * age
+            return 0.25 * age
         if age < 30:
-            return 200
+            return 1.0
         if age < 33:
-            return 200 - 50 * (age - 30)
+            return 1 - 0.25 * (age - 30)
         return 0
 
     return f
@@ -103,14 +103,14 @@ def test_that_event_impact_works_with_callables(growth_function, start_date):
     no_harvest = e.eval(2053)
 
     # Assert
-    assert newly_planted == 0
-    assert small_harvest == 50
-    assert med_harvest == 100
-    assert full_harvest == 200
-    assert last_full_harvest == 200
-    assert decline_harvest == 150
-    assert more_decline_harvest == 100
-    assert no_harvest == 0
+    assert newly_planted == 0.0
+    assert small_harvest == 0.25
+    assert med_harvest == 0.5
+    assert full_harvest == 1.0
+    assert last_full_harvest == 1.0
+    assert decline_harvest == 0.75
+    assert more_decline_harvest == 0.5
+    assert no_harvest == 0.0
 
 
 def test_that_event_impact_works_with_floats(dummy_event):
@@ -137,8 +137,9 @@ def test_that_event_impact_default_has_no_impact(dummy_event):
 # integration
 
 
-def test_that_event_impacts_harvest(dummy_event, growth_function, farm, configs):
+def test_that_event_impacts_harvest(dummy_event, growth_function, farm):
     # Arrange
+    configs = (Config("a", "a", output_per_crop=200),)
     dummy_event.impact = growth_function
     date = datetime.datetime(2025, 1, 1)
 
