@@ -95,7 +95,9 @@ def expected_harvest_info():
 
 
 # some of the below are integration tests
-def test_that_event_impact_works_with_callables(growth_function, start_date, expected_harvest_info):
+def test_that_event_impact_works_with_callables(
+    growth_function, start_date, expected_harvest_info
+):
     # Arrange
     e = Event("some_event", start_date, impact=growth_function)
     list_of_years, expected_harvest = expected_harvest_info
@@ -109,7 +111,7 @@ def test_that_event_impact_works_with_callables(growth_function, start_date, exp
 
 def assert_on_pair(targets, predictions):
     for t, p in zip(targets, predictions):
-        assert t == p, "target / prediction mismatch"
+        assert t == p, f"MISMATCH: target {t} | prediction {p} mismatch"
 
 
 def test_that_event_impact_works_with_floats(dummy_event):
@@ -136,17 +138,26 @@ def test_that_event_impact_default_has_no_impact(dummy_event):
 # integration
 
 
-def test_that_event_impacts_harvest(dummy_event, growth_function, farm):
+def test_that_event_impacts_harvest(
+    start_date, growth_function, farm, expected_harvest_info
+):
     # Arrange
     configs = (Config("a", "a", output_per_crop=200),)
-    dummy_event.impact = growth_function
-    date = datetime.datetime(2025, 1, 1)
+    dummy_event = Event("harvest event", start_date, impact=growth_function)
+
+    years, proportions = expected_harvest_info
+
+    dates = [datetime.datetime(y, 8, 1) for y in years]
+    targets = [p * 200 for p in proportions]
 
     # Act
-    harvest = predict_yield_for_farm(farm, configs, [dummy_event], time=date)
+    harvests = [
+        predict_yield_for_farm(farm, configs, [dummy_event], time=date)[0]
+        for date in dates
+    ]
 
     # Assert
-    assert harvest[0] == 200
+    assert_on_pair(targets, harvests)
 
 
 def test_that_membership_is_based_on_species_when_name_unspecified():
