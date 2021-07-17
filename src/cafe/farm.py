@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 import datetime
 from functools import lru_cache
-import math
-from typing import List, Optional, Tuple, Callable, Union
+import numpy as np
+from typing import List, Optional, Tuple, Callable, Union, Dict
 from numbers import Number
 import warnings
 
@@ -53,6 +53,7 @@ class Event:
     start: Optional[datetime.datetime] = None
     end: Optional[datetime.datetime] = None
     impact: Optional[Union[float, Callable]] = 1.0
+    scope: Optional[Dict] = field(default_factory=dict)
 
     def is_active(self, current_time=datetime.datetime.today()) -> bool:
         if not self.start:
@@ -124,7 +125,7 @@ class Plot:
     @classmethod
     def from_density(cls, density: float = 1.0, **kwargs):
         plot = cls(**kwargs)
-        plot.num = math.floor(plot.area * density)
+        plot.num = np.floor(plot.area * density)
         return plot
 
 
@@ -176,7 +177,7 @@ def predict_yield_for_farm(
     return harvests
 
 
-def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]):
+def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> float:
     # - is it relevant to this plot? can check species, geography, etc.
     # - if so, what will be the impact to pass to the prediction function?
     # - is a strategy being applied? it has an impact too, is an event
@@ -189,7 +190,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]):
         if e.is_active(time):
             relevent_events.append(e)
 
-    impact = math.prod([e.eval(time.year) for e in relevent_events])
+    impact = np.prod([e.eval(time.year) for e in relevent_events])
     return impact
 
 
