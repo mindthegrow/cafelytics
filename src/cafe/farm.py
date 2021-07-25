@@ -48,40 +48,6 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
 
 
 @dataclass
-class Event:
-    name: str
-    start: Optional[datetime.datetime] = None
-    end: Optional[datetime.datetime] = None
-    impact: Optional[Union[float, Callable]] = 1.0
-    scope: Optional[Dict] = field(default_factory=dict)
-
-    def is_active(self, current_time=datetime.datetime.today()) -> bool:
-        if not self.start:
-            return True
-        if not self.end:
-            return True
-        age = self.age(current_time)
-        return age > 0 and current_time <= self.end
-
-    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
-        return current_time - self.start
-
-    def years(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).days / 365.25)
-
-    def days(self, current_time=datetime.datetime.today()) -> int:
-        return self.age(current_time).days
-
-    def mins(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).seconds / 60)
-
-    def eval(self, *args):
-        if isinstance(self.impact, Callable):
-            return self.impact(*args, **self.__dict__)
-        return self.impact
-
-
-@dataclass
 class Plot:
     num: int = 1  # number of crops
     area: float = 1.0
@@ -157,6 +123,53 @@ class Farm:
         return species in set(p.species for p in self.plot_list)
 
 
+@dataclass
+class Event:
+    name: str
+    start: Optional[datetime.datetime] = None
+    end: Optional[datetime.datetime] = None
+    impact: Optional[Union[float, Callable]] = 1.0
+    scope: Optional[Dict] = field(default_factory=dict)
+
+    def is_active(
+        self,
+        current_time: datetime.datetime = datetime.datetime.today(),
+        plot: Optional[Plot] = None,
+    ) -> bool:
+        time_check = self._check_time_window(current_time)
+        # TODO: add more checks involving scope
+        scope_check = self._check_scope(plot)
+        return time_check and scope_check
+
+    def _check_time_window(self, current_time=datetime.datetime.today()) -> bool:
+        if not self.start:
+            return True
+        if not self.end:
+            return True
+        age = self.age(current_time)
+        return age > 0 and current_time <= self.end
+
+    def _check_scope(self, plot: Optional[Plot] = None):
+        return True
+
+    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        return current_time - self.start
+
+    def years(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).days / 365.25)
+
+    def days(self, current_time=datetime.datetime.today()) -> int:
+        return self.age(current_time).days
+
+    def mins(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).seconds / 60)
+
+    def eval(self, *args):
+        if isinstance(self.impact, Callable):
+            return self.impact(*args, **self.__dict__)
+        return self.impact
+
+
 def predict_yield_for_farm(
     farm: Farm,
     configs: List[Config],
@@ -208,8 +221,13 @@ def predict_yield_for_plot(
 
 
 def guate_harvest_function(
-    lifespan: float = 30, mature: float = 5, retire: float = 28
+    lifespan: float = 30, mature: float = 5, retire: float = None
 ) -> Callable:
+    if not retire:
+        retire = lifespan - 2
+    assert retire < lifespan
+    assert mature < retire
+
     def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
         start = plot.origin.year
         year = time if isinstance(time, (float, int)) else time.year
