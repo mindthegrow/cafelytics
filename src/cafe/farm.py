@@ -19,14 +19,14 @@ class Config:
     output_per_crop: float = 1.0
     unit: str = "cuerdas"
 
-    def __eq__(cls, other_cls):
-        if cls.name and other_cls.name:
+    def __eq__(self, other_cls):
+        if self.name and other_cls.name:
             return (
-                cls.name == other_cls.name
-                and cls.species == other_cls.species
-                and cls.unit == other_cls.unit
+                self.name == other_cls.name
+                and self.species == other_cls.species
+                and self.unit == other_cls.unit
             )
-        return cls.species == other_cls.species and cls.unit == other_cls.unit
+        return self.species == other_cls.species and self.unit == other_cls.unit
 
 
 @dataclass
