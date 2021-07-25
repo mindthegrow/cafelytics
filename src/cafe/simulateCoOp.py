@@ -59,7 +59,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         )
 
         farm = Farm(plotList)
-        idx = 1
+        idx = 0
         thisYearsHarvest = predict_yield_for_farm(
             farm, configs, events=events, time=datetime.datetime(plotList[idx].origin.year + year, 1, 1)
         )

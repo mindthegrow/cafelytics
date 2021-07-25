@@ -164,25 +164,6 @@ class Event:
         return self.impact
 
 
-def predict_yield_for_farm(
-    farm: Farm,
-    configs: List[Config],
-    events: List[Event] = None,
-    time: datetime.datetime = datetime.datetime(2020, 1, 1),
-) -> List[float]:
-    harvests = []
-    for p in farm.plots:
-        name = p.species
-        try:
-            c = find_config(name, configs)
-            harvests.append(predict_yield_for_plot(p, c, events, time))
-        except ValueError as v:
-            warnings.warn(
-                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
-            )  # TODO: make into a logger instead
-            harvests.append(0)
-    return harvests
-
 
 # @lru_cache(maxsize=128)
 def find_config(name: str, configs: Tuple[Config]) -> Config:
@@ -258,3 +239,23 @@ def predict_yield_for_plot(
         impact = total_impact(plot, time, events)
         return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
+
+
+def predict_yield_for_farm(
+    farm: Farm,
+    configs: List[Config],
+    events: List[Event] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
+) -> List[float]:
+    harvests = []
+    for p in farm.plots:
+        name = p.species
+        try:
+            c = find_config(name, configs)
+            harvests.append(predict_yield_for_plot(p, c, events, time))
+        except ValueError as v:
+            warnings.warn(
+                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
+            )  # TODO: make into a logger instead
+            harvests.append(0)
+    return harvests
