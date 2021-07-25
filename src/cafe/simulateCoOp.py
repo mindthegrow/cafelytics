@@ -1,6 +1,30 @@
+from typing import Callable
+
 import matplotlib.pyplot as plt
 
-from cafe.farm import Config, Farm, predict_yield_for_farm
+from cafe.farm import (
+    Config,
+    Event,
+    Farm,
+    guate_harvest_function,
+    predict_yield_for_farm,
+)
+
+
+def borbon_harvest_function() -> Callable:
+    return guate_harvest_function(lifespan=30, mature=5)
+
+
+def catuai_harvest_function() -> Callable:
+    return guate_harvest_function(lifespan=17, mature=4)
+
+
+def catura_harvest_function() -> Callable:
+    return guate_harvest_function(lifespan=16, mature=4)
+
+
+def e14_harvest_function() -> Callable:
+    return guate_harvest_function(lifespan=15, mature=5)
 
 
 def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strategy=None):
@@ -26,8 +50,16 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             Config("catuai", "catuai", 125, "cuerdas"),
             Config("catura", "catura", 125, "cuerdas"),
         )
+
+        events = (
+            Event("e14 harvest", impact=e14_harvest_function),
+            Event("catuai harvest", impact=catuai_harvest_function),
+            Event("borbon harvest", impact=borbon_harvest_function),
+            Event("catura harvest", impact=catura_harvest_function),
+        )
+
         farm = Farm(plotList)
-        thisYearsHarvest = predict_yield_for_farm(farm, configs, events=None)
+        thisYearsHarvest = predict_yield_for_farm(farm, configs, events=events)
         print(plotList)
         harvestYear.append(year)
         annualHarvest.append(sum(thisYearsHarvest))
