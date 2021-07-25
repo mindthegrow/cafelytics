@@ -1,3 +1,4 @@
+import datetime
 from typing import Callable
 
 import matplotlib.pyplot as plt
@@ -26,7 +27,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
     annualHarvest = []
     harvestYear = []
 
-    for year in range(numYears):
+    for year in range(numYears+1):
 
         configs = (
             Config("e14", name="e14", output_per_crop=125, unit="cuerdas"),
@@ -38,31 +39,34 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         species_list = [config.species for config in configs]
 
         scopes = {
-            species: {'type': 'species', 'def': species}
-            for species in species_list
+            species: {"type": "species", "def": species} for species in species_list
         }
 
         harvest_functions = {
-            'e14': guate_harvest_function(lifespan=15, mature=5),
-            'catura': guate_harvest_function(lifespan=16, mature=4),
-            'catuai': guate_harvest_function(lifespan=17, mature=4),
-            'borbon': guate_harvest_function(lifespan=30, mature=5),
+            "e14": guate_harvest_function(lifespan=15, mature=5),
+            "catura": guate_harvest_function(lifespan=16, mature=4),
+            "catuai": guate_harvest_function(lifespan=17, mature=4),
+            "borbon": guate_harvest_function(lifespan=30, mature=5),
         }
 
         events = (
             Event(
-                f"{species} harvest",
+                name=f"{species} harvest",
                 impact=harvest_functions[species],
-                scope=scopes[species]
-            ) for species in species_list
+                scope=scopes[species],
+            )
+            for species in species_list
         )
 
         farm = Farm(plotList)
-        thisYearsHarvest = predict_yield_for_farm(farm, configs, events=events)
-        print(plotList)
-        harvestYear.append(year)
-        annualHarvest.append(sum(thisYearsHarvest))
-
+        idx = 1
+        thisYearsHarvest = predict_yield_for_farm(
+            farm, configs, events=events, time=datetime.datetime(plotList[idx].origin.year + year, 1, 1)
+        )
+        print(plotList[idx])
+        harvestYear.append(plotList[idx].origin.year + year)
+        # annualHarvest.append(sum(thisYearsHarvest))
+        annualHarvest.append(thisYearsHarvest[idx])
     simulation = [harvestYear, annualHarvest]
 
     return simulation
@@ -99,8 +103,7 @@ def main(args):
     simData = simulateCoOp(farmList, years)
 
     print("Plotting")
-    pltYears = simData[0]
-    pltHarvests = simData[1]
+    pltYears, pltHarvests = simData
 
     # get parameters for axes
     mnYear, mxYear = min(pltYears), max(pltYears)
@@ -117,6 +120,7 @@ def main(args):
         fontsize=(fsize * 1.25),
     )
     plt.xlabel("Year", fontsize=fsize)
+    plt.xticks(pltYears)
     plt.ylabel("Total pounds of green coffee produced", fontsize=fsize)
     plt.savefig(output, dpi=100)
     # plt.show()
@@ -148,6 +152,7 @@ if __name__ == "__main__":
             Example (& default): --trees data/trees.yml
         """,
     )
+
     parser.add_argument(
         "-s",
         "--strategy",
