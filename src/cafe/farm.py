@@ -158,9 +158,9 @@ class Event:
     def mins(self, current_time=datetime.datetime.today()) -> int:
         return round(self.age(current_time).seconds / 60)
 
-    def eval(self, *args):
+    def eval(self, *args, **kwargs):
         if isinstance(self.impact, Callable):
-            return self.impact(*args, **self.__dict__)
+            return self.impact(*args, **kwargs, **self.__dict__)
         return self.impact
 
 
@@ -184,7 +184,7 @@ def predict_yield_for_farm(
     return harvests
 
 
-@lru_cache(maxsize=128)
+# @lru_cache(maxsize=128)
 def find_config(name: str, configs: Tuple[Config]) -> Config:
     # first check for name (to look for strategy)
     for c in configs:
@@ -242,7 +242,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
         # TODO more checks to determine this condition
         if e.is_active(plot=plot, current_time=time):
             relevent_events.append(e)
-    impact = np.prod([e.eval(time, plot) for e in relevent_events])
+    impact = np.prod([e.eval(time=time, plot=plot) for e in relevent_events])
     return impact
 
 
