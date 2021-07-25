@@ -215,7 +215,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
     # - if so, what will be the impact to pass to the prediction function?
     # - is a strategy being applied? it has an impact too, is an event
     if not events:
-        print("events empty")
+        _logger.warning("Events empty")
         return 1.0
 
     relevent_events = []
@@ -234,8 +234,6 @@ def predict_yield_for_plot(
     events: Optional[List[Event]] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> float:
-    if not events:
-        _logger.warning("Empty events")
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
@@ -247,10 +245,10 @@ def predict_yield_for_plot(
 def predict_yield_for_farm(
     farm: Farm,
     configs: List[Config],
-    events: List[Event] = None,
+    events: Optional[List[Event]] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> List[float]:
-    if not isinstance(events, list):  # TODO: add tests for this
+    if events and not isinstance(events, list):  # TODO: add tests for this
         events = list(events)
     harvests = []
     for p in farm.plots:
