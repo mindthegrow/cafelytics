@@ -129,6 +129,8 @@ class Event:
         return age > 0 and current_time <= self.end
 
     def _check_scope(self, plot: Optional[Plot] = None):
+        if not self.scope:
+            return False
         return True
 
     def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
