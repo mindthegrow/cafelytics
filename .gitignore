@@ -53,3 +53,7 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
+
+# IDE
+.vscode/
+.idea/
