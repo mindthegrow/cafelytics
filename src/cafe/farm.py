@@ -1,8 +1,8 @@
 import datetime
+import logging
 import warnings
 from dataclasses import dataclass, field
 from functools import lru_cache
-import logging
 from numbers import Number
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -197,7 +197,6 @@ def guate_harvest_function(
         birth_year = plot.origin.year
         current_year = time if isinstance(time, (float, int)) else time.year
         age = current_year - birth_year
-        print(plot.plot_id, current_year, birth_year)
         if age < mature - 1:
             return 0
         if age == mature - 1:
@@ -216,6 +215,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
     # - if so, what will be the impact to pass to the prediction function?
     # - is a strategy being applied? it has an impact too, is an event
     if not events:
+        print("events empty")
         return 1.0
 
     relevent_events = []
@@ -225,8 +225,6 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
             relevent_events.append(e)
             _logger.debug(f"Found relevent event {e}")
     impact = np.prod([e.eval(time=time, plot=plot) for e in relevent_events])
-    if plot.plot_id == 0:
-        _logger.warn(f'impact: {impact}')
     return impact
 
 
@@ -237,7 +235,7 @@ def predict_yield_for_plot(
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> float:
     if not events:
-        _logger.warn("Empty events")
+        _logger.warning("Empty events")
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
@@ -254,7 +252,7 @@ def predict_yield_for_farm(
 ) -> List[float]:
     harvests = []
     for p in farm.plots:
-        print(f"Processing Plot {p.plot_id}")
+        # print(f"Processing Plot {p.plot_id}")
         name = p.species
         try:
             c = find_config(name, configs)
@@ -267,8 +265,8 @@ def predict_yield_for_farm(
                 )
             )
         except ValueError as v:
-            warnings.warn(
+            _logger.warn(
                 f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
-            )  # TODO: make into a logger instead
+            )
             harvests.append(0)
     return harvests

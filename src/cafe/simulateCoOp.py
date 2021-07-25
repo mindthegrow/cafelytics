@@ -1,5 +1,4 @@
 import datetime
-from typing import Callable
 
 import matplotlib.pyplot as plt
 
@@ -26,8 +25,8 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
 
     annualHarvest = []
     harvestYear = []
-
-    for year in range(numYears+1):
+    start_year = min([plot.origin.year for plot in plotList])
+    for current_year in range(start_year, start_year + numYears + 1):
 
         configs = (
             Config("e14", name="e14", output_per_crop=125, unit="cuerdas"),
@@ -49,29 +48,26 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             "borbon": guate_harvest_function(lifespan=30, mature=5),
         }
 
-        events = (
+        events = [
             Event(
                 name=f"{species} harvest",
                 impact=harvest_functions[species],
                 scope=scopes[species],
             )
             for species in species_list
-        )
+        ]
 
         farm = Farm(plotList)
-        idx = 7
-        current_year = plotList[idx].origin.year + year
+
         thisYearsHarvest = predict_yield_for_farm(
             farm=farm,
             configs=configs,
-            events=events, 
-            time=datetime.datetime(current_year, 1, 1)
+            events=events,
+            time=datetime.datetime(current_year, 1, 1),
         )
-        if year == 0:
-            print('start', current_year, plotList[idx])
         harvestYear.append(current_year)
-        # annualHarvest.append(sum(thisYearsHarvest))
-        annualHarvest.append(thisYearsHarvest[idx])
+        # annualHarvest.append(thisYearsHarvest[idx])  # inspect single plot
+        annualHarvest.append(sum(thisYearsHarvest))
     simulation = [harvestYear, annualHarvest]
 
     return simulation
@@ -125,7 +121,7 @@ def main(args):
         fontsize=(fsize * 1.25),
     )
     plt.xlabel("Year", fontsize=fsize)
-    plt.xticks(pltYears)
+    plt.xticks(pltYears, rotation=45)
     plt.ylabel("Total pounds of green coffee produced", fontsize=fsize)
     plt.savefig(output, dpi=100)
     # plt.show()
