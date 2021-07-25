@@ -52,10 +52,10 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         )
 
         events = (
-            Event("e14 harvest", impact=e14_harvest_function),
-            Event("catuai harvest", impact=catuai_harvest_function),
-            Event("borbon harvest", impact=borbon_harvest_function),
-            Event("catura harvest", impact=catura_harvest_function),
+            Event("e14 harvest", impact=e14_harvest_function()),
+            Event("catuai harvest", impact=catuai_harvest_function()),
+            Event("borbon harvest", impact=borbon_harvest_function()),
+            Event("catura harvest", impact=catura_harvest_function()),
         )
 
         farm = Farm(plotList)
