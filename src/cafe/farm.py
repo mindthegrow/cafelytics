@@ -130,6 +130,7 @@ class Event:
 
     def _check_scope(self, plot: Optional[Plot] = None):
         if not self.scope:
+            _logger.warning("Scope definition missing, assuming inactive")
             return False
         return True
 
