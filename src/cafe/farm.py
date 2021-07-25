@@ -132,7 +132,8 @@ class Event:
         if not self.scope:
             # _logger.warning("Scope definition missing, assuming inactive")
             return False
-        return True
+        in_scope = False
+        return in_scope
 
     def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
         return current_time - self.start
