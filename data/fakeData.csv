@@ -1,0 +1,101 @@
+plotID,farmerName,treeType,numCuerdas,yearPlanted,ageOfTrees,productionProportion
+0,Ing. Fernando Briseño,borbon,6,2001,19,0.9627473192722773
+1,Mariano Silvia Nevárez,catuai,5,2009,11,0.7783940948209823
+2,Hermelinda Lemus Barragán,catuai,2,2015,5,0.9131739348476706
+3,Felipe Rendón Tijerina,borbon,8,2002,18,0.9090453318435836
+4,Débora Jesús Sanabria,borbon,4,1991,29,0.7336267891008826
+5,Aurora Lemus Olivera,catuai,10,2014,6,0.8092261079570819
+6,Débora Jesús Sanabria,borbon,10,2017,3,0.8842465205762315
+7,Sr(a). Cornelio Sosa,borbon,8,1992,28,0.7199386438895164
+8,Juan Bahena Medrano,borbon,0,2005,15,0.8681742664530648
+9,Natalia Delia Saavedra Camacho,borbon,10,2000,20,0.9382035933205041
+10,Diana Jonás Cortez,catuai,4,2017,3,0.8761284060941524
+11,Lic. Jaime Padrón,borbon,6,2020,0,0.7536597515249436
+12,Sr(a). Rubén Ureña,borbon,5,2012,8,0.935928565812054
+13,Lic. Eugenio Leiva,borbon,10,1999,21,0.7851445211717948
+14,Virginia Pablo Fernández Pantoja,catuai,8,2014,6,0.7643385973946649
+15,Caridad Posada,borbon,4,2020,0,0.8672200823735969
+16,José María Dulce Reséndez,catuai,3,2015,5,0.9816988411941232
+17,Virginia Pablo Fernández Pantoja,borbon,9,2006,14,0.7853594145517112
+18,Sr(a). Rubén Ureña,catuai,10,2016,4,0.7596956777851585
+19,Óliver Adame,catuai,7,2009,11,0.7050007998677534
+20,Ing. Fernando Briseño,borbon,9,2001,19,0.8782044748174359
+21,Aurora Lemus Olivera,catuai,5,2016,4,0.9987712241602436
+22,Ing. Maximiliano Cervántez,borbon,4,2016,4,0.8025079223203776
+23,Lic. Jaime Padrón,catuai,6,2008,12,0.7931045802941804
+24,Héctor Alemán,catuai,0,2020,0,0.7374644294131237
+25,Caridad Posada,borbon,10,2020,0,0.8675477358770514
+26,Felipe Rendón Tijerina,catuai,7,2011,9,0.7276951212628155
+27,Lic. Jaime Padrón,borbon,3,2010,10,0.9601153513844316
+28,Marisela Felipe Arredondo Lozada,catuai,8,2010,10,0.9806163574164706
+29,Mariano Silvia Nevárez,borbon,1,2001,19,0.8993530431641703
+30,Elisa Raya Terrazas,borbon,4,2014,6,0.7389595548536763
+31,Gilberto Delgadillo,catuai,0,2020,0,0.7485396944724189
+32,Elisa Raya Terrazas,catuai,5,2011,9,0.774350614747789
+33,Jos Violeta Romero Rivas,borbon,4,1995,25,0.9527529327869456
+34,Gerardo Barbara Cortez,catuai,5,2008,12,0.9903562651828556
+35,Evelio Terán,catuai,9,2017,3,0.894776194141302
+36,Lic. Jaime Padrón,catuai,8,2016,4,0.9048043423290353
+37,Lic. Eugenio Leiva,borbon,6,2017,3,0.7195681221348916
+38,Aldonza Puente Burgos,borbon,6,2010,10,0.9907718823884042
+39,Virginia Pablo Fernández Pantoja,catuai,1,2006,14,0.7123205178842226
+40,Óliver Adame,catuai,5,2009,11,0.8767123000891643
+41,David Augusto Segura Oquendo,borbon,4,1996,24,0.9542038026528612
+42,Amador Graciela Lomeli,borbon,3,2018,2,0.9439753900601543
+43,Sr(a). Rubén Ureña,borbon,4,2008,12,0.8180764832816745
+44,Ignacio Palomino,catuai,7,2008,12,0.9745263160063425
+45,Amador Graciela Lomeli,catuai,4,2014,6,0.7336243835764548
+46,Hermelinda Lemus Barragán,catura,1,2011,9,0.7719727674772769
+47,Sr(a). Cornelio Sosa,borbon,2,1997,23,0.972287057706847
+48,Elisa Raya Terrazas,borbon,9,2019,1,0.9456206775962929
+49,Sr(a). Cornelio Sosa,borbon,1,1993,27,0.9212842256363412
+50,Mtro. Eva Badillo,catura,6,2012,8,0.7505324598221327
+51,Adriana Carmen Mata Tejeda,borbon,8,2019,1,0.8663109421388402
+52,José María Dulce Reséndez,catuai,9,2011,9,0.8289436319056829
+53,Aldonza Puente Burgos,borbon,7,1999,21,0.8224117323835989
+54,Ing. Fernando Briseño,catuai,10,2008,12,0.890874604063617
+55,Gerardo Barbara Cortez,catuai,9,2006,14,0.9231403988463383
+56,Aurora Lemus Olivera,catuai,1,2011,9,0.8992407374431327
+57,José Luis Carranza,catuai,7,2016,4,0.8417270143643172
+58,Héctor Alemán,catuai,9,2017,3,0.8089969234158416
+59,Jos Violeta Romero Rivas,borbon,3,2013,7,0.8300732188780375
+60,Gilberto Delgadillo,borbon,2,2003,17,0.7826278327341252
+61,Ing. Maximiliano Cervántez,borbon,10,2006,14,0.8225930403523604
+62,Ing. Ruby Piña,catuai,8,2013,7,0.8007451814661405
+63,Ignacio Palomino,catuai,8,2006,14,0.7712582907541816
+64,Ignacio Palomino,borbon,10,2020,0,0.8311221462825156
+65,Ing. Fernando Briseño,borbon,2,1991,29,0.819445190185287
+66,Aurora Lemus Olivera,borbon,5,2009,11,0.9063289304796108
+67,Gilberto Delgadillo,borbon,0,1998,22,0.7486734575905252
+68,Adriana Carmen Mata Tejeda,borbon,2,1992,28,0.7818703590837321
+69,Mariano Silvia Nevárez,borbon,1,2003,17,0.7984766263442831
+70,Aldonza Puente Burgos,borbon,5,2020,0,0.8103500906871532
+71,Ing. Maximiliano Cervántez,borbon,0,2012,8,0.7038898538288242
+72,Helena Toledo Arguello,catuai,1,2019,1,0.806489162621415
+73,Hermelinda Lemus Barragán,borbon,8,2011,9,0.980692801348622
+74,Indira Hidalgo,catuai,7,2019,1,0.8281740295145223
+75,Lic. Eugenio Leiva,catuai,4,2015,5,0.8273938212859402
+76,Óliver Adame,borbon,6,2010,10,0.7448238791916174
+77,David Augusto Segura Oquendo,catuai,7,2009,11,0.970720073110727
+78,Óliver Adame,borbon,9,2006,14,0.8178889281882646
+79,José Emilio Estévez,catuai,1,2007,13,0.7352732859235647
+80,Amador Graciela Lomeli,borbon,7,2018,2,0.9971321373953866
+81,Diana Jonás Cortez,catuai,2,2020,0,0.9318689650807358
+82,Elisa Raya Terrazas,catuai,9,2014,6,0.7607698406232424
+83,Mtro. Eva Badillo,borbon,5,1991,29,0.8054880796804976
+84,Óliver Adame,catuai,7,2019,1,0.9052951845477222
+85,José Emilio Estévez,catuai,7,2017,3,0.8830632825952669
+86,Héctor Alemán,borbon,5,2015,5,0.930649812168429
+87,Indira Hidalgo,borbon,0,2011,9,0.8374871936945465
+88,Sr(a). Cornelio Sosa,borbon,0,1998,22,0.8411954446357581
+89,Helena Toledo Arguello,borbon,0,2003,17,0.8779088222619067
+90,José Luis Carranza,catuai,7,2017,3,0.8980889549099538
+91,Jos Violeta Romero Rivas,catuai,8,2013,7,0.79274290712732
+92,Helena Toledo Arguello,borbon,6,2000,20,0.7217943081112902
+93,Lic. Jaime Padrón,borbon,5,2019,1,0.7263725513334327
+94,Mtro. Luis Miguel Montoya,borbon,3,1995,25,0.8934888574007578
+95,Mtro. Eva Badillo,catuai,6,2016,4,0.7929154918526757
+96,Diana Jonás Cortez,borbon,4,1997,23,0.7290193178499367
+97,Ing. Ruby Piña,borbon,5,2006,14,0.80659658029899
+98,Mtro. Eva Badillo,borbon,3,2011,9,0.7370762144633846
+99,Caridad Posada,catuai,3,2012,8,0.7787329889396585
