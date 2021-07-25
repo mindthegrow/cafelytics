@@ -32,3 +32,11 @@ clean:
 	rm -rf build/
 	rm -rf src/cafelytics.egg-info/
 
+
+version:
+	git describe --always --dirty --tags --long --match "*[0-9]*"
+
+publish:
+	rm -rf dist/*
+	python setup.py sdist bdist_wheel
+	twine upload dist/*

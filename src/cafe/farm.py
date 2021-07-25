@@ -189,8 +189,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
         # TODO more checks to determine this condition
         if e.is_active(time):
             relevent_events.append(e)
-
-    impact = np.prod([e.eval(time.year) for e in relevent_events])
+    impact = np.prod([e.eval(time, plot) for e in relevent_events])
     return impact
 
 
@@ -206,3 +205,23 @@ def predict_yield_for_plot(
         impact = total_impact(plot, time, events)
         return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
+
+
+def guate_harvest_function(
+    lifespan: float = 30, mature: float = 5, retire: float = 28
+) -> Callable:
+    def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
+        start = plot.origin.year
+        year = time if isinstance(time, (float, int)) else time.year
+        age = year - start
+        if age < mature - 1:
+            return 0
+        if age == mature - 1:
+            return 0.2
+        if age < retire:
+            return 1.0
+        if age < lifespan:
+            return 0.75 - 0.25 * (age - retire)
+        return 0.0
+
+    return f

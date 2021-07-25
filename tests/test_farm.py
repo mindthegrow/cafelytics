@@ -10,6 +10,7 @@ from cafe.farm import (
     predict_yield_for_farm,
     predict_yield_for_plot,
 )
+from typing import Union, Callable
 
 # import cafe.importData as importData
 # import warnings
@@ -33,8 +34,8 @@ def configs():
 
 
 @pytest.fixture()
-def farm():
-    return Farm([Plot(species="a")])
+def farm(start_date):
+    return Farm([Plot(species="a", origin=start_date)])
 
 
 @pytest.fixture()
@@ -57,9 +58,28 @@ def farm_dict():
 
 
 @pytest.fixture()
-def growth_function():
-    def f(year, **kwargs):
+def event_impact_function():
+    def f(time, **kwargs):
         start = kwargs["start"].year
+        age = time - start
+        if age == 0:
+            return 0
+        if age < 3:
+            return 0.25 * age
+        if age < 30:
+            return 1.0
+        if age < 33:
+            return 1 - 0.25 * (age - 30)
+        return 0
+
+    return f
+
+
+@pytest.fixture()
+def growth_function() -> Callable:
+    def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
+        start = plot.origin.year
+        year = time if isinstance(time, (float, int)) else time.year
         age = year - start
         if age == 0:
             return 0
@@ -85,32 +105,38 @@ def dummy_event(start_date):
 
 
 # CONFIG TESTS
+@pytest.fixture()
+def expected_proportions_for_harvest():
+    proportion = [0.0, 0.25, 0.5, 1.0, 1.0, 0.75, 0.5, 0.0]
+    years = [2020, 2021, 2022, 2023, 2050, 2051, 2052, 2053]
+    return years, proportion
+
+
+@pytest.fixture()
+def expected_proportions_for_event():
+    proportion = [0.0, 0.25, 0.5, 1.0, 1.0, 0.75, 0.5, 0.0]
+    years = [2020, 2021, 2022, 2023, 2050, 2051, 2052, 2053]
+    return years, proportion
 
 
 # some of the below are integration tests
-def test_that_event_impact_works_with_callables(growth_function, start_date):
+def test_that_event_impact_works_with_callables(
+    start_date, event_impact_function, expected_proportions_for_event
+):
     # Arrange
-    e = Event("some_event", start_date, impact=growth_function)
+    e = Event("some_event", start_date, impact=event_impact_function)
+    list_of_years, expected_harvest_proportion = expected_proportions_for_event
 
     # Act
-    newly_planted = e.eval(2020)
-    small_harvest = e.eval(2021)
-    med_harvest = e.eval(2022)
-    full_harvest = e.eval(2023)
-    last_full_harvest = e.eval(2050)
-    decline_harvest = e.eval(2051)
-    more_decline_harvest = e.eval(2052)
-    no_harvest = e.eval(2053)
+    actual_harvest_proportion = [e.eval(y) for y in list_of_years]
 
     # Assert
-    assert newly_planted == 0.0
-    assert small_harvest == 0.25
-    assert med_harvest == 0.5
-    assert full_harvest == 1.0
-    assert last_full_harvest == 1.0
-    assert decline_harvest == 0.75
-    assert more_decline_harvest == 0.5
-    assert no_harvest == 0.0
+    assert_on_pair(expected_harvest_proportion, actual_harvest_proportion)
+
+
+def assert_on_pair(targets, predictions):
+    for i, (t, p) in enumerate(zip(targets, predictions)):
+        assert t == p, f"MISMATCH @ time {i}: target {t} | prediction {p} mismatch"
 
 
 def test_that_event_impact_works_with_floats(dummy_event):
@@ -137,17 +163,26 @@ def test_that_event_impact_default_has_no_impact(dummy_event):
 # integration
 
 
-def test_that_event_impacts_harvest(dummy_event, growth_function, farm):
+def test_that_event_impacts_harvest(
+    growth_function, farm, expected_proportions_for_harvest
+):
     # Arrange
     configs = (Config("a", "a", output_per_crop=200),)
-    dummy_event.impact = growth_function
-    date = datetime.datetime(2025, 1, 1)
+    dummy_event = Event("harvest event", impact=growth_function)
+
+    years, proportions = expected_proportions_for_harvest
+
+    dates = [datetime.datetime(y, 8, 1) for y in years]
+    targets = [p * 200 for p in proportions]
 
     # Act
-    harvest = predict_yield_for_farm(farm, configs, [dummy_event], time=date)
+    harvests = [
+        predict_yield_for_farm(farm, configs, [dummy_event], time=date)[0]
+        for date in dates
+    ]
 
     # Assert
-    assert harvest[0] == 200
+    assert_on_pair(targets, harvests)
 
 
 def test_that_membership_is_based_on_species_when_name_unspecified():
