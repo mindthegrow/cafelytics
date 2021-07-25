@@ -11,22 +11,6 @@ from cafe.farm import (
 )
 
 
-def borbon_harvest_function() -> Callable:
-    return guate_harvest_function(lifespan=30, mature=5)
-
-
-def catuai_harvest_function() -> Callable:
-    return guate_harvest_function(lifespan=17, mature=4)
-
-
-def catura_harvest_function() -> Callable:
-    return guate_harvest_function(lifespan=16, mature=4)
-
-
-def e14_harvest_function() -> Callable:
-    return guate_harvest_function(lifespan=15, mature=5)
-
-
 def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strategy=None):
     """
     Uses a list of plots, `plotList`, to simulate a cooperative over `numFarms` number of years.
@@ -51,11 +35,26 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             Config("catura", name="catura", output_per_crop=125, unit="cuerdas"),
         )
 
+        species_list = [config.species for config in configs]
+
+        scopes = {
+            species: {'type': 'species', 'def': species}
+            for species in species_list
+        }
+
+        harvest_functions = {
+            'e14': guate_harvest_function(lifespan=15, mature=5),
+            'catura': guate_harvest_function(lifespan=16, mature=4),
+            'catuai': guate_harvest_function(lifespan=17, mature=4),
+            'borbon': guate_harvest_function(lifespan=30, mature=5),
+        }
+
         events = (
-            Event("e14 harvest", impact=e14_harvest_function()),
-            Event("catuai harvest", impact=catuai_harvest_function()),
-            Event("borbon harvest", impact=borbon_harvest_function()),
-            Event("catura harvest", impact=catura_harvest_function()),
+            Event(
+                f"{species} harvest",
+                impact=harvest_functions[species],
+                scope=scopes[species]
+            ) for species in species_list
         )
 
         farm = Farm(plotList)
