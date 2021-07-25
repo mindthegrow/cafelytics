@@ -65,6 +65,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             events=events,
             time=datetime.datetime(current_year, 1, 1),
         )
+
         harvestYear.append(current_year)
         # annualHarvest.append(thisYearsHarvest[idx])  # inspect single plot
         annualHarvest.append(sum(thisYearsHarvest))

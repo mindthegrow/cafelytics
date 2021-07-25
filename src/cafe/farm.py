@@ -250,6 +250,8 @@ def predict_yield_for_farm(
     events: List[Event] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> List[float]:
+    if not isinstance(events, list):  # TODO: add tests for this
+        events = list(events)
     harvests = []
     for p in farm.plots:
         # print(f"Processing Plot {p.plot_id}")
