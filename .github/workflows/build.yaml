@@ -39,7 +39,7 @@ jobs:
       - name: Inspect version info
         run: | 
           python setup.py --version
-          git describe --dirty --tags --long --match "*[0-9]*"
+          git describe --always --dirty --tags --long --match "*[0-9]*"
 
       - name: Test pip install syntax (without wheels)
         run: |
