@@ -45,10 +45,10 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
     for year in range(numYears):
 
         configs = (
-            Config("e14", "e14", 125, "cuerdas"),
-            Config("borbon", "borbon", 200, "cuerdas"),
-            Config("catuai", "catuai", 125, "cuerdas"),
-            Config("catura", "catura", 125, "cuerdas"),
+            Config("e14", name="e14", output_per_crop=125, unit="cuerdas"),
+            Config("borbon", name="borbon", output_per_crop=200, unit="cuerdas"),
+            Config("catuai", name="catuai", output_per_crop=125, unit="cuerdas"),
+            Config("catura", name="catura", output_per_crop=125, unit="cuerdas"),
         )
 
         events = (

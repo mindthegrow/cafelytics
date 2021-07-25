@@ -2,11 +2,14 @@ import datetime
 import warnings
 from dataclasses import dataclass, field
 from functools import lru_cache
+import logging
 from numbers import Number
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -129,11 +132,19 @@ class Event:
         return age > 0 and current_time <= self.end
 
     def _check_scope(self, plot: Optional[Plot] = None):
+        if isinstance(self.scope, bool):
+            return self.scope
         if not self.scope:
-            # _logger.warning("Scope definition missing, assuming inactive")
+            _logger.warning("Scope definition missing, assuming inactive.")
             return False
-        in_scope = False
-        return in_scope
+        if not plot:
+            _logger.warning("Plot definition missing, assuming inactive.")
+            return False
+        if self.scope["type"] == "species":
+            return self.scope["def"] == plot.species
+        if self.scope["type"] in ("geo", "gps", "area"):  # TODO: naming choices
+            raise NotImplementedError("Geographic scope not yet implemented.")
+        return False
 
     def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
         return current_time - self.start
@@ -229,7 +240,7 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
     relevent_events = []
     for e in events:
         # TODO more checks to determine this condition
-        if e.is_active(time):
+        if e.is_active(plot=plot, current_time=time):
             relevent_events.append(e)
     impact = np.prod([e.eval(time, plot) for e in relevent_events])
     return impact
