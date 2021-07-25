@@ -108,7 +108,7 @@ class Event:
     start: Optional[datetime.datetime] = None
     end: Optional[datetime.datetime] = None
     impact: Optional[Union[float, Callable]] = 1.0
-    scope: Optional[Dict] = field(default_factory=dict)
+    scope: Optional[Union[bool, Dict]] = field(default_factory=dict)
 
     def is_active(
         self,
@@ -130,7 +130,7 @@ class Event:
 
     def _check_scope(self, plot: Optional[Plot] = None):
         if not self.scope:
-            _logger.warning("Scope definition missing, assuming inactive")
+            # _logger.warning("Scope definition missing, assuming inactive")
             return False
         return True
 
