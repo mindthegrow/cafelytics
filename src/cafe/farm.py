@@ -26,27 +26,6 @@ class Config:
         return cls.species == other_cls.species and cls.unit == other_cls.unit
 
 
-@lru_cache(maxsize=128)
-def find_config(name: str, configs: Tuple[Config]) -> Config:
-    # first check for name (to look for strategy)
-    for c in configs:
-        if c.name == name:
-            return c
-    # if none found, seek species default
-    # TODO print warning about this behavior
-    warnings.warn(
-        (
-            "Could not find canonical match"
-            f"for species=`{name}`, searching for"
-            "match against species instead."
-        )
-    )
-    for c in configs:
-        if c.species == name:
-            return c
-    raise ValueError(f"Could not find desired config for species=`{name}`")
-
-
 @dataclass
 class Plot:
     num: int = 1  # number of crops
@@ -190,6 +169,52 @@ def predict_yield_for_farm(
     return harvests
 
 
+@lru_cache(maxsize=128)
+def find_config(name: str, configs: Tuple[Config]) -> Config:
+    # first check for name (to look for strategy)
+    for c in configs:
+        if c.name == name:
+            return c
+    # if none found, seek species default
+    # TODO print warning about this behavior
+    warnings.warn(
+        (
+            "Could not find canonical match"
+            f"for species=`{name}`, searching for"
+            "match against species instead."
+        )
+    )
+    for c in configs:
+        if c.species == name:
+            return c
+    raise ValueError(f"Could not find desired config for species=`{name}`")
+
+
+def guate_harvest_function(
+    lifespan: float = 30, mature: float = 5, retire: float = None
+) -> Callable:
+    if not retire:
+        retire = lifespan - 2
+    assert retire < lifespan
+    assert mature < retire
+
+    def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
+        start = plot.origin.year
+        year = time if isinstance(time, (float, int)) else time.year
+        age = year - start
+        if age < mature - 1:
+            return 0
+        if age == mature - 1:
+            return 0.2
+        if age < retire:
+            return 1.0
+        if age < lifespan:
+            return 0.75 - 0.25 * (age - retire)
+        return 0.0
+
+    return growth
+
+
 def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> float:
     # - is it relevant to this plot? can check species, geography, etc.
     # - if so, what will be the impact to pass to the prediction function?
@@ -218,28 +243,3 @@ def predict_yield_for_plot(
         impact = total_impact(plot, time, events)
         return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
-
-
-def guate_harvest_function(
-    lifespan: float = 30, mature: float = 5, retire: float = None
-) -> Callable:
-    if not retire:
-        retire = lifespan - 2
-    assert retire < lifespan
-    assert mature < retire
-
-    def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        start = plot.origin.year
-        year = time if isinstance(time, (float, int)) else time.year
-        age = year - start
-        if age < mature - 1:
-            return 0
-        if age == mature - 1:
-            return 0.2
-        if age < retire:
-            return 1.0
-        if age < lifespan:
-            return 0.75 - 0.25 * (age - retire)
-        return 0.0
-
-    return f
