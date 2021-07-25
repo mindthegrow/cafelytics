@@ -1,12 +1,15 @@
-from dataclasses import dataclass, field
 import datetime
-from functools import lru_cache
-import numpy as np
-from typing import List, Optional, Tuple, Callable, Union, Dict
-from numbers import Number
+import logging
 import warnings
+from dataclasses import dataclass, field
+from functools import lru_cache
+from numbers import Number
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
+import numpy as np
 import pandas as pd
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -16,69 +19,14 @@ class Config:
     output_per_crop: float = 1.0
     unit: str = "cuerdas"
 
-    def __eq__(cls, other_cls):
-        if cls.name and other_cls.name:
+    def __eq__(self, other_cls):
+        if self.name and other_cls.name:
             return (
-                cls.name == other_cls.name
-                and cls.species == other_cls.species
-                and cls.unit == other_cls.unit
+                self.name == other_cls.name
+                and self.species == other_cls.species
+                and self.unit == other_cls.unit
             )
-        return cls.species == other_cls.species and cls.unit == other_cls.unit
-
-
-@lru_cache(maxsize=128)
-def find_config(name: str, configs: Tuple[Config]) -> Config:
-    # first check for name (to look for strategy)
-    for c in configs:
-        if c.name == name:
-            return c
-    # if none found, seek species default
-    # TODO print warning about this behavior
-    warnings.warn(
-        (
-            "Could not find canonical match"
-            f"for species=`{name}`, searching for"
-            "match against species instead."
-        )
-    )
-    for c in configs:
-        if c.species == name:
-            return c
-    raise ValueError(f"Could not find desired config for species=`{name}`")
-
-
-@dataclass
-class Event:
-    name: str
-    start: Optional[datetime.datetime] = None
-    end: Optional[datetime.datetime] = None
-    impact: Optional[Union[float, Callable]] = 1.0
-    scope: Optional[Dict] = field(default_factory=dict)
-
-    def is_active(self, current_time=datetime.datetime.today()) -> bool:
-        if not self.start:
-            return True
-        if not self.end:
-            return True
-        age = self.age(current_time)
-        return age > 0 and current_time <= self.end
-
-    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
-        return current_time - self.start
-
-    def years(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).days / 365.25)
-
-    def days(self, current_time=datetime.datetime.today()) -> int:
-        return self.age(current_time).days
-
-    def mins(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).seconds / 60)
-
-    def eval(self, *args):
-        if isinstance(self.impact, Callable):
-            return self.impact(*args, **self.__dict__)
-        return self.impact
+        return self.species == other_cls.species and self.unit == other_cls.unit
 
 
 @dataclass
@@ -157,24 +105,109 @@ class Farm:
         return species in set(p.species for p in self.plot_list)
 
 
-def predict_yield_for_farm(
-    farm: Farm,
-    configs: List[Config],
-    events: List[Event] = None,
-    time: datetime.datetime = datetime.datetime(2020, 1, 1),
-) -> List[float]:
-    harvests = []
-    for p in farm.plots:
-        name = p.species
-        try:
-            c = find_config(name, configs)
-            harvests.append(predict_yield_for_plot(p, c, events, time))
-        except ValueError as v:
-            warnings.warn(
-                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
-            )  # TODO: make into a logger instead
-            harvests.append(0)
-    return harvests
+@dataclass
+class Event:
+    name: str
+    start: Optional[datetime.datetime] = None
+    end: Optional[datetime.datetime] = None
+    impact: Optional[Union[float, Callable]] = 1.0
+    scope: Optional[Union[bool, Dict]] = field(default_factory=dict)
+
+    def is_active(
+        self,
+        current_time: datetime.datetime = datetime.datetime.today(),
+        plot: Optional[Plot] = None,
+    ) -> bool:
+        time_check = self._check_time_window(current_time)
+        # TODO: add more checks involving scope
+        scope_check = self._check_scope(plot)
+        return time_check and scope_check
+
+    def _check_time_window(self, current_time=datetime.datetime.today()) -> bool:
+        if not self.start:
+            return True
+        if not self.end:
+            return True
+        age = self.age(current_time)
+        return age > 0 and current_time <= self.end
+
+    def _check_scope(self, plot: Optional[Plot] = None):
+        if isinstance(self.scope, bool):
+            return self.scope
+        if not self.scope:
+            _logger.warning("Scope definition missing, assuming inactive.")
+            return False
+        if not plot:
+            _logger.warning("Plot definition missing, assuming inactive.")
+            return False
+        if self.scope["type"] == "species":
+            return self.scope["def"] == plot.species
+        if self.scope["type"] in ("geo", "gps", "area"):  # TODO: naming choices
+            raise NotImplementedError("Geographic scope not yet implemented.")
+        return False
+
+    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        return current_time - self.start
+
+    def years(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).days / 365.25)
+
+    def days(self, current_time=datetime.datetime.today()) -> int:
+        return self.age(current_time).days
+
+    def mins(self, current_time=datetime.datetime.today()) -> int:
+        return round(self.age(current_time).seconds / 60)
+
+    def eval(self, *args, **kwargs):
+        if isinstance(self.impact, Callable):
+            return self.impact(*args, **kwargs, **self.__dict__)
+        return self.impact
+
+
+@lru_cache(maxsize=128)
+def find_config(name: str, configs: Tuple[Config]) -> Config:
+    # first check for name (to look for strategy)
+    for c in configs:
+        if c.name == name:
+            return c
+    # if none found, seek species default
+    # TODO print warning about this behavior
+    warnings.warn(
+        (
+            "Could not find canonical match"
+            f"for species=`{name}`, searching for"
+            "match against species instead."
+        )
+    )
+    for c in configs:
+        if c.species == name:
+            return c
+    raise ValueError(f"Could not find desired config for species=`{name}`")
+
+
+def guate_harvest_function(
+    lifespan: float = 30, mature: float = 5, retire: float = None
+) -> Callable:
+    if not retire:
+        retire = lifespan - 2
+    assert retire < lifespan
+    assert mature < retire
+
+    def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
+        birth_year = plot.origin.year
+        current_year = time if isinstance(time, (float, int)) else time.year
+        age = current_year - birth_year
+        if age < mature - 1:
+            return 0
+        if age == mature - 1:
+            return 0.2
+        if age < retire:
+            return 1.0
+        if age < lifespan:
+            return 0.75 - 0.25 * (age - retire)
+        return 0.0
+
+    return growth
 
 
 def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> float:
@@ -182,14 +215,16 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
     # - if so, what will be the impact to pass to the prediction function?
     # - is a strategy being applied? it has an impact too, is an event
     if not events:
+        _logger.warning("Events empty")
         return 1.0
 
     relevent_events = []
     for e in events:
         # TODO more checks to determine this condition
-        if e.is_active(time):
+        if e.is_active(plot=plot, current_time=time):
             relevent_events.append(e)
-    impact = np.prod([e.eval(time, plot) for e in relevent_events])
+            _logger.debug(f"Found relevent event {e}")
+    impact = np.prod([e.eval(time=time, plot=plot) for e in relevent_events])
     return impact
 
 
@@ -202,26 +237,36 @@ def predict_yield_for_plot(
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
-        impact = total_impact(plot, time, events)
+        impact = total_impact(plot=plot, time=time, events=events)
         return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
 
 
-def guate_harvest_function(
-    lifespan: float = 30, mature: float = 5, retire: float = 28
-) -> Callable:
-    def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        start = plot.origin.year
-        year = time if isinstance(time, (float, int)) else time.year
-        age = year - start
-        if age < mature - 1:
-            return 0
-        if age == mature - 1:
-            return 0.2
-        if age < retire:
-            return 1.0
-        if age < lifespan:
-            return 0.75 - 0.25 * (age - retire)
-        return 0.0
-
-    return f
+def predict_yield_for_farm(
+    farm: Farm,
+    configs: List[Config],
+    events: Optional[List[Event]] = None,
+    time: datetime.datetime = datetime.datetime(2020, 1, 1),
+) -> List[float]:
+    if events and not isinstance(events, list):  # TODO: add tests for this
+        events = list(events)
+    harvests = []
+    for p in farm.plots:
+        # print(f"Processing Plot {p.plot_id}")
+        name = p.species
+        try:
+            c = find_config(name, configs)
+            harvests.append(
+                predict_yield_for_plot(
+                    plot=p,
+                    config=c,
+                    events=events,
+                    time=time,
+                )
+            )
+        except ValueError as v:
+            _logger.warn(
+                f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"
+            )
+            harvests.append(0)
+    return harvests

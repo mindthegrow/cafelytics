@@ -168,7 +168,8 @@ def test_that_event_impacts_harvest(
 ):
     # Arrange
     configs = (Config("a", "a", output_per_crop=200),)
-    dummy_event = Event("harvest event", impact=growth_function)
+    # scope = {"type": "species", "def": "a"}
+    dummy_event = Event("harvest event", impact=growth_function, scope=True)
 
     years, proportions = expected_proportions_for_harvest
 
