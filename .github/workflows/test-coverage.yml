@@ -6,15 +6,25 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
+    paths:
+      - "src/**.py"
+      - "setup.py"
+      - "setup.cfg"
+      - ".github/workflows/main.yml"
   pull_request:
-    branches:
-      - '*'
+    branches-ignore: "**docker**"
+    paths:
+      - "src/**.py"
+      - "setup.py"
+      - "setup.cfg"
+      - ".github/workflows/main.yml"
   schedule:
       - cron: "0 0 */7 * *"
   release:
     types: [released]
 
+      
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
