@@ -164,8 +164,7 @@ class Event:
         return self.impact
 
 
-
-# @lru_cache(maxsize=128)
+@lru_cache(maxsize=128)
 def find_config(name: str, configs: Tuple[Config]) -> Config:
     # first check for name (to look for strategy)
     for c in configs:
@@ -255,6 +254,7 @@ def predict_yield_for_farm(
 ) -> List[float]:
     harvests = []
     for p in farm.plots:
+        print(f"Processing Plot {p.plot_id}")
         name = p.species
         try:
             c = find_config(name, configs)
