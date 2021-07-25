@@ -1,0 +1,62 @@
+name: builds
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/**.py"
+      - "setup.py"
+      - "setup.cfg"
+      - ".github/workflows/build.yml"
+  pull_request:
+    branches-ignore: '**docker**'
+    paths:
+      - "src/**.py"
+      - "setup.py"
+      - "setup.cfg"
+      - ".github/workflows/build.yml"
+  schedule:
+      - cron: "0 0 1 * *"
+
+jobs:
+  build:
+    name: Test build process
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Inspect version info
+        run: | 
+          python setup.py --version
+          git describe --dirty --tags --long --match "*[0-9]*"
+
+      - name: Test pip install syntax (without wheels)
+        run: |
+          pip install .
+          pip uninstall -y cafelytics
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade wheel setuptools setuptools_scm
+
+      - name: Test install with wheels
+        run: |
+          python setup.py sdist bdist_wheel
+          pip uninstall -y cafelytics
+
+      - name: Test install with other syntax
+        run: |
+          pip install . --use-feature=in-tree-build
+          # python -m build .  # for future inclusion of pyproject.toml with pyscaffold v5+
