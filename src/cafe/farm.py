@@ -195,9 +195,10 @@ def guate_harvest_function(
     assert mature < retire
 
     def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        start = plot.origin.year
-        year = time if isinstance(time, (float, int)) else time.year
-        age = year - start
+        birth_year = plot.origin.year
+        current_year = time if isinstance(time, (float, int)) else time.year
+        age = current_year - birth_year
+        print(plot.plot_id, current_year, birth_year)
         if age < mature - 1:
             return 0
         if age == mature - 1:
@@ -223,7 +224,10 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
         # TODO more checks to determine this condition
         if e.is_active(plot=plot, current_time=time):
             relevent_events.append(e)
+            _logger.debug(f"Found relevent event {e}")
     impact = np.prod([e.eval(time=time, plot=plot) for e in relevent_events])
+    if plot.plot_id == 0:
+        _logger.warn(f'impact: {impact}')
     return impact
 
 
@@ -233,10 +237,12 @@ def predict_yield_for_plot(
     events: Optional[List[Event]] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> float:
+    if not events:
+        _logger.warn("Empty events")
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
-        impact = total_impact(plot, time, events)
+        impact = total_impact(plot=plot, time=time, events=events)
         return plot.num * config.output_per_crop * impact
     raise ValueError(f"Species mismatch, {plot}, {config}")
 
@@ -252,7 +258,14 @@ def predict_yield_for_farm(
         name = p.species
         try:
             c = find_config(name, configs)
-            harvests.append(predict_yield_for_plot(p, c, events, time))
+            harvests.append(
+                predict_yield_for_plot(
+                    plot=p,
+                    config=c,
+                    events=events,
+                    time=time,
+                )
+            )
         except ValueError as v:
             warnings.warn(
                 f"Caught {v}, skipping yield prediction for plot {p.plot_id}. Yield will be 0"

@@ -59,12 +59,17 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         )
 
         farm = Farm(plotList)
-        idx = 0
+        idx = 7
+        current_year = plotList[idx].origin.year + year
         thisYearsHarvest = predict_yield_for_farm(
-            farm, configs, events=events, time=datetime.datetime(plotList[idx].origin.year + year, 1, 1)
+            farm=farm,
+            configs=configs,
+            events=events, 
+            time=datetime.datetime(current_year, 1, 1)
         )
-        print(plotList[idx])
-        harvestYear.append(plotList[idx].origin.year + year)
+        if year == 0:
+            print('start', current_year, plotList[idx])
+        harvestYear.append(current_year)
         # annualHarvest.append(sum(thisYearsHarvest))
         annualHarvest.append(thisYearsHarvest[idx])
     simulation = [harvestYear, annualHarvest]
