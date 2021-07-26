@@ -28,7 +28,7 @@ def test_we_can_instantiate_plot_from_series(series_fixture):
 
 def test_that_plots_inherit_time_properties():
     # Arrange
-    plot = Plot('a', start=datetime.datetime(2000, 1, 1))
+    plot = Plot("a", start=datetime.datetime(2000, 1, 1))
     current_time = datetime.datetime(2020, 1, 1)
 
     # Act
@@ -40,13 +40,13 @@ def test_that_plots_inherit_time_properties():
     # Assert
     assert age == datetime.timedelta(days=7305)
     assert years == 20
-    assert days == 20*365.25
-    assert mins == days*24*60
+    assert days == 20 * 365.25
+    assert mins == days * 24 * 60
 
 
 def test_that_plots_without_start_time_raises_error():
     # Arrange
-    plot = Plot('a')
+    plot = Plot("a")
     current_time = datetime.datetime(2020, 1, 1)
 
     # Act
