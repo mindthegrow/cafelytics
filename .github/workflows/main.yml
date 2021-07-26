@@ -53,8 +53,6 @@ jobs:
       - name: Test usage patterns
         run: |
           cat README.md | grep python3 | bash
-          python -m cafe.fakeData # fake default dataframe
-          python -m cafe.simulateCoOp # gets imported by this
 
       - name: Upload coverage to coveralls.io
         if: ${{ matrix.python-version }} == 3.9
