@@ -25,7 +25,8 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
 
     annualHarvest = []
     harvestYear = []
-    start_year = min([plot.origin.year for plot in plotList])
+    # start_year = min([plot.origin.year for plot in plotList])
+    start_year = 2020
     for current_year in range(start_year, start_year + numYears + 1):
 
         configs = (

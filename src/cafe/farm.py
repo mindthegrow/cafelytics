@@ -196,7 +196,7 @@ def guate_harvest_function(
     def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
         birth_year = plot.origin.year
         current_year = time if isinstance(time, (float, int)) else time.year
-        age = current_year - birth_year
+        age = (current_year - birth_year)
         if age < mature - 1:
             return 0
         if age == mature - 1:
@@ -205,7 +205,7 @@ def guate_harvest_function(
             return 1.0
         if age < lifespan:
             return 0.75 - 0.25 * (age - retire)
-        return 0.0
+        return growth(current_year - lifespan - 2, plot)
 
     return growth
 
