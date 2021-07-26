@@ -2,7 +2,10 @@ test:
 	pytest
 
 run:
-	python src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
+	python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
+
+data:
+	python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv
 
 build: clean
 	python setup.py sdist bdist_wheel
@@ -38,5 +41,6 @@ version:
 
 publish:
 	rm -rf dist/*
+	python -m pip install -U pip wheel setuptools setuptools_scm twine
 	python setup.py sdist bdist_wheel
 	twine upload dist/*
