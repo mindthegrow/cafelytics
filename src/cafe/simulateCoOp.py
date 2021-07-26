@@ -20,17 +20,17 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
 
     annualHarvest = []
     harvestYear = []
-    print(plotList[0].initialAgeOfTrees)
     start_year = int(2020 - max([plot.initialAgeOfTrees for plot in plotList]))
+    print(start_year)
     for current_year in range(start_year, start_year + numYears + 1):
         # each year reset harvest
         thisYearsHarvest = 0
 
         for j in range(numPlots):
-            if pruneYear:
-                if j == pruneYear:  # if it's the prune year
-                    # isPrune = True
-                    plotList[j].setPruneTrees()
+            # if pruneYear:
+            #     if j == pruneYear:  # if it's the prune year
+            #         # isPrune = True
+            #         plotList[j].setPruneTrees()
 
             plotList[j].oneYear()  # run this plot through one year of the demo
             tempHarvest = plotList[j].totalHarvest
