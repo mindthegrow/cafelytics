@@ -48,11 +48,7 @@ def fakeData(
     for i, e in enumerate(trees):
         # (1) get year planted and age
         # borbons have a longer lifespan
-        if e == "borbon":
-            _age = random.randint(0, 29)
-
-        else:
-            _age = random.randint(0, 14)
+        _age = random.randint(0, 14)
 
         _yearPlanted = startYear - _age
         yearPlanted.append(_yearPlanted)
@@ -85,16 +81,6 @@ def fakeData(
 
     fakeFarms.to_csv(outputFile, index=False)
     return fakeFarms
-
-
-def main(args):
-    farms = args.farms
-    names = args.names
-    year = args.year
-    output = args.output
-    df = fakeData(numFarms=farms, numFarmers=names, startYear=year, outputFile=output)
-    print("Demonstration of output data:")
-    print(df)
 
 
 if __name__ == "__main__":
@@ -148,4 +134,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(args)
+    farms = args.farms
+    names = args.names
+    year = args.year
+    output = args.output
+    df = fakeData(numFarms=farms, numFarmers=names, startYear=year, outputFile=output)
+    print("Demonstration of output data:")
+    print(df)
