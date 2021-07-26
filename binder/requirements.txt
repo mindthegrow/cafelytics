@@ -1,0 +1,5 @@
+	numpy
+	matplotlib
+	pandas
+	timedelta
+	dataclasses; python_version < "3.7"
