@@ -41,6 +41,9 @@ jobs:
           python setup.py --version
           git describe --always --dirty --tags --long --match "*[0-9]*"
 
+      - name: Enforce linting
+        run: make lint
+
       - name: Test pip install syntax (without wheels)
         run: |
           pip install .
