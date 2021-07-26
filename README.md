@@ -1,8 +1,3 @@
-Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/binder/?urlpath=git-pull?repo=https://github.com/mindthegrow/cafelytics)
-
-Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/master?urlpath=lab/tree/index.ipynb)
-
-
 <p align="left">
 <a href="https://pypi.org/project/cafelytics/"><img alt="PyPI" src="https://img.shields.io/pypi/v/cafelytics"></a>
 <a href="https://github.com/mindthegrow/cafelytics/actions"><img alt="Test Actions Status" src="https://github.com/mindthegrow/cafelytics/actions/workflows/main.yml/badge.svg"></a>
@@ -18,25 +13,31 @@ Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.or
 
 # cafélytics ☕️
 A basic simulation of a coffee operation. Please pardon the mess as this is a work in progress.
+This is a model that enables forecasting and experimentation under uncertainty, with the goal of steady year-over-year agricultural yields.
+It can help address questions such as:
+- _when should I expand / how much?_
+- _what will the impacts of various crop diversification strategies be?_
+- _how can I plan around disaster recovery and mitigation of lost income?_
+- _what would cooperative-wide yields look like if more farmers joined? what about if some left?_
 
 
 ## usage (python cli)
 
-after you have installed the repository and necessary modules (more on this later),first create a fake dataset to run the simulation on using:
-
+The dataset provided can be used for forecasting with
 ```bash
-python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv
+make run
 ```
 
-Feel free to replace arguments to suit your taste. The arguments above are the defaults that will be ran without specification.
-
-After you've created this dataset, run the simulation using:
+which is equivalent to 
 
 ```bash
-python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 30 --output testNewFarm.png
+python src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
 ```
 
-once again, these are the default arguments.
+and will output this plot, representing the outputs of a collective of farmers over a seventy-five year time span:
+![image](https://user-images.githubusercontent.com/40366263/126931909-c49e1c8d-c1a4-4585-9092-f40e64725245.png)
+
+Some farmers who joined the cooperative had trees that were already very mature, so this simulation starts back in 1991 to show their hypothetical contributions towards the total yield of the group (in other words, their membership start date is not considered as a factor in this simulation at this time).
 
 
 ## contributing
@@ -45,4 +46,11 @@ Contributions are welcome. There are many aspects of this project to improve, pl
 
 ## license
 This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](/info/LICENSE.txt).
+
+
+## try it out
+(Note: the following have not been tested in a long time, they make likely not work).
+Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/binder/?urlpath=git-pull?repo=https://github.com/mindthegrow/cafelytics)
+
+Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/master?urlpath=lab/tree/index.ipynb)
 
