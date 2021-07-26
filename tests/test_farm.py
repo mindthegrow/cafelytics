@@ -12,7 +12,6 @@ from cafe.farm import (
 )
 from typing import Union, Callable
 
-# import cafe.importData as importData
 # import warnings
 
 from unittest import mock

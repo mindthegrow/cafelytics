@@ -2,7 +2,7 @@ test:
 	pytest
 
 run:
-	python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
+	python3 simulate.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
 
 data:
 	python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv
