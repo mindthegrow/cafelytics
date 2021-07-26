@@ -6,7 +6,6 @@
 <a href="https://cafelytics.readthedocs.io/en/stable/?badge=stable"><img alt="Documentation Status" src="https://readthedocs.org/projects/cafelytics/badge/?version=stable"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 <a href="https://coveralls.io/github/mindthegrow/cafelytics?branch=main"><img alt="Coverage Status" src="https://coveralls.io/repos/github/mindthegrow/cafelytics/badge.svg?branch=main"></a>
-<a href="https://codecov.io/gh/mindthegrow/cafelytics"><img alt="Coverage Status" src="https://codecov.io/gh/mindthegrow/cafelytics/branch/main/graph/badge.svg?token=HT880PYHPG"></a>
 <a href="https://pepy.tech/project/cafelytics"><img alt="Total Downloads" src="https://static.pepy.tech/personalized-badge/cafelytics?period=total&units=abbreviation&left_color=gray&right_color=blue&left_text=downloads"></a>
 </p>
 
