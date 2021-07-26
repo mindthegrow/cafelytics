@@ -59,7 +59,6 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         ]
 
         farm = Farm(plotList)
-
         thisYearsHarvest = predict_yield_for_farm(
             farm=farm,
             configs=configs,
@@ -68,7 +67,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
         )
 
         harvestYear.append(current_year)
-        # annualHarvest.append(thisYearsHarvest[idx])  # inspect single plot
+        # annualHarvest.append(thisYearsHarvest[0])  # inspect single plot
         annualHarvest.append(sum(thisYearsHarvest))
     simulation = [harvestYear, annualHarvest]
 
