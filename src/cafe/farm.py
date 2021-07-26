@@ -30,7 +30,7 @@ def time_like(cls):
             return current_time - self.start
 
         def years(self, current_time=datetime.datetime.today()) -> int:
-            return timedelta.Timedelta(self.age(current_time)).total.days / 365.25
+            return int(timedelta.Timedelta(self.age(current_time)).total.days / 365.25)
 
         def days(self, current_time=datetime.datetime.today()) -> int:
             return timedelta.Timedelta(self.age(current_time)).total.days
