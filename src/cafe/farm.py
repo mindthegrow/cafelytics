@@ -8,8 +8,37 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
+import timedelta
 
 _logger = logging.getLogger(__name__)
+
+
+def time_like(cls):
+    @dataclass
+    class temporal(cls):
+        # start: Optional[datetime.datetime] = datetime.datetime(2020, 1, 1, 0, 0)
+        start: Optional[datetime.datetime] = None
+        end: Optional[datetime.datetime] = None
+
+        @property
+        def year_planted(self):
+            return self.start.year
+
+        def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+            if not self.start:
+                raise ValueError("Start time undefined, age indeterminable.")
+            return current_time - self.start
+
+        def years(self, current_time=datetime.datetime.today()) -> int:
+            return timedelta.Timedelta(self.age(current_time)).total.days / 365.25
+
+        def days(self, current_time=datetime.datetime.today()) -> int:
+            return timedelta.Timedelta(self.age(current_time)).total.days
+
+        def mins(self, current_time=datetime.datetime.today()) -> int:
+            return timedelta.Timedelta(self.age(current_time)).total.minutes
+
+    return temporal
 
 
 @dataclass(frozen=True)
@@ -29,6 +58,7 @@ class Config:
         return self.species == other_cls.species and self.unit == other_cls.unit
 
 
+@time_like
 @dataclass
 class Plot:
     num: int = 1  # number of crops
@@ -36,15 +66,10 @@ class Plot:
     plot_id: int = 0
     species: str = field(default_factory=str)
     unit: str = "cuerdas"
-    start: datetime = datetime.datetime(2020, 1, 1, 0, 0)
 
     @property  # TODO deprecate / change tests?
     def size(self) -> float:
         return self.area
-
-    @property  # TODO deprecate / change tests?
-    def year_planted(self):
-        return self.start.year
 
     @staticmethod
     def to_datetime(time) -> datetime.datetime:
@@ -105,11 +130,10 @@ class Farm:
         return species in set(p.species for p in self.plot_list)
 
 
+@time_like
 @dataclass
 class Event:
     name: str
-    start: Optional[datetime.datetime] = None
-    end: Optional[datetime.datetime] = None
     impact: Optional[Union[float, Callable]] = 1.0
     scope: Optional[Union[bool, Dict]] = field(default_factory=dict)
 
@@ -145,20 +169,6 @@ class Event:
         if self.scope["type"] in ("geo", "gps", "area"):  # TODO: naming choices
             raise NotImplementedError("Geographic scope not yet implemented.")
         return False
-
-    def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
-        if not self.start:
-            raise ValueError("Start time undefined, age indeterminable.")
-        return current_time - self.start
-
-    def years(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).days / 365.25)
-
-    def days(self, current_time=datetime.datetime.today()) -> int:
-        return self.age(current_time).days
-
-    def mins(self, current_time=datetime.datetime.today()) -> int:
-        return round(self.age(current_time).seconds / 60)
 
     def eval(self, *args, **kwargs):
         if isinstance(self.impact, Callable):
@@ -196,7 +206,7 @@ def guate_harvest_function(
     assert mature < retire
 
     def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        birth_year = plot.start.year
+        birth_year = plot.year_planted
         current_year = time if isinstance(time, (float, int)) else time.year
         age = current_year - birth_year
         if age < mature - 1:

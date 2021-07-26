@@ -23,6 +23,11 @@ __license__ = "mit"
 
 
 @pytest.fixture()
+def start_date():
+    return datetime.datetime(2020, 1, 1)
+
+
+@pytest.fixture()
 def configs():
     return (
         Config("a", "a"),
@@ -94,13 +99,8 @@ def growth_function() -> Callable:
 
 
 @pytest.fixture()
-def start_date():
-    return datetime.datetime(2020, 1, 1)
-
-
-@pytest.fixture()
 def dummy_event(start_date):
-    return Event("some_event", start_date)
+    return Event("some_event", start=start_date)
 
 
 # CONFIG TESTS
@@ -123,7 +123,7 @@ def test_that_event_impact_works_with_callables(
     start_date, event_impact_function, expected_proportions_for_event
 ):
     # Arrange
-    e = Event("some_event", start_date, impact=event_impact_function)
+    e = Event("some_event", start=start_date, impact=event_impact_function)
     list_of_years, expected_harvest_proportion = expected_proportions_for_event
 
     # Act
