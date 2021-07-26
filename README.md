@@ -34,7 +34,7 @@ python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml
 ```
 
 and will output this plot, representing the outputs of a collective of farmers over a seventy-five year time span:
-![image](https://user-images.githubusercontent.com/40366263/126931909-c49e1c8d-c1a4-4585-9092-f40e64725245.png)
+![image](https://user-images.githubusercontent.com/40366263/126934177-7353103f-bd90-4a7a-9085-f409a69d1b66.png)
 
 Some farmers who joined the cooperative had trees that were already very mature, so this simulation starts back in 1991 to show their hypothetical contributions towards the total yield of the group (in other words, their membership start date is not considered as a factor in this simulation at this time).
 
@@ -49,7 +49,5 @@ This software is released as-is, with no guarantee nor warranty. For more detail
 
 ## try it out
 (Note: the following have not been tested in a long time, they make likely not work).
-Classic: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/binder/?urlpath=git-pull?repo=https://github.com/mindthegrow/cafelytics)
-
-Jupyterlab: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/master?urlpath=lab/tree/index.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/binder/?urlpath=git-pull?repo=https://github.com/mindthegrow/cafelytics)
 
