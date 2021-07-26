@@ -46,5 +46,5 @@ This software is released as-is, with no guarantee nor warranty. For more detail
 
 ## try it out
 (Note: the following have not been tested in a long time, they make likely not work).
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=git-pull?repo=https://github.com/mindthegrow/cafelytics)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=/lab)
 
