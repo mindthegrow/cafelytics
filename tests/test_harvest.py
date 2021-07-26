@@ -35,9 +35,10 @@ def guate_growth_target(
         retire,
         retire + 1,
         lifespan,
+        lifespan + 1,
     ]
     years = [2020 + y for y in test_periods]
-    proportion = [0.0, 0.0, 0.2, 1.0, 1.0, 1.0, 0.75, 0.5, 0.0]
+    proportion = [0.0, 0.0, 0.2, 1.0, 1.0, 1.0, 1.0, 0.75, 0.5, 0.0]
     return years, proportion
 
 
