@@ -36,7 +36,7 @@ class Plot:
     plot_id: int = 0
     species: str = field(default_factory=str)
     unit: str = "cuerdas"
-    origin: datetime = datetime.datetime(2020, 1, 1, 0, 0)
+    start: datetime = datetime.datetime(2020, 1, 1, 0, 0)
 
     @property  # TODO deprecate / change tests?
     def size(self) -> float:
@@ -44,7 +44,7 @@ class Plot:
 
     @property  # TODO deprecate / change tests?
     def year_planted(self):
-        return self.origin.year
+        return self.start.year
 
     @staticmethod
     def to_datetime(time) -> datetime.datetime:
@@ -63,7 +63,7 @@ class Plot:
             species=series.treeType,
             area=series.numCuerdas,
             unit="cuerdas",
-            origin=cls.to_datetime(series.yearPlanted),
+            start=cls.to_datetime(series.yearPlanted),
         )
 
     @classmethod
@@ -147,6 +147,8 @@ class Event:
         return False
 
     def age(self, current_time=datetime.datetime.today()) -> datetime.timedelta:
+        if not self.start:
+            raise ValueError("Start time undefined, age indeterminable.")
         return current_time - self.start
 
     def years(self, current_time=datetime.datetime.today()) -> int:
@@ -194,7 +196,7 @@ def guate_harvest_function(
     assert mature < retire
 
     def growth(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        birth_year = plot.origin.year
+        birth_year = plot.start.year
         current_year = time if isinstance(time, (float, int)) else time.year
         age = current_year - birth_year
         if age < mature - 1:

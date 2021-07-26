@@ -34,7 +34,7 @@ def configs():
 
 @pytest.fixture()
 def farm(start_date):
-    return Farm([Plot(species="a", origin=start_date)])
+    return Farm([Plot(species="a", start=start_date)])
 
 
 @pytest.fixture()
@@ -77,7 +77,7 @@ def event_impact_function():
 @pytest.fixture()
 def growth_function() -> Callable:
     def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        start = plot.origin.year
+        start = plot.start.year
         year = time if isinstance(time, (float, int)) else time.year
         age = year - start
         if age == 0:
