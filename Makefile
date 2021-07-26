@@ -2,7 +2,7 @@ test:
 	pytest
 
 run:
-	python3 simulate.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
+	python3 simulate.py --farm data/fakeData.csv --years 75 --output testNewFarm.png
 
 data:
 	python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv
@@ -29,11 +29,13 @@ clean:
 	rm -rf .ipynb_checkpoints
 	rm -rf src/cafe/.ipynb_checkpoints
 	rm -rf binder/.ipynb_checkpoints
-	rm -rf __pycache__/
 	rm -rf htmlcov/
 	rm -rf dist/
 	rm -rf build/
 	rm -rf src/cafelytics.egg-info/
+	rm -rf __pycache__/
+	rm -rf tests/__pycache__/
+	rm -rf src/cafe/__pycache__/
 
 
 version:

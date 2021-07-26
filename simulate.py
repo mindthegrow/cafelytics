@@ -118,7 +118,7 @@ def main(args):
     plt.plot(pltYears, pltHarvests, linewidth=4)
     plt.style.use("ggplot")
     plt.title(
-        "Prediction of %d years with no action by demo co-op" % (years),
+        "Yield Forecast",
         fontsize=(fsize * 1.25),
     )
     plt.xlabel("Year", fontsize=fsize)
@@ -144,33 +144,9 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-t",
-        "--trees",
-        default="data/trees.yml",
-        type=str,
-        help="""
-            Name of file (and path from current directory)
-            to data containing tree attributes.\n
-            Example (& default): --trees data/trees.yml
-        """,
-    )
-
-    parser.add_argument(
-        "-s",
-        "--strategy",
-        default="data/strategy1.yml",
-        type=str,
-        help="""
-            Name of file (and path from current directory)
-            to data containing method, strategy, & approach data.\n
-            Example (& default): --strategy intervention/strategy1.yml
-        """,
-    )
-
-    parser.add_argument(
         "-y",
         "--years",
-        default=30,
+        default=75,
         type=int,
         help="""
             Number of years that should be iterated
