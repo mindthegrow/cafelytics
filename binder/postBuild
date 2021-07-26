@@ -3,7 +3,7 @@
 # install the notebook and nbgitpuller packages
 pip install --no-cache --upgrade pip && \
     pip install --no-cache notebook && \
-    pip install --no-cache nbgitpuller
+    pip install --no-cache nbgitpuller && \
     pip install .
 
 jupyter serverextension enable --py nbgitpuller --sys-prefix
