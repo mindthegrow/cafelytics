@@ -53,4 +53,4 @@ def test_that_plots_without_start_time_raises_error():
 
     # Assert
     with pytest.raises(ValueError):
-        age = plot.age(current_time)
+        plot.age(current_time)
