@@ -4,7 +4,7 @@
 [![build status](https://github.com/mindthegrow/cafelytics/actions/workflows/build.yml/badge.svg)](https://github.com/mindthegrow/cafelytics/actions/workflows/build.yml)
 [![publish status](https://github.com/mindthegrow/cafelytics/actions/workflows/publish.yml/badge.svg)](https://github.com/mindthegrow/cafelytics/actions/workflows/publish.yml)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![docs](https://cafelytics.readthedocs.io/en/stable/?badge=stable)](https://readthedocs.org/projects/cafelytics/badge/?version=stable)
+[![docs](https://readthedocs.org/projects/cafelytics/badge/?version=stable)](https://cafelytics.readthedocs.io/en/stable/?badge=stable)
 [![downloads](https://static.pepy.tech/personalized-badge/cafelytics?period=total&units=abbreviation&left_color=gray&right_color=blue&left_text=downloads)](https://pepy.tech/project/cafelytics)
 
 # cafélytics ☕️
