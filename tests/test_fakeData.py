@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 
-import pytest
+# import pytest
 import cafe.fakeData as fd
-
+from unittest import mock
+import pandas as pd
 
 __author__ = "Mathematical Michael"
 __copyright__ = "Mathematical Michael"
 __license__ = "mit"
 
 
-def test_empty_fake_data():
+@mock.patch.object(pd.DataFrame, "to_csv")
+def test_empty_fake_data(mock_to_csv):
+    # Arrange
+
+    # Act
     fakedata = fd.fakeData()
-    assert len(fakedata) == 1 # check num farms in dataframe
-    # things below here will pass if they RAISE an error.
-    # these are expected "failure modes", e.g. check that an error message was printed.    
-    # with pytest.raises(TypeError):
+
+    # Assert
+    assert len(fakedata) == 1
+    mock_to_csv.assert_called_once_with("data/fakeData.csv", index=False)

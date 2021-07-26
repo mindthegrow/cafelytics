@@ -1,9 +1,14 @@
-import pandas as pd
-import statistics as stats
+import datetime
+
 import matplotlib.pyplot as plt
 
-import cafe.farm as farm
-import cafe.importData as importData
+from cafe.farm import (
+    Config,
+    Event,
+    Farm,
+    guate_harvest_function,
+    predict_yield_for_farm,
+)
 
 
 def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strategy=None):
@@ -16,30 +21,54 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
 
     """
 
-    numPlots = len(plotList)
+    # numPlots = len(plotList)
 
     annualHarvest = []
     harvestYear = []
-    start_year = int(2020 - max([plot.initialAgeOfTrees for plot in plotList]))
-    print(start_year)
+    start_year = min([plot.origin.year for plot in plotList])
+    # start_year = 2020
     for current_year in range(start_year, start_year + numYears + 1):
-        # each year reset harvest
-        thisYearsHarvest = 0
 
-        for j in range(numPlots):
-            # if pruneYear:
-            #     if j == pruneYear:  # if it's the prune year
-            #         # isPrune = True
-            #         plotList[j].setPruneTrees()
+        configs = (
+            Config("e14", name="e14", output_per_crop=125, unit="cuerdas"),
+            Config("borbon", name="borbon", output_per_crop=200, unit="cuerdas"),
+            Config("catuai", name="catuai", output_per_crop=125, unit="cuerdas"),
+            Config("catura", name="catura", output_per_crop=125, unit="cuerdas"),
+        )
 
-            plotList[j].oneYear()  # run this plot through one year of the demo
-            tempHarvest = plotList[j].totalHarvest
-            plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
-            thisYearsHarvest += tempHarvest
+        species_list = [config.species for config in configs]
+
+        scopes = {
+            species: {"type": "species", "def": species} for species in species_list
+        }
+
+        harvest_functions = {
+            "e14": guate_harvest_function(lifespan=15, mature=5),
+            "catura": guate_harvest_function(lifespan=16, mature=4),
+            "catuai": guate_harvest_function(lifespan=17, mature=4),
+            "borbon": guate_harvest_function(lifespan=30, mature=5),
+        }
+
+        events = [
+            Event(
+                name=f"{species} harvest",
+                impact=harvest_functions[species],
+                scope=scopes[species],
+            )
+            for species in species_list
+        ]
+
+        farm = Farm(plotList)
+        thisYearsHarvest = predict_yield_for_farm(
+            farm=farm,
+            configs=configs,
+            events=events,
+            time=datetime.datetime(current_year, 1, 1),
+        )
 
         harvestYear.append(current_year)
-        annualHarvest.append(thisYearsHarvest)
-
+        # annualHarvest.append(thisYearsHarvest[0])  # inspect single plot
+        annualHarvest.append(sum(thisYearsHarvest))
     simulation = [harvestYear, annualHarvest]
 
     return simulation
@@ -50,48 +79,33 @@ def main(args):
     import os
 
     farmData = args.farm
-    trees = args.trees
-    strategy = args.strategy
+    # trees = args.trees
+    # strategy = args.strategy
     years = args.years
     output = args.output
 
     if not os.path.exists(farmData):
         raise ValueError(
-            """
-        File: %s does not exist
-        
-        If you are running default commands and this is your first time
-        running the simulation, assure you have run:
-        
-        `python3 src/cafe/fakeData.py --farms 100 --year 2020 --output data/fakeData.csv`
-        
-        in the core directory before calling simulateCoOp.py from the command line.
-        
-        """
-            % farmData
-        )
-
-    if not os.path.exists(trees):
-        raise ValueError(
-            """
-        File: %s does not exist
-        
-        Assure you are in the correct working directory relative to the filepath
-        argument given for --trees.
-        
-        """
-            % trees
+            (
+                f"File: {farmData} does not exist.\n"
+                "If you are running default commands and this is your first time"
+                "running the simulation, assure you have run:\n"
+                "`python3 src/cafe/fakeData.py --farms 100"
+                "--year 2020 --output data/fakeData.csv`\n"
+                "in the core directory before calling"
+                "simulateCoOp.py from the command line."
+            )
         )
 
     print("Importing Data")
-    farmList = importData.compileCoOp(farmStr=farmData, treeStr=trees)
+    farm_example = Farm.from_csv(farmData)
+    farmList = farm_example.plots
 
     print("Simulating Cooperative")
     simData = simulateCoOp(farmList, years)
 
     print("Plotting")
-    pltYears = simData[0]
-    pltHarvests = simData[1]
+    pltYears, pltHarvests = simData
 
     # get parameters for axes
     mnYear, mxYear = min(pltYears), max(pltYears)
@@ -122,62 +136,54 @@ if __name__ == "__main__":
         "-f",
         "--farm",
         default="data/fakeData.csv",
-        type=str,  # string type works well for
+        type=str,
         help="""
-                        Name of file (and path from current directory) to data containing cuerdas, tree types, etc.
-                        
-                        Example (& default): --farm data/demoData.csv
-                        
-                        """,
+           Path to data containing plot details.
+           e.g.,  cuerdas, tree types, etc.\n
+        """,
     )
 
     parser.add_argument(
         "-t",
-        "--trees",  # currently this information is stored in the Cuerdas class
+        "--trees",
         default="data/trees.yml",
-        type=str,  # string type works well for
+        type=str,
         help="""
-                        Name of file (and path from current directory) to data containing tree attributes.
-                        
-                        Example (& default): --trees data/trees.yml
-                        
-                        """,
+            Name of file (and path from current directory)
+            to data containing tree attributes.\n
+            Example (& default): --trees data/trees.yml
+        """,
     )
+
     parser.add_argument(
         "-s",
         "--strategy",
         default="data/strategy1.yml",
-        type=str,  # string type works well for
+        type=str,
         help="""
-                        Name of file (and path from current directory) to data containing method, strategy, & approach data.
-                        
-                        Example (& default): --strategy intervention/strategy1.yml
-                        
-                        """,
+            Name of file (and path from current directory)
+            to data containing method, strategy, & approach data.\n
+            Example (& default): --strategy intervention/strategy1.yml
+        """,
     )
 
     parser.add_argument(
         "-y",
         "--years",
         default=30,
-        type=int,  # string type works well for
+        type=int,
         help="""
-                        Number of years that should be iterated through in the simulation (type : int).
-                        
-                        Example (& default): --year 30
-                        
-                        """,
+            Number of years that should be iterated
+            through in the simulation (default=30).\n
+        """,
     )
 
     parser.add_argument(
         "-o",
         "--output",
         default="testNewFarm.png",
-        type=str,  # string type works well for
-        help="""
-                        Desired name of plot output file.
-                        
-                        """,
+        type=str,
+        help="Desired name of plot output file (default=testNewFarm.png).",
     )
 
     args = parser.parse_args()

@@ -2,7 +2,7 @@ test:
 	pytest
 
 run:
-	python src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 50 --output testNewFarm.png
+	python src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
 
 build: clean
 	python setup.py sdist bdist_wheel
