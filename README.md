@@ -31,7 +31,7 @@ make run
 which is equivalent to 
 
 ```bash
-python src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
+python3 src/cafe/simulateCoOp.py --farm data/fakeData.csv --trees data/trees.yml --years 75 --output testNewFarm.png
 ```
 
 and will output this plot, representing the outputs of a collective of farmers over a seventy-five year time span:
