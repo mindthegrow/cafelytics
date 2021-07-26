@@ -13,13 +13,13 @@ from cafe.farm import (
 
 
 @pytest.fixture()
-def farm():
-    return Farm([Plot(species="borbon")])
+def start_date():
+    return datetime.datetime(2020, 1, 1)
 
 
 @pytest.fixture()
-def start_date():
-    return datetime.datetime(2020, 1, 1)
+def farm(start_date):
+    return Farm([Plot(species="borbon", start=start_date)])
 
 
 def guate_growth_target(

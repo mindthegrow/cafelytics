@@ -23,6 +23,11 @@ __license__ = "mit"
 
 
 @pytest.fixture()
+def start_date():
+    return datetime.datetime(2020, 1, 1)
+
+
+@pytest.fixture()
 def configs():
     return (
         Config("a", "a"),
@@ -34,7 +39,7 @@ def configs():
 
 @pytest.fixture()
 def farm(start_date):
-    return Farm([Plot(species="a", origin=start_date)])
+    return Farm([Plot(species="a", start=start_date)])
 
 
 @pytest.fixture()
@@ -77,7 +82,7 @@ def event_impact_function():
 @pytest.fixture()
 def growth_function() -> Callable:
     def f(time: Union[datetime.datetime, float], plot: Plot, **kwargs):
-        start = plot.origin.year
+        start = plot.start.year
         year = time if isinstance(time, (float, int)) else time.year
         age = year - start
         if age == 0:
@@ -94,13 +99,8 @@ def growth_function() -> Callable:
 
 
 @pytest.fixture()
-def start_date():
-    return datetime.datetime(2020, 1, 1)
-
-
-@pytest.fixture()
 def dummy_event(start_date):
-    return Event("some_event", start_date)
+    return Event("some_event", start=start_date)
 
 
 # CONFIG TESTS
@@ -123,7 +123,7 @@ def test_that_event_impact_works_with_callables(
     start_date, event_impact_function, expected_proportions_for_event
 ):
     # Arrange
-    e = Event("some_event", start_date, impact=event_impact_function)
+    e = Event("some_event", start=start_date, impact=event_impact_function)
     list_of_years, expected_harvest_proportion = expected_proportions_for_event
 
     # Act
