@@ -13,7 +13,7 @@ import timedelta
 _logger = logging.getLogger(__name__)
 
 
-def time_like(cls):
+def maybe_time_like(cls):
     @dataclass
     class temporal(cls):
         # start: Optional[datetime.datetime] = datetime.datetime(2020, 1, 1, 0, 0)
@@ -58,7 +58,7 @@ class Config:
         return self.species == other_cls.species and self.unit == other_cls.unit
 
 
-@time_like
+@maybe_time_like
 @dataclass
 class Plot:
     num: int = 1  # number of crops
@@ -130,7 +130,7 @@ class Farm:
         return species in set(p.species for p in self.plot_list)
 
 
-@time_like
+@maybe_time_like
 @dataclass
 class Event:
     name: str
