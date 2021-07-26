@@ -20,8 +20,9 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
 
     annualHarvest = []
     harvestYear = []
-
-    for year in range(numYears):
+    print(plotList[0].initialAgeOfTrees)
+    start_year = int(2020 - max([plot.initialAgeOfTrees for plot in plotList]))
+    for current_year in range(start_year, start_year + numYears + 1):
         # each year reset harvest
         thisYearsHarvest = 0
 
@@ -36,7 +37,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             plotList[j].setHarvestZero()  # not cumulative sum, but instead reset
             thisYearsHarvest += tempHarvest
 
-        harvestYear.append(year)
+        harvestYear.append(current_year)
         annualHarvest.append(thisYearsHarvest)
 
     simulation = [harvestYear, annualHarvest]
@@ -107,6 +108,7 @@ def main(args):
         fontsize=(fsize * 1.25),
     )
     plt.xlabel("Year", fontsize=fsize)
+    plt.xticks(pltYears, rotation=45)
     plt.ylabel("Total pounds of green coffee produced", fontsize=fsize)
     plt.savefig(output, dpi=100)
     # plt.show()
