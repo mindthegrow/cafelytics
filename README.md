@@ -37,11 +37,11 @@ Some farmers who joined the cooperative had trees that were already very mature,
 
 
 ## contributing
-Contributions are welcome. There are many aspects of this project to improve, please see [CONTRIBUTING](/info/CONTRIBUTING.md) for a list of places to start. You may also raise an issue if you have questions or suggestions about this code.
+Contributions are welcome. There are many aspects of this project to improve, please see [CONTRIBUTING](https://github.com/mindthegrow/cafelytics/blob/feature/pre-commit/CONTRIBUTING.md) for a list of places to start. You may also raise an issue if you have questions or suggestions about this code.
 
 
 ## license
-This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](/info/LICENSE.txt).
+This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](https://github.com/mindthegrow/cafelytics/blob/feature/pre-commit/LICENSE.txt).
 
 
 ## try it out
