@@ -103,7 +103,6 @@ def dummy_event(start_date):
     return Event("some_event", start=start_date)
 
 
-# CONFIG TESTS
 @pytest.fixture()
 def expected_proportions_for_harvest():
     proportion = [0.0, 0.25, 0.5, 1.0, 1.0, 0.75, 0.5, 0.0]
@@ -183,6 +182,9 @@ def test_that_event_impacts_harvest(
 
     # Assert
     assert_on_pair(targets, harvests)
+
+
+# CONFIG TESTS
 
 
 def test_that_membership_is_based_on_species_when_name_unspecified():
