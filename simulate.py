@@ -64,7 +64,7 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             Event(
                 "catastrophic overfertilization",
                 impact=0.001,
-                scope={"type": "species", "def": "e14"},
+                scope={"type": "species", "def": "borbon"},
                 start=start_year,
                 end=end_year,
             )
