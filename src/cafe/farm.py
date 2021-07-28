@@ -152,8 +152,8 @@ class Event:
             return True
         if not self.end:
             return True
-        age = self.age(current_time)
-        return age > 0 and current_time <= self.end
+        age_in_mins = self.mins(current_time)
+        return age_in_mins > 0 and current_time <= self.end
 
     def _check_scope(self, plot: Optional[Plot] = None):
         if isinstance(self.scope, bool):
@@ -270,12 +270,7 @@ def predict_yield_for_farm(
         try:
             c = find_config(name, configs)
             harvests.append(
-                predict_yield_for_plot(
-                    plot=p,
-                    config=c,
-                    events=events,
-                    time=time,
-                )
+                predict_yield_for_plot(plot=p, config=c, events=events, time=time)
             )
         except ValueError as v:
             _logger.warn(

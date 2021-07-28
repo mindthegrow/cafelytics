@@ -58,6 +58,18 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             for species in species_list
         ]
 
+        start_year = datetime.datetime(2020, 1, 1)
+        end_year = datetime.datetime(2021, 1, 1)
+        events.append(
+            Event(
+                "catastrophic overfertilization",
+                impact=0.001,
+                scope={"type": "species", "def": "e14"},
+                start=start_year,
+                end=end_year,
+            )
+        )
+
         farm = Farm(plotList)
         thisYearsHarvest = predict_yield_for_farm(
             farm=farm,
@@ -117,10 +129,7 @@ def main(args):
     plt.axes(xlim=(mnYear, mxYear), ylim=(0, (mxHarvest + (mxHarvest * 0.10))))
     plt.plot(pltYears, pltHarvests, linewidth=4)
     plt.style.use("ggplot")
-    plt.title(
-        "Yield Forecast",
-        fontsize=(fsize * 1.25),
-    )
+    plt.title("Yield Forecast", fontsize=(fsize * 1.25))
     plt.xlabel("Year", fontsize=fsize)
     plt.xticks(pltYears, rotation=45)
     plt.ylabel("Total pounds of green coffee produced", fontsize=fsize)
