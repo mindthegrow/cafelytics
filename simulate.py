@@ -117,10 +117,7 @@ def main(args):
     plt.axes(xlim=(mnYear, mxYear), ylim=(0, (mxHarvest + (mxHarvest * 0.10))))
     plt.plot(pltYears, pltHarvests, linewidth=4)
     plt.style.use("ggplot")
-    plt.title(
-        "Yield Forecast",
-        fontsize=(fsize * 1.25),
-    )
+    plt.title("Yield Forecast", fontsize=(fsize * 1.25))
     plt.xlabel("Year", fontsize=fsize)
     plt.xticks(pltYears, rotation=45)
     plt.ylabel("Total pounds of green coffee produced", fontsize=fsize)

@@ -27,7 +27,7 @@ jobs:
         run: pip install --upgrade pip
 
       - name: Install build tools
-        run: pip install twine wheel setuptools setuptools_scm 
+        run: pip install twine wheel setuptools setuptools_scm
 
       - name: Build dist
         run: |

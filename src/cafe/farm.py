@@ -270,12 +270,7 @@ def predict_yield_for_farm(
         try:
             c = find_config(name, configs)
             harvests.append(
-                predict_yield_for_plot(
-                    plot=p,
-                    config=c,
-                    events=events,
-                    time=time,
-                )
+                predict_yield_for_plot(plot=p, config=c, events=events, time=time)
             )
         except ValueError as v:
             _logger.warn(

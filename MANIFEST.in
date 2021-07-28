@@ -1,4 +1,4 @@
-prune .github 
+prune .github
 exclude .hound.yml .gitignore .coveragerc .flake8 Makefile CONTRIBUTING.md MANIFEST.in
 prune docs
 prune binder
