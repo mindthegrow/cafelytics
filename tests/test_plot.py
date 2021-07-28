@@ -7,12 +7,7 @@ import datetime
 @pytest.fixture
 def series_fixture():
     return pd.Series(
-        {
-            "plotID": 0,
-            "treeType": "borbon",
-            "numCuerdas": 1.0,
-            "yearPlanted": 2020,
-        }
+        {"plotID": 0, "treeType": "borbon", "numCuerdas": 1.0, "yearPlanted": 2020}
     )
 
 

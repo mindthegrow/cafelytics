@@ -24,7 +24,7 @@ The dataset provided can be used for forecasting with
 make run
 ```
 
-which is equivalent to 
+which is equivalent to
 
 ```bash
 python3 simulate.py --farm data/fakeData.csv --years 75 --output testNewFarm.png
@@ -37,14 +37,13 @@ Some farmers who joined the cooperative had trees that were already very mature,
 
 
 ## contributing
-Contributions are welcome. There are many aspects of this project to improve, please see [CONTRIBUTING](/info/CONTRIBUTING.md) for a list of places to start. You may also raise an issue if you have questions or suggestions about this code. 
+Contributions are welcome. There are many aspects of this project to improve, please see [CONTRIBUTING](https://github.com/mindthegrow/cafelytics/blob/feature/pre-commit/CONTRIBUTING.md) for a list of places to start. You may also raise an issue if you have questions or suggestions about this code.
 
 
 ## license
-This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](/info/LICENSE.txt).
+This software is released as-is, with no guarantee nor warranty. For more details, please see [LICENSE](https://github.com/mindthegrow/cafelytics/blob/feature/pre-commit/LICENSE.txt).
 
 
 ## try it out
 (Note: the following have not been tested in a long time, they make likely not work).
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=/lab)
-

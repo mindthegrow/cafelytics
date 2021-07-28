@@ -39,7 +39,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Inspect version info
-        run: | 
+        run: |
           python setup.py --version
           git describe --always --dirty --tags --long --match "*[0-9]*"
 
