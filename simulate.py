@@ -58,6 +58,18 @@ def simulateCoOp(plotList, numYears, pruneYear=None, growthPattern=None, strateg
             for species in species_list
         ]
 
+        start_year = datetime.datetime(2020, 1, 1)
+        end_year = datetime.datetime(2021, 1, 1)
+        events.append(
+            Event(
+                "catastrophic overfertilization",
+                impact=0.001,
+                scope={"type": "species", "def": "e14"},
+                start=start_year,
+                end=end_year,
+            )
+        )
+
         farm = Farm(plotList)
         thisYearsHarvest = predict_yield_for_farm(
             farm=farm,
