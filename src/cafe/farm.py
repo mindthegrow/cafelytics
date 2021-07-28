@@ -152,8 +152,8 @@ class Event:
             return True
         if not self.end:
             return True
-        age = self.age(current_time)
-        return age > 0 and current_time <= self.end
+        age_in_mins = self.mins(current_time)
+        return age_in_mins > 0 and current_time <= self.end
 
     def _check_scope(self, plot: Optional[Plot] = None):
         if isinstance(self.scope, bool):
