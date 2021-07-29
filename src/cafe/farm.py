@@ -231,13 +231,13 @@ def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> fl
         _logger.warning("Events empty")
         return 1.0
 
-    relevent_events = []
+    relevant_events = []
     for e in events:
         # TODO more checks to determine this condition
         if e.is_active(plot=plot, current_time=time):
-            relevent_events.append(e)
-            _logger.debug(f"Found relevent event {e}")
-    impact = np.prod([e.eval(time=time, plot=plot) for e in relevent_events])
+            relevant_events.append(e)
+            _logger.debug(f"Found relevant event {e}")
+    impact = np.prod([e.eval(time=time, plot=plot) for e in relevant_events])
     return impact
 
 
