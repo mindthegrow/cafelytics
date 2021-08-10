@@ -68,6 +68,7 @@ class Config:
 
 
 @maybe_time_like
+@dataclass
 class Plot:
     """
     Stores information about a farmer's plot.
@@ -184,6 +185,7 @@ class Farm:
 
 
 @maybe_time_like
+@dataclass
 class Event:
     """
     Stores information about events which impact harvest expectations.
