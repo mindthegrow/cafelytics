@@ -81,7 +81,19 @@ class Plot:
             raise ValueError(f"Please specify a valid time. Given {type(time)}")
 
     @classmethod
-    def from_series(cls, series):
+    def from_series(cls, series: pd.Series, **kwargs):
+        """
+        Instantiates class from a ``pandas.Series`` object.
+
+        This method primarily exists for backwards compatibility.
+
+        Args:
+            data (dict): Plot density (trees/unit area)
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            plot (Plot): ``Plot`` object.
+        """
         return cls.from_density(
             density=1.0,
             plot_id=series.plotID,
@@ -92,11 +104,34 @@ class Plot:
         )
 
     @classmethod
-    def from_dict(cls, dict):
-        return cls.from_series(pd.Series(dict))
+    def from_dict(cls, data: Dict, **kwargs):
+        """
+        Instantiates class using a ``dict`` object.
+
+        This method primarily exists for backwards compatibility.
+
+        Args:
+            data (dict): Plot density (trees/unit area)
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            plot (Plot): ``Plot`` object.
+        """
+        return cls.from_series(pd.Series(data))
 
     @classmethod
     def from_density(cls, density: float = 1.0, **kwargs):
+        """
+        Instantiates class using a ``density`` argument instead of
+        the number of trees.
+
+        Args:
+            density (float): Plot density (trees/unit area)
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            plot (Plot): ``Plot`` object.
+        """
         plot = cls(**kwargs)
         plot.num = np.floor(plot.area * density)
         return plot
@@ -178,6 +213,21 @@ class Event:
 
 @lru_cache(maxsize=128)
 def find_config(name: str, configs: Tuple[Config]) -> Config:
+    """
+    Looks up a varietal by name in a collection of
+    `Configs`. If name not found, will return config for
+    the species instead, but throw an error if missing.
+
+    Args:
+        name (str): Name of varietal or species to look up
+        configs (Tuple[Config]): registry of configs
+
+    Returns:
+        config (Config): relevant config entry
+
+    Raises:
+        KeyError: `name` could not be found in `configs`
+    """
     # first check for name (to look for strategy)
     for c in configs:
         if c.name == name:
