@@ -2,7 +2,7 @@ import datetime
 import logging
 import warnings
 from dataclasses import dataclass, field
-from functools import lru_cache
+from functools import lru_cache, wraps
 from numbers import Number
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -14,6 +14,11 @@ _logger = logging.getLogger(__name__)
 
 
 def maybe_time_like(cls):
+    """
+    Wrapper to add temporal properties and methods to a class.
+    """
+
+    @wraps(cls, updated=())
     @dataclass
     class temporal(cls):
         # start: Optional[datetime.datetime] = datetime.datetime(2020, 1, 1, 0, 0)
@@ -43,6 +48,10 @@ def maybe_time_like(cls):
 
 @dataclass(frozen=True)
 class Config:
+    """
+    Stores information about crop yields per species / varietal name
+    """
+
     species: str
     name: str = ""
     output_per_crop: float = 1.0
@@ -59,8 +68,13 @@ class Config:
 
 
 @maybe_time_like
-@dataclass
 class Plot:
+    """
+    Stores information about a farmer's plot.
+
+    What is planted, how much, where, to whom does it belong? etc.
+    """
+
     num: int = 1  # number of crops
     area: float = 1.0
     plot_id: int = 0
@@ -139,6 +153,10 @@ class Plot:
 
 @dataclass
 class Farm:
+    """
+    Container class for a collection of ``Plot`` objects.
+    """
+
     plot_list: List[Plot] = field(default_factory=List)
 
     @classmethod
@@ -166,8 +184,11 @@ class Farm:
 
 
 @maybe_time_like
-@dataclass
 class Event:
+    """
+    Stores information about events which impact harvest expectations.
+    """
+
     name: str
     impact: Optional[Union[float, Callable]] = 1.0
     scope: Optional[Union[bool, Dict]] = field(default_factory=dict)
@@ -177,12 +198,19 @@ class Event:
         current_time: datetime.datetime = datetime.datetime.today(),
         plot: Optional[Plot] = None,
     ) -> bool:
+        """
+        Performs checks on scope of event to determine whether or not this
+        event will have an impact on the harvest.
+        """
         time_check = self._check_time_window(current_time)
         # TODO: add more checks involving scope
         scope_check = self._check_scope(plot)
         return time_check and scope_check
 
     def _check_time_window(self, current_time=datetime.datetime.today()) -> bool:
+        """
+        Determines if event is occurring at a specified time.
+        """
         if not self.start:
             return True
         if not self.end:
@@ -191,6 +219,10 @@ class Event:
         return age_in_mins > 0 and current_time <= self.end
 
     def _check_scope(self, plot: Optional[Plot] = None):
+        """
+        Checks whether event is relevant / active with respect to the event scope.
+        This determination can be based on species and location data of a plot.
+        """
         if isinstance(self.scope, bool):
             return self.scope
         if not self.scope:
@@ -250,6 +282,11 @@ def find_config(name: str, configs: Tuple[Config]) -> Config:
 def guate_harvest_function(
     lifespan: float = 30, mature: float = 5, retire: float = None
 ) -> Callable:
+    """
+    Defines piecewise-linear function which approximates the growth patterns
+    of coffee trees according to the coffee cooperative for which this simulation
+    was first written.
+    """
     if not retire:
         retire = lifespan - 2
     assert retire < lifespan
@@ -274,6 +311,10 @@ def guate_harvest_function(
 
 
 def total_impact(plot: Plot, time: datetime.datetime, events: List[Event]) -> float:
+    """
+    Determines which events are relevant and multiplies all the associated impacts
+    together in order to define the "total impact" of these events on a particular plot.
+    """
     # - is it relevant to this plot? can check species, geography, etc.
     # - if so, what will be the impact to pass to the prediction function?
     # - is a strategy being applied? it has an impact too, is an event
@@ -297,6 +338,10 @@ def predict_yield_for_plot(
     events: Optional[List[Event]] = None,
     time: datetime.datetime = datetime.datetime(2020, 1, 1),
 ) -> float:
+    """
+    Predicts yields for a given plot, set of events, and collection of configs
+    at a specified time.
+    """
     # yield = area * crops/area * weight / crop
     # messy to compare two different classes but duck typing allows it...
     if plot.species == config.species and plot.unit == config.unit:
