@@ -1,5 +1,5 @@
 prune .github
-exclude .hound.yml .gitignore .coveragerc .flake8 Makefile CONTRIBUTING.md MANIFEST.in
+exclude .hound.yml .gitignore .coveragerc .flake8 Makefile CONTRIBUTING.md MANIFEST.in .readthedocs.yml
 prune docs
 prune binder
 prune tests
