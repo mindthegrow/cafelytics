@@ -87,8 +87,7 @@ demo
 ====
 Try it in your browser!
 
-.. raw:: html
-
-   <a href="https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=/lab"><img alt="Launch Binder" src="https://mybinder.org/badge_logo.svg"></a>
-
+.. image:: https://mybinder.org/badge_logo.svg
+    :alt: Launch Binder
+    :target: https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=/lab
 
