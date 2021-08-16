@@ -74,6 +74,6 @@ Try it in your browser!
 
 
 
-.. _CONTRIBUTING: https://github.com/mindthegrow/cafelytics/blob/CONTRIBUTING.md
-.. _LICENSE: https://github.com/mindthegrow/cafelytics/blob/LICENSE.txt
+.. _CONTRIBUTING: https://github.com/mindthegrow/cafelytics/blob/main/CONTRIBUTING.md
+.. _LICENSE: https://github.com/mindthegrow/cafelytics/blob/main/LICENSE.txt
 .. _issue: https://github.com/mindthegrow/cafelytics/issues/
