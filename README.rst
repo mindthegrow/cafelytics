@@ -55,13 +55,13 @@ Some farmers who joined the cooperative had trees that were already very mature,
 
 contributing
 ============
-Contributions are welcome. There are many aspects of this project to improve, please see `CONTRIBUTING`_ for a list of places to start.
-You may also raise an `_issue` if you have questions or suggestions about this code.
+Contributions are welcome. There are many aspects of this project to improve, please see `CONTRIBUTING.md <https://github.com/mindthegrow/cafelytics/blob/main/CONTRIBUTING.md>`_ for a list of places to start.
+You may also raise an `issue <https://github.com/mindthegrow/cafelytics/issues/>`_ if you have questions or suggestions about this code.
 
 
 license
 =======
-This software is released as-is, with no guarantee nor warranty. For more details, please see `LICENSE`_.
+This software is released as-is, with no guarantee nor warranty. For more details, please see `LICENSE.txt <https://github.com/mindthegrow/cafelytics/blob/main/LICENSE.txt>`_.
 
 
 demo
@@ -73,7 +73,3 @@ Try it in your browser!
    <a href="https://mybinder.org/v2/gh/mindthegrow/cafelytics/HEAD/?urlpath=/lab"><img alt="Launch Binder" src="https://mybinder.org/badge_logo.svg"></a>
 
 
-
-.. _CONTRIBUTING: https://github.com/mindthegrow/cafelytics/blob/main/CONTRIBUTING.md
-.. _LICENSE: https://github.com/mindthegrow/cafelytics/blob/main/LICENSE.txt
-.. _issue: https://github.com/mindthegrow/cafelytics/issues/
